@@ -420,7 +420,8 @@
                         else totalOut += amt;
 
                         const item = document.createElement('div');
-                        item.className = "flex items-center justify-between p-5 bg-black/40 rounded-2xl border-2 border-teenBorder hover:border-teenLime transition-colors group animate-slide-up";
+                        // Use flex-col on mobile and sm:flex-row on desktop to handle amount placement
+                        item.className = "flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-black/40 rounded-2xl border-2 border-teenBorder hover:border-teenLime transition-colors group animate-slide-up gap-3 sm:gap-0";
                         item.innerHTML = `
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center neo-box no-hover group-hover:bg-${tx.type === 'income' ? 'teenLime' : 'teenPink'} transition-colors">
@@ -431,7 +432,11 @@
                                     <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">${tx.category} • ${new Date(tx.timestamp).toLocaleDateString()}</p>
                                 </div>
                             </div>
-                            <span class="font-black text-${tx.type === 'income' ? 'teenLime' : 'teenPink'} flex items-baseline whitespace-nowrap">${tx.type === 'income' ? '+' : '-'}<span class="currency-symbol">${currencyMap[document.getElementById('activeCurrencyDisplay').innerText] || ''}</span>${amt.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+                            <div class="sm:text-right">
+                                <span class="font-black text-lg sm:text-base text-${tx.type === 'income' ? 'teenLime' : 'teenPink'} flex items-baseline whitespace-nowrap">
+                                    ${tx.type === 'income' ? '+' : '-'}<span class="currency-symbol">${currencyMap[document.getElementById('activeCurrencyDisplay').innerText] || ''}</span>${amt.toLocaleString(undefined, {minimumFractionDigits: 2})}
+                                </span>
+                            </div>
                         `;
                         listContainer.appendChild(item);
                     });
