@@ -64,6 +64,7 @@
             border: 3px solid #000;
             box-shadow: 6px 6px 0px #000;
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden; /* Added to keep data inside */
         }
 
         .cyber-grid {
@@ -82,6 +83,7 @@
             font-family: monospace;
             font-size: 10px;
             color: #befa39;
+            word-break: break-all;
         }
 
         .neo-input {
@@ -94,6 +96,7 @@
             padding: 1rem;
             border-radius: 1rem;
             transition: all 0.2s;
+            width: 100%; /* Ensure inputs don't overflow */
         }
 
         .neo-input:focus {
@@ -123,7 +126,7 @@
 
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-[120] w-72 bg-teenSurface border-r-4 border-black p-6 flex flex-col transition-transform duration-300 sidebar-closed lg:translate-x-0">
         <button onclick="toggleSidebar()" class="lg:hidden absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-zinc-500 hover:text-teenPink">
-            <i class="fas fa-xmark text-2xl"></i>
+            <i class="fas fa-xmark text-2xl" style="margin-left: 25px;"></i>
         </button>
 
         <div class="flex items-center gap-3 mb-12">
@@ -149,51 +152,51 @@
         </nav>
 
         <div class="pt-6 border-t-2 border-teenBorder space-y-4">
-            <div class="flex items-center gap-3 p-2 bg-black/40 rounded-2xl border-2 border-teenBorder">
-                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-black">
+            <div class="flex items-center gap-3 p-2 bg-black/40 rounded-2xl border-2 border-teenBorder overflow-hidden">
+                <div class="w-10 h-10 rounded-full flex-shrink-0 overflow-hidden border-2 border-black">
                     <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" id="sidebarAvatar">
                 </div>
                 <div class="overflow-hidden">
                     <p id="sidebarUserName" class="font-black text-[9px] uppercase truncate text-white">ACCESSING...</p>
-                    <p class="text-[8px] font-bold text-teenLime uppercase">Level 4 Clearance</p>
+                    <p class="text-[8px] font-bold text-teenLime uppercase truncate">Level 4 Clearance</p>
                 </div>
             </div>
-            <button onclick="handleLogout()" class="w-full bg-teenPink border-2 border-black text-black p-3 rounded-xl font-black text-[10px] uppercase hover:bg-white transition-all flex items-center justify-center gap-2">
+            <button onclick="handleLogout()" class="w-full bg-teenPink border-2 border-black text-black p-3 rounded-xl font-black text-[10px] uppercase hover:bg-white transition-all flex items-center justify-center gap-2" >
                 <i class="fas fa-power-off"></i> TERMINATE SESSION
             </button>
         </div>
     </aside>
 
-    <main class="flex-1 lg:ml-72 min-h-screen p-6 md:p-12 space-y-10">
+    <main class="flex-1 lg:ml-72 min-h-screen p-6 md:p-12 space-y-10 overflow-x-hidden" style="margin-bottom: 30px;">
         
         <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-slide-up" style="margin-top: 60px;">
             <div>
-                <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">ACCESS <span class="text-teenPink">LOGS</span></h1>
+                <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none break-words">ACCESS<br><span class="text-teenPink">LOGS</span></h1>
                 <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Security Status: <span class="text-teenLime animate-pulse-slow">ENCRYPTED</span></p>
             </div>
-            <div class="flex gap-4">
-                <div class="bg-teenSurface border-2 border-teenBorder p-4 px-6 rounded-2xl flex items-center gap-4">
-                    <div class="w-3 h-3 bg-teenLime rounded-full shadow-[0_0_10px_#befa39]"></div>
-                    <span class="text-[10px] font-black uppercase text-zinc-400">Current Session Active</span>
+            <div class="flex flex-wrap gap-4">
+                <div class="bg-teenSurface border-2 border-teenBorder p-4 px-6 rounded-2xl flex items-center gap-4 max-w-full">
+                    <div class="w-3 h-3 bg-teenLime rounded-full shadow-[0_0_10px_#befa39] flex-shrink-0"></div>
+                    <span class="text-[10px] font-black uppercase text-zinc-400 truncate">Current Session Active</span>
                 </div>
             </div>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
             
-            <div class="lg:col-span-2 space-y-6">
+            <div class="lg:col-span-2 space-y-6 overflow-hidden">
                 <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover">
                     <div class="flex items-center justify-between mb-10">
-                        <h3 class="font-black text-2xl italic uppercase leading-none">Authentication <br><span class="text-teenPink">Timeline</span></h3>
+                        <h3 class="font-black text-2xl italic uppercase leading-none">Logged In <br><span class="text-teenPink">Timeline</span></h3>
                         <i class="fas fa-fingerprint text-4xl text-zinc-800"></i>
                     </div>
 
-                    <div class="space-y-4" id="loginHistory">
+                    <div class="space-y-4 overflow-hidden" id="loginHistory">
                         <div class="text-center py-20 opacity-20 font-black uppercase italic text-xs tracking-[0.3em]">Decoding Access History...</div>
                     </div>
                 </div>
 
-                <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover">
+                <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover overflow-hidden">
                     <h3 class="font-black text-2xl italic uppercase leading-none mb-8">Update <span class="text-teenLime">Credentials</span></h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -211,23 +214,23 @@
                             </button>
                         </div>
 
-                        <div class="bg-black/50 border-2 border-teenBorder rounded-3xl p-6 flex flex-col justify-center text-center">
+                        <div class="bg-black/50 border-2 border-teenBorder rounded-3xl p-6 flex flex-col justify-center text-center overflow-hidden">
                             <i class="fas fa-key text-teenPink text-3xl mb-4"></i>
                             <h4 class="font-black text-xs uppercase text-white mb-2">Forget Access?</h4>
-                            <p class="text-[9px] font-black text-zinc-500 uppercase leading-relaxed mb-6">Request an external recovery token via your linked neural-mail.</p>
-                            <button onclick="handleForgotPassword()" class="text-teenPink font-black text-[10px] uppercase hover:underline">
+                            <p class="text-[9px] font-black text-zinc-500 uppercase leading-relaxed mb-6">Request recovery token via linked neural-mail.</p>
+                            <button onclick="handleForgotPassword()" class="text-teenPink font-black text-[10px] uppercase hover:underline break-words">
                                 [ Trigger Recovery Protocol ]
                             </button>
                         </div>
                     </div>
-                    <p id="passwordStatus" class="mt-6 text-[9px] font-black uppercase text-center hidden"></p>
+                    <p id="passwordStatus" class="mt-6 text-[9px] font-black uppercase text-center hidden break-words"></p>
                 </div>
 
                 <div class="bg-black rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-teenLime/20 animate-scan"></div>
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="font-black text-sm italic uppercase text-teenLime">System Integrity Terminal</h3>
-                        <span class="text-[8px] font-bold text-zinc-600 uppercase">Verifying Cloud Packets...</span>
+                        <span class="text-[8px] font-bold text-zinc-600 uppercase">Verifying...</span>
                     </div>
                     <div id="terminal" class="space-y-2 max-h-40 overflow-y-auto">
                         <p class="terminal-text">> Initializing security handshake...</p>
@@ -237,22 +240,22 @@
                 </div>
             </div>
 
-            <div class="space-y-8">
+            <div class="space-y-8 overflow-hidden">
                 <div class="bg-teenSurface p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover relative overflow-hidden group">
                     <h3 class="font-black text-2xl italic uppercase mb-6 leading-none">AGENT <br><span class="text-teenLime">PROFILE</span></h3>
                     
-                    <div class="space-y-6 relative z-10">
-                        <div class="flex justify-between items-center border-b border-teenBorder pb-4">
-                            <span class="text-[10px] font-black uppercase text-zinc-500">ID String</span>
-                            <span id="agentUID" class="text-[10px] font-black text-white truncate ml-4 italic">...</span>
+                    <div class="space-y-6 relative z-10 overflow-hidden">
+                        <div class="flex justify-between items-center border-b border-teenBorder pb-4 overflow-hidden gap-2">
+                            <span class="text-[10px] font-black uppercase text-zinc-500 flex-shrink-0">ID String</span>
+                            <span id="agentUID" class="text-[10px] font-black text-white truncate italic text-right">...</span>
                         </div>
-                        <div class="flex justify-between items-center border-b border-teenBorder pb-4">
-                            <span class="text-[10px] font-black uppercase text-zinc-500">Last Seen</span>
-                            <span id="lastLogin" class="text-[10px] font-black text-teenPink uppercase">...</span>
+                        <div class="flex justify-between items-center border-b border-teenBorder pb-4 overflow-hidden gap-2">
+                            <span class="text-[10px] font-black uppercase text-zinc-500 flex-shrink-0">Last Seen</span>
+                            <span id="lastLogin" class="text-[10px] font-black text-teenPink uppercase text-right">...</span>
                         </div>
-                        <div class="flex justify-between items-center border-b border-teenBorder pb-4">
-                            <span class="text-[10px] font-black uppercase text-zinc-500">Session ID</span>
-                            <span class="text-[10px] font-black text-white uppercase italic">SC-492-X</span>
+                        <div class="flex justify-between items-center border-b border-teenBorder pb-4 overflow-hidden gap-2">
+                            <span class="text-[10px] font-black uppercase text-zinc-500 flex-shrink-0">Session ID</span>
+                            <span class="text-[10px] font-black text-white uppercase italic text-right">SC-492-X</span>
                         </div>
                     </div>
                     <i class="fas fa-user-shield absolute -right-6 -bottom-6 text-9xl opacity-5 group-hover:scale-110 transition-transform duration-500"></i>
@@ -284,11 +287,11 @@
 
                 <div class="bg-black p-10 rounded-[2.5rem] border-4 border-teenBorder neo-box no-hover">
                     <div class="w-12 h-12 bg-teenPink/10 rounded-xl flex items-center justify-center text-teenPink mb-6 border border-teenPink/20">
-                        <i class="fas fa-radar text-xl"></i>
+                        <i class="fas fa-tower-broadcast text-xl"></i>
                     </div>
                     <h3 class="font-black text-lg italic uppercase mb-4">Threat Intel</h3>
-                    <p class="text-[10px] font-black uppercase text-zinc-500 leading-relaxed mb-6">No unauthorized cross-origin requests detected in the last 24 hours. Your connection is tunnelled.</p>
-                    <div class="bg-teenSurface p-4 rounded-xl border border-teenBorder">
+                    <p class="text-[10px] font-black uppercase text-zinc-500 leading-relaxed mb-6 break-words">No unauthorized cross-origin requests detected in the last 24 hours.</p>
+                    <div class="bg-teenSurface p-4 rounded-xl border border-teenBorder overflow-hidden">
                         <div class="flex items-center justify-between text-[8px] font-black uppercase mb-2">
                             <span>Integrity Check</span>
                             <span class="text-teenLime">100%</span>
@@ -331,7 +334,6 @@
             overlay.classList.toggle('hidden');
         };
 
-        // Password Reset Feature
         window.handleForgotPassword = () => {
             if(auth.currentUser) {
                 const email = auth.currentUser.email;
@@ -341,7 +343,6 @@
             }
         };
 
-        // Update Password Feature
         window.handlePasswordUpdate = async () => {
             const oldPass = document.getElementById('oldPassword').value;
             const newPass = document.getElementById('newPassword').value;
@@ -354,7 +355,6 @@
             statusEl.innerText = "AUTHENTICATING...";
             statusEl.className = "mt-6 text-[9px] font-black uppercase text-center text-zinc-500";
 
-            // Re-authenticate first
             const credential = EmailAuthProvider.credential(user.email, oldPass);
             
             try {
@@ -406,18 +406,18 @@
 
             entries.forEach(log => {
                 const item = document.createElement('div');
-                item.className = "flex items-center justify-between p-6 bg-black/40 rounded-3xl border-2 border-teenBorder group hover:border-teenPink transition-all animate-slide-up";
+                item.className = "flex items-center justify-between p-6 bg-black/40 rounded-3xl border-2 border-teenBorder group hover:border-teenPink transition-all animate-slide-up overflow-hidden";
                 item.innerHTML = `
-                    <div class="flex items-center gap-5">
-                        <div class="w-12 h-12 bg-teenPink/10 rounded-2xl flex items-center justify-center border-2 border-teenPink/20 text-teenPink">
+                    <div class="flex items-center gap-5 overflow-hidden">
+                        <div class="w-12 h-12 bg-teenPink/10 rounded-2xl flex-shrink-0 flex items-center justify-center border-2 border-teenPink/20 text-teenPink">
                             <i class="fas fa-clock-rotate-left"></i>
                         </div>
-                        <div>
-                            <h4 class="font-black text-xs uppercase text-white">${log.time}</h4>
-                            <p class="text-[9px] font-black text-zinc-600 uppercase tracking-widest">${log.device}</p>
+                        <div class="overflow-hidden">
+                            <h4 class="font-black text-xs uppercase text-white truncate">${log.time}</h4>
+                            <p class="text-[9px] font-black text-zinc-600 uppercase tracking-widest truncate">${log.device}</p>
                         </div>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right flex-shrink-0">
                         <span class="bg-${log.color}/10 text-${log.color} text-[8px] font-black px-3 py-1 rounded-full border border-${log.color}/20 uppercase">${log.status}</span>
                     </div>
                 `;
@@ -448,16 +448,6 @@
                 runTerminal();
             }
         });
-    </script>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-            navigator.serviceWorker.register('../../pwa/sw.js')
-                .then(reg => console.log('Service Worker registered! Scope:', reg.scope))
-                .catch(err => console.log('Service Worker registration failed:', err));
-            });
-        }
     </script>
 </body>
 </html>
