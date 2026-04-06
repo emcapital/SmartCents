@@ -3,6 +3,7 @@ const assets = [
   '/',
   '../index.html',
   '../pages/auth/login.html',
+  '../pages/main/dashboard.html',
   '/manifest.json',
   'https://cdn.tailwindcss.com'
 ];

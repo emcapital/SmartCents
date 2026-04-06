@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SmartCents | Command Center</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teenLime: '#befa39',
+                        teenPurple: '#a855f7',
+                        teenPink: '#ff71ce',
+                        teenCanvas: '#050505',
+                        teenSurface: '#121214',
+                        teenBorder: '#27272a',
+                    },
+                    animation: {
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'slide-in': 'slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                    },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(100%) scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'translateX(0) scale(1)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&display=swap');
+        
+        body { 
+            font-family: 'Unbounded', sans-serif; 
+            background-color: #050505; 
+            color: white; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+        }
+        
+        .neo-box { 
+            border: 3px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .neo-box:hover:not(.no-hover) {
+            transform: translate(-2px, -2px);
+            box-shadow: 10px 10px 0px #000;
+        }
+
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(24, 24, 27, 0.5) 1px, transparent 1px), 
+                              linear-gradient(to bottom, rgba(24, 24, 27, 0.5) 1px, transparent 1px);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #befa39; }
+    </style>
+</head>
+<body class="antialiased min-h-screen cyber-grid pb-20">
+
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-[110] flex flex-col gap-4 pointer-events-none"></div>
+
+    <nav class="sticky top-0 z-50 p-4 md:p-6 bg-black/50 backdrop-blur-md border-b-4 border-black">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-teenLime rounded-xl flex items-center justify-center neo-box no-hover">
+                    <i class="fas fa-hand-holding-dollar text-black text-lg"></i>
+                </div>
+                <span class="font-black text-lg italic uppercase tracking-tighter hidden sm:inline">Smart<span class="text-teenLime">Cents</span></span>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button id="syncBtn" class="bg-teenPurple p-2 px-4 rounded-xl neo-box text-[10px] font-black uppercase flex items-center gap-2">
+                    <i class="fas fa-rotate"></i> <span class="hidden sm:inline">Sync Cloud</span>
+                </button>
+                <div id="userProfile" class="w-10 h-10 bg-zinc-800 border-2 border-black rounded-full overflow-hidden neo-box cursor-pointer no-hover">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" id="userAvatar">
+                </div>
+                <button onclick="handleLogout()" class="text-zinc-500 hover:text-teenPink transition-colors p-2">
+                    <i class="fas fa-power-off text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8 space-y-8">
+        
+        <header class="animate-slide-up">
+            <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">COMMAND <span class="text-teenLime">CENTER</span></h1>
+            <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Active Protocol: <span id="userNameDisplay" class="text-white">ACCESSING...</span></p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-teenLime p-6 rounded-3xl neo-box animate-slide-up no-hover" style="animation-delay: 0.1s">
+                <p class="text-black font-black text-[10px] uppercase tracking-widest opacity-70">Total Stack</p>
+                <h2 class="text-black text-4xl font-black mt-2 leading-none">$12,450.00</h2>
+                <div class="mt-4 flex items-center gap-2 text-black/50 text-[10px] font-black uppercase">
+                    <i class="fas fa-arrow-trend-up"></i> +12.5% vs last month
+                </div>
+            </div>
+
+            <div class="bg-teenSurface p-6 rounded-3xl neo-box border-4 border-black animate-slide-up no-hover" style="animation-delay: 0.2s">
+                <p class="text-teenPurple font-black text-[10px] uppercase tracking-widest">Incoming</p>
+                <h2 class="text-white text-4xl font-black mt-2 leading-none">$4,200.00</h2>
+                <div class="w-full bg-zinc-900 h-2 mt-6 rounded-full overflow-hidden">
+                    <div class="bg-teenPurple h-full w-2/3"></div>
+                </div>
+            </div>
+
+            <div class="bg-teenSurface p-6 rounded-3xl neo-box border-4 border-black animate-slide-up no-hover" style="animation-delay: 0.3s">
+                <p class="text-teenPink font-black text-[10px] uppercase tracking-widest">Outgoing</p>
+                <h2 class="text-white text-4xl font-black mt-2 leading-none">$1,840.00</h2>
+                <div class="w-full bg-zinc-900 h-2 mt-6 rounded-full overflow-hidden">
+                    <div class="bg-teenPink h-full w-1/3"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-teenSurface rounded-3xl border-4 border-black p-6 md:p-8 neo-box no-hover">
+                    <div class="flex justify-between items-center mb-8">
+                        <h3 class="font-black text-xl italic uppercase">Loot History</h3>
+                        <button class="text-teenLime font-black text-[10px] uppercase border-b-2 border-teenLime">Filter History</button>
+                    </div>
+
+                    <div class="space-y-4" id="transactionList">
+                        <div class="flex items-center justify-between p-4 bg-black/40 rounded-2xl border-2 border-teenBorder hover:border-teenLime transition-colors group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center neo-box no-hover group-hover:bg-teenPurple transition-colors">
+                                    <i class="fas fa-burger text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-sm uppercase">Cyber Bites Cafe</h4>
+                                    <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Food & Drinks • 2h ago</p>
+                                </div>
+                            </div>
+                            <span class="font-black text-teenPink">-$24.50</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 bg-black/40 rounded-2xl border-2 border-teenBorder hover:border-teenLime transition-colors group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center neo-box no-hover group-hover:bg-teenLime transition-colors">
+                                    <i class="fas fa-briefcase text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-sm uppercase">Contract Payment</h4>
+                                    <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Income • Yesterday</p>
+                                </div>
+                            </div>
+                            <span class="font-black text-teenLime">+$1,200.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-teenPurple p-8 rounded-3xl neo-box text-black no-hover">
+                    <h3 class="font-black text-2xl italic uppercase mb-4 leading-none">QUICK <br>ENTRY</h3>
+                    <p class="text-[10px] font-black uppercase opacity-60 mb-8">Deploy new transaction to cloud</p>
+                    <button onclick="handleNewEntry()" class="w-full bg-black text-white p-5 rounded-2xl font-black text-xs uppercase neo-box hover:bg-white hover:text-black transition-all flex items-center justify-center gap-3">
+                        <i class="fas fa-plus"></i> ADD EXPENSE
+                    </button>
+                </div>
+
+                <div class="bg-teenSurface p-8 rounded-3xl border-4 border-black neo-box no-hover">
+                    <h3 class="font-black text-lg italic uppercase mb-6 text-teenLime">Vault Status</h3>
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center text-[10px] font-black uppercase">
+                            <span class="text-zinc-500">Cloud Sync</span>
+                            <span class="text-teenLime">Online</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] font-black uppercase">
+                            <span class="text-zinc-500">Encryption</span>
+                            <span>AES-256</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDYM0pEVPR3PJQoPzNGJF7q4z4BkeNDYoM",
+            authDomain: "budgetbuddy-f9eff.firebaseapp.com",
+            databaseURL: "https://budgetbuddy-f9eff-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "budgetbuddy-f9eff",
+            storageBucket: "budgetbuddy-f9eff.firebasestorage.app",
+            messagingSenderId: "686739320375",
+            appId: "1:686739320375:web:ca0a1bab63bd9df1d6d9b2",
+            measurementId: "G-82MHJLWR60"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // Toast Helper
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-teenLime' : 'bg-teenPink';
+            const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
+            
+            toast.className = `${bgColor} border-4 border-black p-4 rounded-2xl neo-box no-hover animate-slide-in pointer-events-auto min-w-[280px]`;
+            toast.innerHTML = `
+                <div class="flex items-center gap-4 text-black">
+                    <i class="fas ${icon} text-xl"></i>
+                    <div class="font-black text-[10px] uppercase tracking-tighter italic">${message}</div>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(20px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Global Handlers
+        window.handleLogout = () => {
+            showToast("TERMINATING SESSION...", "success");
+            setTimeout(() => {
+                signOut(auth).then(() => window.location.href = 'index.html');
+            }, 1000);
+        };
+
+        window.handleNewEntry = () => {
+            showToast("LEDGER UPDATER OPENED", "success");
+        };
+
+        // Sync Logic
+        document.getElementById('syncBtn').addEventListener('click', () => {
+            const icon = document.querySelector('#syncBtn i');
+            icon.classList.add('fa-spin');
+            showToast("INITIATING CLOUD HANDSHAKE...", "success");
+            
+            setTimeout(() => {
+                icon.classList.remove('fa-spin');
+                showToast("VAULT SYNCHRONIZED SUCCESSFULLY", "success");
+            }, 2000);
+        });
+
+        // Auth Monitor
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+            } else {
+                document.getElementById('userNameDisplay').innerText = (user.displayName || user.email.split('@')[0]).toUpperCase();
+                if(user.photoURL) document.getElementById('userAvatar').src = user.photoURL;
+                showToast(`WELCOME BACK, ${user.displayName || 'AGENT'}`, "success");
+            }
+        });
+    </script>
+</body>
+</html>

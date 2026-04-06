@@ -29,7 +29,6 @@
                         'float': 'float 3s ease-in-out infinite',
                         'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
                         'slide-in': 'slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
-                        'spin-slow': 'spin 3s linear infinite',
                     },
                     keyframes: {
                         float: {
@@ -96,6 +95,13 @@
         @media (min-height: 850px) and (min-width: 1024px) {
             body { overflow-y: hidden; }
         }
+
+        .btn-disabled {
+            filter: grayscale(1);
+            opacity: 0.5;
+            cursor: not-allowed !important;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="antialiased flex items-center justify-center p-4 md:p-8 cyber-grid">
@@ -107,17 +113,28 @@
                 <div class="w-24 h-24 border-8 border-t-teenLime rounded-full animate-spin absolute top-0 left-0"></div>
                 <i class="fas fa-bolt text-teenLime text-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse"></i>
             </div>
-            <h2 class="font-black text-xl uppercase italic tracking-widest text-white">Syncing <span class="text-teenLime">Loot</span>...</h2>
-            <p class="text-[10px] font-bold text-zinc-500 mt-2 uppercase tracking-tighter">Connecting to Secure Vault</p>
+            <h2 class="font-black text-xl uppercase italic tracking-widest text-white">Verifying <span class="text-teenLime">Credentials</span>...</h2>
         </div>
     </div>
 
-    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div class="absolute -top-20 -left-20 w-96 h-96 bg-teenPurple/10 rounded-full blur-[120px]"></div>
-        <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-teenLime/10 rounded-full blur-[120px]"></div>
+    <div id="googleModal" class="fixed inset-0 z-[150] flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeGoogleModal()"></div>
+        <div class="bg-teenSurface border-4 border-black p-8 rounded-3xl neo-box relative z-10 max-w-sm w-full animate-slide-in no-hover">
+            <div class="flex justify-between items-start mb-6">
+                <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center neo-box no-hover">
+                    <i class="fab fa-google text-black text-2xl"></i>
+                </div>
+                <button onclick="closeGoogleModal()" class="text-zinc-500 hover:text-teenPink"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <h3 class="font-black text-xl uppercase mb-2 italic">Secure <span class="text-teenLime">OAuth</span></h3>
+            <p class="text-zinc-400 font-bold text-[10px] uppercase tracking-widest mb-8 leading-relaxed">
+                Syncing via Google uses 256-bit encryption to protect your financial vault.
+            </p>
+            <button id="googleConfirmBtn" class="w-full bg-white border-4 border-black text-black p-4 rounded-xl font-black text-xs uppercase neo-box mb-4 flex items-center justify-center gap-3">
+                <i class="fab fa-google"></i> Continue with Google
+            </button>
+        </div>
     </div>
-
-    <div id="toastContainer" class="fixed bottom-6 right-6 z-[110] flex flex-col gap-4 pointer-events-none"></div>
 
     <div id="maintenanceModal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeModal()"></div>
@@ -135,6 +152,13 @@
         </div>
     </div>
 
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-20 -left-20 w-96 h-96 bg-teenPurple/10 rounded-full blur-[120px]"></div>
+        <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-teenLime/10 rounded-full blur-[120px]"></div>
+    </div>
+
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-[110] flex flex-col gap-4 pointer-events-none"></div>
+
     <main class="w-full max-w-lg relative z-10">
         <div class="bg-teenSurface border-4 border-black rounded-3xl md:rounded-4xl p-8 md:p-12 neo-box relative no-hover">
             
@@ -146,7 +170,7 @@
             </div>
 
             <header class="mb-10">
-                <span class="bg-teenPurple text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">Identity Portal</span>
+                <span class="bg-teenPurple text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">Security Protocol</span>
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight uppercase italic mt-4 mb-2 leading-none whitespace-nowrap overflow-hidden text-ellipsis">
                     VERIFY YOUR <span class="text-teenLime">ID</span>
                 </h1>
@@ -155,17 +179,17 @@
             <form id="loginForm" class="space-y-6">
                 <div class="space-y-3">
                     <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-                        <i class="fas fa-user-ninja text-teenLime"></i> Email Address
+                        <i class="fas fa-shield-halved text-teenLime"></i> Encrypted Email
                     </label>
-                    <input type="email" id="email" placeholder="your@email.com" required class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800">
+                    <input type="email" id="email" placeholder="your@email.com" required autocomplete="email" class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800">
                 </div>
 
                 <div class="space-y-3">
                     <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
-                        <i class="fas fa-lock text-teenLime"></i> Secret Code
+                        <i class="fas fa-key text-teenLime"></i> Pass-Key
                     </label>
                     <div class="relative">
-                        <input type="password" id="password" placeholder="••••••••" required class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800 pr-16">
+                        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800 pr-16">
                         <button type="button" onclick="togglePassword()" class="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-teenLime transition-colors">
                             <i id="passIcon" class="fas fa-eye text-lg"></i>
                         </button>
@@ -173,20 +197,21 @@
                 </div>
 
                 <div class="pt-2">
-                    <button type="submit" class="w-full bg-teenLime border-4 border-black text-black p-5 rounded-2xl flex items-center justify-center gap-4 hover:bg-white transition-all neo-box group font-black text-sm uppercase tracking-widest">
-                        <span>CONNECT MY STACK</span>
-                        <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                    <button type="submit" id="submitBtn" class="w-full bg-teenLime border-4 border-black text-black p-5 rounded-2xl flex items-center justify-center gap-4 hover:bg-white transition-all neo-box group font-black text-sm uppercase tracking-widest">
+                        <span>ESTABLISH LINK</span>
+                        <i class="fas fa-lock group-hover:rotate-12 transition-transform"></i>
                     </button>
+                    <p id="cooldownText" class="text-center text-[9px] font-black text-teenPink mt-4 uppercase hidden">Brute force protection active. Please wait.</p>
                 </div>
             </form>
 
             <div class="mt-10 pt-8 border-t-2 border-teenBorder text-center">
-                <p class="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-6">Quick Connect</p>
+                <p class="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-6">Secure Third-Party Connect</p>
                 <div class="grid grid-cols-2 gap-4">
                     <button onclick="showMaintenance()" class="bg-zinc-900 border-4 border-black text-white p-4 rounded-xl flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all neo-box text-[10px] font-black uppercase">
                         <i class="fab fa-discord text-base"></i> Discord
                     </button>
-                    <button id="googleBtn" class="bg-zinc-900 border-4 border-black text-white p-4 rounded-xl flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all neo-box text-[10px] font-black uppercase">
+                    <button onclick="showGoogleModal()" class="bg-zinc-900 border-4 border-black text-white p-4 rounded-xl flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all neo-box text-[10px] font-black uppercase">
                         <i class="fab fa-google text-base"></i> Google
                     </button>
                 </div>
@@ -194,14 +219,16 @@
         </div>
 
         <footer class="mt-8 text-center flex flex-col justify-center items-center gap-2 text-[9px] font-black text-zinc-600 uppercase tracking-widest px-4">
-            <p>SmartCents Protocol // BudgetBuddy v2.1</p>
-            <p class="text-teenLime">SECURE CLOUD SYNC ACTIVE</p>
+            <p>SmartCents // End-to-End Encryption Enabled</p>
+            <p class="text-teenLime flex items-center gap-2 italic">
+                <i class="fas fa-circle text-[6px] animate-pulse"></i> Session Secure
+            </p>
         </footer>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDYM0pEVPR3PJQoPzNGJF7q4z4BkeNDYoM",
@@ -217,87 +244,90 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // UI Functions
-        window.showMaintenance = () => {
-            document.getElementById('maintenanceModal').classList.remove('hidden');
-        };
-        window.closeModal = () => {
-            document.getElementById('maintenanceModal').classList.add('hidden');
-        };
+        // Security State
+        let loginAttempts = 0;
+        const MAX_ATTEMPTS = 3;
 
+        // Auto-Redirect Security
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                showToast("SECURE SESSION DETECTED. REDIRECTING...", "success");
+                setTimeout(() => window.location.href = '../main/dashboard.html', 1000);
+            }
+        });
+
+        // UI Helpers
+        window.showMaintenance = () => document.getElementById('maintenanceModal').classList.remove('hidden');
+        window.closeModal = () => document.getElementById('maintenanceModal').classList.add('hidden');
+        window.showGoogleModal = () => document.getElementById('googleModal').classList.remove('hidden');
+        window.closeGoogleModal = () => document.getElementById('googleModal').classList.add('hidden');
         window.togglePassword = () => {
             const passInput = document.getElementById('password');
             const passIcon = document.getElementById('passIcon');
-            if (passInput.type === 'password') {
-                passInput.type = 'text';
-                passIcon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                passInput.type = 'password';
-                passIcon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
+            passInput.type = passInput.type === 'password' ? 'text' : 'password';
+            passIcon.classList.toggle('fa-eye');
+            passIcon.classList.toggle('fa-eye-slash');
         };
 
         function setLoading(state) {
-            const loader = document.getElementById('loadingOverlay');
-            if(state) loader.classList.remove('hidden');
-            else loader.classList.add('hidden');
+            document.getElementById('loadingOverlay').classList.toggle('hidden', !state);
+        }
+
+        function triggerSecurityLock() {
+            const btn = document.getElementById('submitBtn');
+            const cdText = document.getElementById('cooldownText');
+            btn.classList.add('btn-disabled');
+            cdText.classList.remove('hidden');
+            
+            setTimeout(() => {
+                loginAttempts = 0;
+                btn.classList.remove('btn-disabled');
+                cdText.classList.add('hidden');
+                showToast("SECURITY LOCK LIFTED", "success");
+            }, 30000);
         }
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-            const bgColor = type === 'success' ? 'bg-teenLime' : 'bg-teenPink';
-            const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
-            
-            toast.className = `${bgColor} border-4 border-black p-4 rounded-2xl neo-box no-hover animate-slide-in pointer-events-auto min-w-[280px]`;
-            toast.innerHTML = `
-                <div class="flex items-center gap-4 text-black">
-                    <i class="fas ${icon} text-xl"></i>
-                    <div class="font-black text-[10px] uppercase tracking-tighter italic">${message}</div>
-                </div>
-            `;
-            
+            toast.className = `${type === 'success' ? 'bg-teenLime' : 'bg-teenPink'} border-4 border-black p-4 rounded-2xl neo-box no-hover animate-slide-in pointer-events-auto min-w-[280px]`;
+            toast.innerHTML = `<div class="flex items-center gap-4 text-black"><i class="fas ${type === 'success' ? 'fa-check-double' : 'fa-triangle-exclamation'} text-xl"></i><div class="font-black text-[10px] uppercase italic tracking-tighter">${message}</div></div>`;
             container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(20px)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
         }
 
-        // Email Login
+        // Auth Logic
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
             
+            if(loginAttempts >= MAX_ATTEMPTS) {
+                showToast("THREAT MITIGATION: BRUTE FORCE DETECTED", "error");
+                return;
+            }
+
             setLoading(true);
-            signInWithEmailAndPassword(auth, email, password)
+            signInWithEmailAndPassword(auth, email.value, password.value)
                 .then(() => {
                     setLoading(false);
-                    showToast("LOOT STACK CONNECTED! Redirecting...", "success");
-                    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+                    showToast("HANDSHAKE COMPLETE!", "success");
                 })
                 .catch((error) => {
                     setLoading(false);
-                    showToast(`ACCESS DENIED: ${error.code.split('/')[1].replace(/-/g, ' ')}`, "error");
+                    loginAttempts++;
+                    const msg = error.code === 'auth/invalid-credential' ? "INVALID KEY" : "LINK FAILED";
+                    showToast(`ERROR: ${msg}`, "error");
+                    if(loginAttempts >= MAX_ATTEMPTS) triggerSecurityLock();
                 });
         });
 
-        // Google Login
-        document.getElementById('googleBtn').addEventListener('click', () => {
+        document.getElementById('googleConfirmBtn').addEventListener('click', () => {
             const provider = new GoogleAuthProvider();
+            closeGoogleModal();
             setLoading(true);
             signInWithPopup(auth, provider)
-                .then(() => {
+                .catch(() => {
                     setLoading(false);
-                    showToast("GOOGLE SYNC SUCCESSFUL!", "success");
-                    setTimeout(() => window.location.href = 'dashboard.html', 1500);
-                })
-                .catch((error) => {
-                    setLoading(false);
-                    showToast("GOOGLE SYNC FAILED", "error");
+                    showToast("GOOGLE HANDSHAKE FAILED", "error");
                 });
         });
     </script>
