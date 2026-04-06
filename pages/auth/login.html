@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SmartCents | Verify Your Identity</title>
+
+    <meta name="theme-color" content="#befa39">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teenLime: '#befa39',
+                        teenPurple: '#a855f7',
+                        teenPink: '#ff71ce',
+                        teenCanvas: '#050505',
+                        teenSurface: '#121214',
+                        teenBorder: '#27272a',
+                    },
+                    borderRadius: { '4xl': '2.5rem' },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+                        'slide-in': 'slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'spin-slow': 'spin 3s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0) rotate(-1deg)' },
+                            '50%': { transform: 'translateY(-10px) rotate(1deg)' },
+                        },
+                        shake: {
+                            '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                            '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                            '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                            '40%, 60%': { transform: 'translate3d(4px, 0, 0)' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(100%) scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'translateX(0) scale(1)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&display=swap');
+        
+        body { 
+            font-family: 'Unbounded', sans-serif; 
+            background-color: #050505; 
+            color: white; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .neo-box { 
+            border: 3px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .neo-box:hover:not(.no-hover) {
+            transform: translate(-2px, -2px);
+            box-shadow: 10px 10px 0px #000;
+        }
+        
+        .neo-input {
+            border: 3px solid #27272a;
+            box-shadow: 4px 4px 0px #000;
+            transition: all 0.2s;
+        }
+        .neo-input:focus {
+            border-color: #befa39;
+            outline: none;
+            box-shadow: 6px 6px 0px #befa39;
+        }
+
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(24, 24, 27, 0.5) 1px, transparent 1px), 
+                              linear-gradient(to bottom, rgba(24, 24, 27, 0.5) 1px, transparent 1px);
+        }
+
+        @media (min-height: 850px) and (min-width: 1024px) {
+            body { overflow-y: hidden; }
+        }
+    </style>
+</head>
+<body class="antialiased flex items-center justify-center p-4 md:p-8 cyber-grid">
+
+    <div id="loadingOverlay" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-xl hidden">
+        <div class="text-center">
+            <div class="relative inline-block mb-6">
+                <div class="w-24 h-24 border-8 border-teenBorder rounded-full"></div>
+                <div class="w-24 h-24 border-8 border-t-teenLime rounded-full animate-spin absolute top-0 left-0"></div>
+                <i class="fas fa-bolt text-teenLime text-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse"></i>
+            </div>
+            <h2 class="font-black text-xl uppercase italic tracking-widest text-white">Syncing <span class="text-teenLime">Loot</span>...</h2>
+            <p class="text-[10px] font-bold text-zinc-500 mt-2 uppercase tracking-tighter">Connecting to Secure Vault</p>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-20 -left-20 w-96 h-96 bg-teenPurple/10 rounded-full blur-[120px]"></div>
+        <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-teenLime/10 rounded-full blur-[120px]"></div>
+    </div>
+
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-[110] flex flex-col gap-4 pointer-events-none"></div>
+
+    <div id="maintenanceModal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeModal()"></div>
+        <div class="bg-teenSurface border-4 border-black p-8 rounded-3xl neo-box relative z-10 max-w-sm w-full animate-shake no-hover">
+            <div class="w-16 h-16 bg-teenPink rounded-2xl flex items-center justify-center neo-box mb-6 mx-auto no-hover">
+                <i class="fas fa-tools text-black text-2xl"></i>
+            </div>
+            <h3 class="font-black text-xl text-center uppercase mb-4 italic">System Alert!</h3>
+            <p class="text-zinc-400 font-bold text-center text-xs leading-loose mb-8">
+                Discord integration is currently undergoing a <span class="text-teenPink">scheduled upgrade</span>. Use Google or Email for now!
+            </p>
+            <button onclick="closeModal()" class="w-full bg-teenLime border-4 border-black text-black p-4 rounded-xl font-black text-xs uppercase neo-box">
+                Got it, Captain
+            </button>
+        </div>
+    </div>
+
+    <main class="w-full max-w-lg relative z-10">
+        <div class="bg-teenSurface border-4 border-black rounded-3xl md:rounded-4xl p-8 md:p-12 neo-box relative no-hover">
+            
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-12 h-12 bg-teenLime rounded-2xl flex items-center justify-center neo-box no-hover">
+                    <i class="fas fa-hand-holding-dollar text-black text-xl"></i>
+                </div>
+                <span class="font-black text-xl italic tracking-tighter uppercase">Smart<span class="text-teenLime">Cents</span></span>
+            </div>
+
+            <header class="mb-10">
+                <span class="bg-teenPurple text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">Identity Portal</span>
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight uppercase italic mt-4 mb-2 leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                    VERIFY YOUR <span class="text-teenLime">ID</span>
+                </h1>
+            </header>
+
+            <form id="loginForm" class="space-y-6">
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fas fa-user-ninja text-teenLime"></i> Email Address
+                    </label>
+                    <input type="email" id="email" placeholder="your@email.com" required class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800">
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fas fa-lock text-teenLime"></i> Secret Code
+                    </label>
+                    <div class="relative">
+                        <input type="password" id="password" placeholder="••••••••" required class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800 pr-16">
+                        <button type="button" onclick="togglePassword()" class="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-teenLime transition-colors">
+                            <i id="passIcon" class="fas fa-eye text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full bg-teenLime border-4 border-black text-black p-5 rounded-2xl flex items-center justify-center gap-4 hover:bg-white transition-all neo-box group font-black text-sm uppercase tracking-widest">
+                        <span>CONNECT MY STACK</span>
+                        <i class="fas fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-10 pt-8 border-t-2 border-teenBorder text-center">
+                <p class="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-6">Quick Connect</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="showMaintenance()" class="bg-zinc-900 border-4 border-black text-white p-4 rounded-xl flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all neo-box text-[10px] font-black uppercase">
+                        <i class="fab fa-discord text-base"></i> Discord
+                    </button>
+                    <button id="googleBtn" class="bg-zinc-900 border-4 border-black text-white p-4 rounded-xl flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all neo-box text-[10px] font-black uppercase">
+                        <i class="fab fa-google text-base"></i> Google
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-8 text-center flex flex-col justify-center items-center gap-2 text-[9px] font-black text-zinc-600 uppercase tracking-widest px-4">
+            <p>SmartCents Protocol // BudgetBuddy v2.1</p>
+            <p class="text-teenLime">SECURE CLOUD SYNC ACTIVE</p>
+        </footer>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDYM0pEVPR3PJQoPzNGJF7q4z4BkeNDYoM",
+            authDomain: "budgetbuddy-f9eff.firebaseapp.com",
+            databaseURL: "https://budgetbuddy-f9eff-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "budgetbuddy-f9eff",
+            storageBucket: "budgetbuddy-f9eff.firebasestorage.app",
+            messagingSenderId: "686739320375",
+            appId: "1:686739320375:web:ca0a1bab63bd9df1d6d9b2",
+            measurementId: "G-82MHJLWR60"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // UI Functions
+        window.showMaintenance = () => {
+            document.getElementById('maintenanceModal').classList.remove('hidden');
+        };
+        window.closeModal = () => {
+            document.getElementById('maintenanceModal').classList.add('hidden');
+        };
+
+        window.togglePassword = () => {
+            const passInput = document.getElementById('password');
+            const passIcon = document.getElementById('passIcon');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                passIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                passIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        };
+
+        function setLoading(state) {
+            const loader = document.getElementById('loadingOverlay');
+            if(state) loader.classList.remove('hidden');
+            else loader.classList.add('hidden');
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-teenLime' : 'bg-teenPink';
+            const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
+            
+            toast.className = `${bgColor} border-4 border-black p-4 rounded-2xl neo-box no-hover animate-slide-in pointer-events-auto min-w-[280px]`;
+            toast.innerHTML = `
+                <div class="flex items-center gap-4 text-black">
+                    <i class="fas ${icon} text-xl"></i>
+                    <div class="font-black text-[10px] uppercase tracking-tighter italic">${message}</div>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(20px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Email Login
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            setLoading(true);
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    setLoading(false);
+                    showToast("LOOT STACK CONNECTED! Redirecting...", "success");
+                    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+                })
+                .catch((error) => {
+                    setLoading(false);
+                    showToast(`ACCESS DENIED: ${error.code.split('/')[1].replace(/-/g, ' ')}`, "error");
+                });
+        });
+
+        // Google Login
+        document.getElementById('googleBtn').addEventListener('click', () => {
+            const provider = new GoogleAuthProvider();
+            setLoading(true);
+            signInWithPopup(auth, provider)
+                .then(() => {
+                    setLoading(false);
+                    showToast("GOOGLE SYNC SUCCESSFUL!", "success");
+                    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+                })
+                .catch((error) => {
+                    setLoading(false);
+                    showToast("GOOGLE SYNC FAILED", "error");
+                });
+        });
+    </script>
+</body>
+</html>

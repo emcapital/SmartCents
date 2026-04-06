@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCents | Level Up Your Stack</title>
+
+    <meta name="theme-color" content="#befa39">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2489/2489756.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teenLime: '#befa39',
+                        teenPurple: '#a855f7',
+                        teenPink: '#ff71ce',
+                        teenCanvas: '#050505',
+                        teenSurface: '#121214',
+                        teenBorder: '#27272a',
+                    },
+                    borderRadius: { '4xl': '2.5rem' },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0) rotate(-1deg)' },
+                            '50%': { transform: 'translateY(-10px) rotate(1deg)' },
+                        },
+                        glow: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.6' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&display=swap');
+        
+        body { 
+            font-family: 'Unbounded', sans-serif; 
+            background-color: #050505; 
+            color: white; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+        }
+        
+        .neo-box { 
+            border: 3px solid #000;
+            box-shadow: 8px 8px 0px #000;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .neo-box:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 12px 12px 0px #000;
+        }
+        .neo-box-lime { box-shadow: 8px 8px 0px #befa39; border-color: #befa39; }
+        .neo-box-purple { box-shadow: 8px 8px 0px #a855f7; border-color: #a855f7; }
+        
+        .custom-gradient {
+            background: linear-gradient(135deg, rgba(190,250,57,0.1) 0%, rgba(168,85,247,0.1) 100%);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden selection:bg-teenLime selection:text-black">
+
+    <aside id="sidebar" class="fixed -left-80 top-0 h-screen w-80 bg-teenCanvas border-r-4 border-black flex flex-col p-8 z-[60] transition-all duration-500">
+        <div class="flex items-center gap-4 mb-16">
+            <div class="w-12 h-12 bg-teenLime rounded-2xl flex items-center justify-center neo-box">
+                <i class="fas fa-hand-holding-dollar text-black text-xl"></i>
+            </div>
+            <span class="font-black text-xl italic tracking-tighter uppercase">Smart<span class="text-teenLime">Cents</span></span>
+        </div>
+        
+        <nav class="space-y-6 flex-1">
+            <a href="#" class="flex items-center justify-between p-4 rounded-2xl bg-teenLime text-black font-black neo-box group">
+                <span class="flex items-center gap-4"><i class="fas fa-house"></i> Home</span>
+            </a>
+            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-zinc-500 font-bold hover:text-teenPurple transition-all">
+                <i class="fas fa-fire"></i> Streaks
+            </a>
+            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-zinc-500 font-bold hover:text-teenPink transition-all">
+                <i class="fas fa-shop"></i> Skin Shop
+            </a>
+        </nav>
+
+        <div class="mt-auto space-y-4">
+            <div class="p-6 bg-teenSurface border-4 border-black rounded-3xl neo-box">
+                <p class="text-[10px] font-black text-zinc-500 uppercase mb-3 tracking-widest">System</p>
+                <div class="flex items-center gap-2 text-xs font-bold text-teenLime">
+                    <div class="w-2 h-2 bg-teenLime rounded-full animate-pulse"></div>
+                    Cloud Sync Active
+                </div>
+            </div>
+
+            <button onclick="toggleSidebar()" class="w-full bg-zinc-900 border-4 border-black p-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-teenPink hover:text-black transition-all neo-box group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-2 transition-transform"></i>
+                <span class="font-black text-xs uppercase tracking-widest">Collapse</span>
+            </button>
+        </div>
+    </aside>
+
+    <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[55] hidden opacity-0 transition-opacity duration-300"></div>
+
+    <main class="min-h-screen p-6 md:p-12 pb-32 transition-all duration-300">
+        
+        <header class="flex flex-col md:flex-row justify-between md:items-center gap-6 mb-12">
+            <div class="flex items-center gap-6">
+                <button onclick="toggleSidebar()" class="w-14 h-14 bg-teenSurface rounded-2xl border-4 border-black neo-box flex items-center justify-center group">
+                    <i class="fas fa-bars text-teenLime group-hover:rotate-90 transition-transform"></i>
+                </button>
+                <div>
+                    <div class="flex items-center gap-3 mb-1">
+                        <span class="bg-teenPurple text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">Gold League</span>
+                        <span class="text-zinc-500 text-[10px] font-black">LVL 14 ROGUE</span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-black tracking-tight uppercase italic">WASSUP, <span class="text-teenLime">JOHN?</span></h1>
+                </div>
+            </div>
+            
+            <div class="flex gap-4">
+                <div class="bg-teenSurface px-6 py-4 rounded-3xl border-4 border-black neo-box flex items-center gap-4">
+                    <div class="text-right">
+                        <p class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Daily XP</p>
+                        <p class="font-black text-teenLime">1,250 / 2k</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full border-4 border-zinc-800 flex items-center justify-center relative">
+                         <i class="fas fa-bolt text-teenLime animate-pulse"></i>
+                         <svg class="absolute inset-0 w-full h-full -rotate-90">
+                            <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="4" fill="transparent" class="text-teenLime" stroke-dasharray="125" stroke-dashoffset="30" />
+                         </svg>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            
+            <div class="md:col-span-8 bg-teenSurface border-4 border-black rounded-4xl p-10 neo-box-purple relative overflow-hidden group custom-gradient">
+                <div class="relative z-10">
+                    <span class="text-zinc-400 font-black text-sm uppercase tracking-widest">Total Stack</span>
+                    <h2 class="text-6xl md:text-8xl font-black my-6 tracking-tighter">$2,405.<span class="text-zinc-600">10</span></h2>
+                    <div class="flex flex-wrap gap-4 mt-8">
+                        <div class="bg-black/40 backdrop-blur-md px-6 py-3 rounded-2xl border-2 border-white/5 flex items-center gap-3">
+                            <span class="w-3 h-3 bg-teenLime rounded-full shadow-[0_0_10px_#befa39]"></span>
+                            <span class="font-black text-sm text-emerald-400">+$42.00 Today</span>
+                        </div>
+                        <div class="bg-black/40 backdrop-blur-md px-6 py-3 rounded-2xl border-2 border-white/5 flex items-center gap-3">
+                            <i class="fas fa-trophy text-teenPurple"></i>
+                            <span class="font-black text-sm uppercase italic">Top 5% Saver</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute -right-16 -bottom-16 opacity-10 group-hover:rotate-12 transition-transform duration-700">
+                    <i class="fas fa-wallet text-[300px]"></i>
+                </div>
+            </div>
+
+            <div class="md:col-span-4 space-y-8">
+                <div class="bg-teenPurple p-8 rounded-4xl neo-box text-black relative overflow-hidden group cursor-pointer">
+                    <h3 class="font-black text-2xl italic leading-none mb-6 uppercase">Squad<br>Leaderboard</h3>
+                    <div class="flex -space-x-4">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=1" class="w-12 h-12 rounded-full border-4 border-black bg-white">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=2" class="w-12 h-12 rounded-full border-4 border-black bg-white">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=3" class="w-12 h-12 rounded-full border-4 border-black bg-white">
+                        <div class="w-12 h-12 rounded-full border-4 border-black bg-black text-white flex items-center justify-center font-black text-xs">+8</div>
+                    </div>
+                    <i class="fas fa-users absolute -right-4 -top-4 text-8xl opacity-10 rotate-12"></i>
+                </div>
+
+                <div class="bg-teenSurface border-4 border-black rounded-4xl p-8 neo-box-lime">
+                    <h3 class="font-black text-xl mb-8 uppercase tracking-tighter">Current Quests 🎯</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-[10px] font-black mb-3 uppercase tracking-widest">
+                                <span class="text-zinc-400 italic">Sneaker Fund</span>
+                                <span class="text-teenLime">80%</span>
+                            </div>
+                            <div class="h-6 bg-black rounded-xl p-1.5 border-2 border-teenBorder">
+                                <div class="h-full bg-teenLime rounded-lg shadow-[0_0_15px_#befa39]" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-12 bg-teenSurface border-4 border-black rounded-4xl p-8 md:p-10 neo-box overflow-hidden relative">
+                <div class="flex justify-between items-center mb-10">
+                    <h3 class="font-black text-2xl flex items-center gap-4 italic uppercase">
+                        <span class="w-2 h-8 bg-teenLime rounded-full"></span> Loot Log
+                    </h3>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="flex items-center justify-between p-6 bg-black rounded-3xl border-2 border-teenBorder hover:border-teenLime group transition-all cursor-pointer">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 bg-teenSurface rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-[4px_4px_0px_#000]">
+                                🎮
+                            </div>
+                            <div>
+                                <p class="font-black text-lg group-hover:text-teenLime transition-colors">Steam Game</p>
+                                <p class="text-[10px] font-bold text-zinc-500 uppercase">Entertainment</p>
+                            </div>
+                        </div>
+                        <p class="font-black text-xl text-red-500">-$59.99</p>
+                    </div>
+
+                    <div class="flex items-center justify-between p-6 bg-black rounded-3xl border-2 border-teenBorder hover:border-teenPurple group transition-all cursor-pointer">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 bg-teenSurface rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-[4px_4px_0px_#000]">
+                                💸
+                            </div>
+                            <div>
+                                <p class="font-black text-lg group-hover:text-teenPurple transition-colors">Gig Payment</p>
+                                <p class="text-[10px] font-bold text-zinc-500 uppercase">Income</p>
+                            </div>
+                        </div>
+                        <p class="font-black text-xl text-teenLime">+$120.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 w-[92%] max-w-sm bg-teenSurface/90 backdrop-blur-2xl border-4 border-black rounded-[2.5rem] px-8 py-5 flex justify-between items-center z-50 neo-box-lime">
+        <a href="#" class="text-teenLime text-2xl"><i class="fas fa-house"></i></a>
+        <a href="#" class="text-zinc-600 text-2xl"><i class="fas fa-chart-simple"></i></a>
+        
+        <div class="relative">
+            <div class="absolute inset-0 bg-teenLime rounded-2xl blur-lg opacity-40 animate-glow"></div>
+            <div class="w-16 h-16 bg-teenLime rounded-2xl flex items-center justify-center -mt-16 neo-box border-4 border-black cursor-pointer group relative z-10">
+                <i class="fas fa-plus text-black text-2xl group-active:scale-90 transition-transform"></i>
+            </div>
+        </div>
+        
+        <a href="#" class="text-zinc-600 text-2xl"><i class="fas fa-bullseye"></i></a>
+        <a href="#" class="text-zinc-600 text-2xl"><i class="fas fa-user-ninja"></i></a>
+    </nav>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            if (sidebar.classList.contains('-left-80')) {
+                sidebar.classList.remove('-left-80');
+                sidebar.classList.add('left-0');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+            } else {
+                sidebar.classList.add('-left-80');
+                sidebar.classList.remove('left-0');
+                overlay.classList.remove('opacity-100');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+    </script>
+
+</body>
+</html>

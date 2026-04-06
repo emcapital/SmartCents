@@ -1,0 +1,21 @@
+{
+  "short_name": "SmartCents",
+  "name": "SmartCents: Level Up Your Stack",
+  "description": "Gamified finance for the next generation",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2489/2489756.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2489/2489756.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "../pages/auth/login.html",
+  "display": "standalone",
+  "theme_color": "#befa39",
+  "background_color": "#09090b"
+}
