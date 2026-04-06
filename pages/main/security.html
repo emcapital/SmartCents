@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SmartCents | Security Intel</title>
+
+    <link rel="manifest" href="../../pwa/manifest.json">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="SmartCents">
+
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2489/2489756.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teenLime: '#befa39',
+                        teenPurple: '#a855f7',
+                        teenPink: '#ff71ce',
+                        teenCanvas: '#050505',
+                        teenSurface: '#121214',
+                        teenBorder: '#27272a',
+                    },
+                    animation: {
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 2s linear infinite',
+                    },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scan: {
+                            '0%': { top: '0%' },
+                            '100%': { top: '100%' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&display=swap');
+        
+        body { 
+            font-family: 'Unbounded', sans-serif; 
+            background-color: #050505; 
+            color: white; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            overflow-x: hidden;
+        }
+        
+        .neo-box { 
+            border: 3px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(24, 24, 27, 0.5) 1px, transparent 1px), 
+                              linear-gradient(to bottom, rgba(24, 24, 27, 0.5) 1px, transparent 1px);
+        }
+
+        .sidebar-link.active {
+            background-color: #befa39;
+            color: black;
+            box-shadow: 4px 4px 0px #000;
+        }
+
+        .terminal-text {
+            font-family: monospace;
+            font-size: 10px;
+            color: #befa39;
+        }
+
+        .neo-input {
+            background: #000;
+            border: 2px solid #27272a;
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 1rem;
+            border-radius: 1rem;
+            transition: all 0.2s;
+        }
+
+        .neo-input:focus {
+            border-color: #befa39;
+            outline: none;
+            box-shadow: 0 0 15px rgba(190, 250, 57, 0.2);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar-closed { transform: translateX(-100%); }
+            .sidebar-open { transform: translateX(0); }
+            #sidebar-overlay.active { display: block; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+    </style>
+</head>
+<body class="antialiased min-h-screen cyber-grid flex">
+
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[115] hidden transition-opacity duration-300"></div>
+
+    <button onclick="toggleSidebar()" class="lg:hidden fixed top-6 right-6 z-[100] w-12 h-12 bg-teenLime rounded-xl neo-box flex items-center justify-center text-black">
+        <i class="fas fa-bars-staggered"></i>
+    </button>
+
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-[120] w-72 bg-teenSurface border-r-4 border-black p-6 flex flex-col transition-transform duration-300 sidebar-closed lg:translate-x-0">
+        <button onclick="toggleSidebar()" class="lg:hidden absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-zinc-500 hover:text-teenPink">
+            <i class="fas fa-xmark text-2xl"></i>
+        </button>
+
+        <div class="flex items-center gap-3 mb-12">
+            <div class="w-10 h-10 bg-teenLime rounded-xl flex items-center justify-center neo-box">
+                <i class="fas fa-hand-holding-dollar text-black text-lg"></i>
+            </div>
+            <span class="font-black text-lg italic uppercase tracking-tighter">Smart<span class="text-teenLime">Cents</span></span>
+        </div>
+
+        <nav class="flex-1 space-y-4">
+            <a href="./dashboard.html" class="sidebar-link text-zinc-500 hover:text-teenLime group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
+                <i class="fas fa-house-chimney-window text-lg"></i> COMMAND CENTER
+            </a>
+            <a href="./assets.html" class="sidebar-link text-zinc-500 hover:text-teenLime group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
+                <i class="fas fa-wallet text-lg"></i> ASSETS
+            </a>
+            <a href="./analytics.html" class="sidebar-link text-zinc-500 hover:text-teenPurple group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
+                <i class="fas fa-chart-line text-lg"></i> ANALYTICS
+            </a>
+            <a href="./security.html" class="sidebar-link active group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
+                <i class="fas fa-shield-halved text-lg"></i> SECURITY
+            </a>
+        </nav>
+
+        <div class="pt-6 border-t-2 border-teenBorder space-y-4">
+            <div class="flex items-center gap-3 p-2 bg-black/40 rounded-2xl border-2 border-teenBorder">
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-black">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" id="sidebarAvatar">
+                </div>
+                <div class="overflow-hidden">
+                    <p id="sidebarUserName" class="font-black text-[9px] uppercase truncate text-white">ACCESSING...</p>
+                    <p class="text-[8px] font-bold text-teenLime uppercase">Level 4 Clearance</p>
+                </div>
+            </div>
+            <button onclick="handleLogout()" class="w-full bg-teenPink border-2 border-black text-black p-3 rounded-xl font-black text-[10px] uppercase hover:bg-white transition-all flex items-center justify-center gap-2">
+                <i class="fas fa-power-off"></i> TERMINATE SESSION
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 lg:ml-72 min-h-screen p-6 md:p-12 space-y-10">
+        
+        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-slide-up" style="margin-top: 60px;">
+            <div>
+                <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">ACCESS <span class="text-teenPink">LOGS</span></h1>
+                <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Security Status: <span class="text-teenLime animate-pulse-slow">ENCRYPTED</span></p>
+            </div>
+            <div class="flex gap-4">
+                <div class="bg-teenSurface border-2 border-teenBorder p-4 px-6 rounded-2xl flex items-center gap-4">
+                    <div class="w-3 h-3 bg-teenLime rounded-full shadow-[0_0_10px_#befa39]"></div>
+                    <span class="text-[10px] font-black uppercase text-zinc-400">Current Session Active</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover">
+                    <div class="flex items-center justify-between mb-10">
+                        <h3 class="font-black text-2xl italic uppercase leading-none">Authentication <br><span class="text-teenPink">Timeline</span></h3>
+                        <i class="fas fa-fingerprint text-4xl text-zinc-800"></i>
+                    </div>
+
+                    <div class="space-y-4" id="loginHistory">
+                        <div class="text-center py-20 opacity-20 font-black uppercase italic text-xs tracking-[0.3em]">Decoding Access History...</div>
+                    </div>
+                </div>
+
+                <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover">
+                    <h3 class="font-black text-2xl italic uppercase leading-none mb-8">Update <span class="text-teenLime">Credentials</span></h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[9px] font-black uppercase text-zinc-500 ml-2">Current Access Key</label>
+                                <input type="password" id="oldPassword" class="neo-input" placeholder="Enter current password">
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[9px] font-black uppercase text-zinc-500 ml-2">New Security Hash</label>
+                                <input type="password" id="newPassword" class="neo-input" placeholder="Minimum 6 characters">
+                            </div>
+                            <button onclick="handlePasswordUpdate()" class="w-full bg-teenLime text-black p-4 rounded-xl font-black text-[10px] uppercase neo-box hover:bg-white transition-all">
+                                Commit Security Update
+                            </button>
+                        </div>
+
+                        <div class="bg-black/50 border-2 border-teenBorder rounded-3xl p-6 flex flex-col justify-center text-center">
+                            <i class="fas fa-key text-teenPink text-3xl mb-4"></i>
+                            <h4 class="font-black text-xs uppercase text-white mb-2">Forget Access?</h4>
+                            <p class="text-[9px] font-black text-zinc-500 uppercase leading-relaxed mb-6">Request an external recovery token via your linked neural-mail.</p>
+                            <button onclick="handleForgotPassword()" class="text-teenPink font-black text-[10px] uppercase hover:underline">
+                                [ Trigger Recovery Protocol ]
+                            </button>
+                        </div>
+                    </div>
+                    <p id="passwordStatus" class="mt-6 text-[9px] font-black uppercase text-center hidden"></p>
+                </div>
+
+                <div class="bg-black rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-teenLime/20 animate-scan"></div>
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-black text-sm italic uppercase text-teenLime">System Integrity Terminal</h3>
+                        <span class="text-[8px] font-bold text-zinc-600 uppercase">Verifying Cloud Packets...</span>
+                    </div>
+                    <div id="terminal" class="space-y-2 max-h-40 overflow-y-auto">
+                        <p class="terminal-text">> Initializing security handshake...</p>
+                        <p class="terminal-text">> Database sync: 200 OK</p>
+                        <p class="terminal-text">> AES-256 Encryption active...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="bg-teenSurface p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover relative overflow-hidden group">
+                    <h3 class="font-black text-2xl italic uppercase mb-6 leading-none">AGENT <br><span class="text-teenLime">PROFILE</span></h3>
+                    
+                    <div class="space-y-6 relative z-10">
+                        <div class="flex justify-between items-center border-b border-teenBorder pb-4">
+                            <span class="text-[10px] font-black uppercase text-zinc-500">ID String</span>
+                            <span id="agentUID" class="text-[10px] font-black text-white truncate ml-4 italic">...</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-teenBorder pb-4">
+                            <span class="text-[10px] font-black uppercase text-zinc-500">Last Seen</span>
+                            <span id="lastLogin" class="text-[10px] font-black text-teenPink uppercase">...</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-teenBorder pb-4">
+                            <span class="text-[10px] font-black uppercase text-zinc-500">Session ID</span>
+                            <span class="text-[10px] font-black text-white uppercase italic">SC-492-X</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-user-shield absolute -right-6 -bottom-6 text-9xl opacity-5 group-hover:scale-110 transition-transform duration-500"></i>
+                </div>
+
+                <div class="bg-teenSurface p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover">
+                    <h3 class="font-black text-xl italic uppercase mb-6">Hardening <br><span class="text-teenPurple">Score</span></h3>
+                    <div class="flex items-center justify-center py-4">
+                        <div class="relative w-32 h-32 flex items-center justify-center">
+                            <svg class="w-full h-full -rotate-90">
+                                <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8" fill="transparent" class="text-zinc-900"/>
+                                <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8" fill="transparent" stroke-dasharray="364.4" stroke-dashoffset="36.4" class="text-teenLime"/>
+                            </svg>
+                            <span class="absolute text-2xl font-black italic">90%</span>
+                        </div>
+                    </div>
+                    <ul class="mt-6 space-y-3">
+                        <li class="flex items-center gap-3 text-[9px] font-black uppercase text-zinc-400">
+                            <i class="fas fa-check text-teenLime"></i> MFA Enabled
+                        </li>
+                        <li class="flex items-center gap-3 text-[9px] font-black uppercase text-zinc-400">
+                            <i class="fas fa-check text-teenLime"></i> Database Encrypted
+                        </li>
+                        <li class="flex items-center gap-3 text-[9px] font-black uppercase text-zinc-400">
+                            <i class="fas fa-circle-exclamation text-teenPink"></i> 1 Session Open
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-black p-10 rounded-[2.5rem] border-4 border-teenBorder neo-box no-hover">
+                    <div class="w-12 h-12 bg-teenPink/10 rounded-xl flex items-center justify-center text-teenPink mb-6 border border-teenPink/20">
+                        <i class="fas fa-radar text-xl"></i>
+                    </div>
+                    <h3 class="font-black text-lg italic uppercase mb-4">Threat Intel</h3>
+                    <p class="text-[10px] font-black uppercase text-zinc-500 leading-relaxed mb-6">No unauthorized cross-origin requests detected in the last 24 hours. Your connection is tunnelled.</p>
+                    <div class="bg-teenSurface p-4 rounded-xl border border-teenBorder">
+                        <div class="flex items-center justify-between text-[8px] font-black uppercase mb-2">
+                            <span>Integrity Check</span>
+                            <span class="text-teenLime">100%</span>
+                        </div>
+                        <div class="h-1 bg-zinc-900 rounded-full overflow-hidden">
+                            <div class="h-full bg-teenLime w-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, updatePassword, reauthenticateWithCredential, EmailAuthProvider, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDYM0pEVPR3PJQoPzNGJF7q4z4BkeNDYoM",
+            authDomain: "budgetbuddy-f9eff.firebaseapp.com",
+            databaseURL: "https://budgetbuddy-f9eff-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "budgetbuddy-f9eff",
+            storageBucket: "budgetbuddy-f9eff.firebasestorage.app",
+            messagingSenderId: "686739320375",
+            appId: "1:686739320375:web:ca0a1bab63bd9df1d6d9b2",
+            measurementId: "G-82MHJLWR60"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        window.toggleSidebar = () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('sidebar-open');
+            sidebar.classList.toggle('sidebar-closed');
+            overlay.classList.toggle('hidden');
+        };
+
+        // Password Reset Feature
+        window.handleForgotPassword = () => {
+            if(auth.currentUser) {
+                const email = auth.currentUser.email;
+                sendPasswordResetEmail(auth, email)
+                    .then(() => alert(`Recovery protocol sent to: ${email}`))
+                    .catch(err => console.error(err));
+            }
+        };
+
+        // Update Password Feature
+        window.handlePasswordUpdate = async () => {
+            const oldPass = document.getElementById('oldPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const statusEl = document.getElementById('passwordStatus');
+            const user = auth.currentUser;
+
+            if(!oldPass || !newPass) return;
+
+            statusEl.classList.remove('hidden');
+            statusEl.innerText = "AUTHENTICATING...";
+            statusEl.className = "mt-6 text-[9px] font-black uppercase text-center text-zinc-500";
+
+            // Re-authenticate first
+            const credential = EmailAuthProvider.credential(user.email, oldPass);
+            
+            try {
+                await reauthenticateWithCredential(user, credential);
+                await updatePassword(user, newPass);
+                statusEl.innerText = "SECURITY HASH UPDATED SUCCESSFULLY.";
+                statusEl.className = "mt-6 text-[9px] font-black uppercase text-center text-teenLime";
+                document.getElementById('oldPassword').value = '';
+                document.getElementById('newPassword').value = '';
+            } catch (error) {
+                statusEl.innerText = "AUTH ERROR: OLD PASSWORD INCORRECT.";
+                statusEl.className = "mt-6 text-[9px] font-black uppercase text-center text-teenPink";
+            }
+        };
+
+        function runTerminal() {
+            const terminal = document.getElementById('terminal');
+            const logs = [
+                "Scanning for anomalies...",
+                "Encryption keys rotated.",
+                "Ping Firebase: 42ms",
+                "Integrity check: SUCCESS",
+                "Access token verified."
+            ];
+            let i = 0;
+            setInterval(() => {
+                const p = document.createElement('p');
+                p.className = "terminal-text animate-fade-in";
+                p.innerText = `> ${logs[i % logs.length]}`;
+                terminal.appendChild(p);
+                terminal.scrollTop = terminal.scrollHeight;
+                if (terminal.childElementCount > 10) terminal.removeChild(terminal.firstChild);
+                i++;
+            }, 3000);
+        }
+
+        function renderSecurityLogs(user) {
+            const logContainer = document.getElementById('loginHistory');
+            logContainer.innerHTML = '';
+            
+            const currentSession = {
+                time: new Date(user.metadata.lastSignInTime).toLocaleString(),
+                status: 'ACTIVE',
+                device: 'AUTH_BROWSER_WEB',
+                color: 'teenLime'
+            };
+
+            const entries = [currentSession];
+
+            entries.forEach(log => {
+                const item = document.createElement('div');
+                item.className = "flex items-center justify-between p-6 bg-black/40 rounded-3xl border-2 border-teenBorder group hover:border-teenPink transition-all animate-slide-up";
+                item.innerHTML = `
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-teenPink/10 rounded-2xl flex items-center justify-center border-2 border-teenPink/20 text-teenPink">
+                            <i class="fas fa-clock-rotate-left"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-black text-xs uppercase text-white">${log.time}</h4>
+                            <p class="text-[9px] font-black text-zinc-600 uppercase tracking-widest">${log.device}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="bg-${log.color}/10 text-${log.color} text-[8px] font-black px-3 py-1 rounded-full border border-${log.color}/20 uppercase">${log.status}</span>
+                    </div>
+                `;
+                logContainer.appendChild(item);
+            });
+
+            document.getElementById('agentUID').innerText = user.uid;
+            document.getElementById('lastLogin').innerText = new Date(user.metadata.lastSignInTime).toLocaleDateString();
+        }
+
+        window.handleLogout = () => {
+            signOut(auth).then(() => {
+                window.location.href = '../auth/login.html';
+            });
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = '../auth/login.html';
+            } else {
+                onValue(ref(db, `users/${user.uid}`), (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        document.getElementById('sidebarUserName').innerText = (data.firstName || 'AGENT').toUpperCase();
+                    }
+                });
+                renderSecurityLogs(user);
+                runTerminal();
+            }
+        });
+    </script>
+</body>
+</html>

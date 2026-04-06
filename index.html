@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartCents | Level Up Your Stack</title>
 
+    <link rel="manifest" href="./pwa/manifest.json">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="SmartCents">
+
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2489/2489756.png">
+
     <meta name="theme-color" content="#befa39">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -269,6 +276,16 @@
                 setTimeout(() => overlay.classList.add('hidden'), 300);
             }
         }
+    </script>
+
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./pwa/sw.js')
+            .then(reg => console.log('Service Worker registered! Scope:', reg.scope))
+            .catch(err => console.log('Service Worker registration failed:', err));
+        });
+    }
     </script>
 
 </body>

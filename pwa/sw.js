@@ -5,6 +5,10 @@ const assets = [
   '../pages/auth/login.html',
   '../pages/main/dashboard.html',
   '/manifest.json',
+  '../pages/main/assets.html',
+  '../pages/main/analytics.html',
+  '../pages/main/security.html',
+  '../pages/auth/signup.html',
   'https://cdn.tailwindcss.com'
 ];
 

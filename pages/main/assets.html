@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SmartCents | Command Center</title>
+    <title>SmartCents | Assets Vault</title>
 
     <link rel="manifest" href="../../pwa/manifest.json">
 
@@ -86,17 +86,6 @@
             box-shadow: 4px 4px 0px #000;
         }
 
-        @media (max-width: 1024px) {
-            .sidebar-closed { transform: translateX(-100%); }
-            .sidebar-open { transform: translateX(0); }
-            #sidebar-overlay.active { display: block; }
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #befa39; }
-
         .neo-input {
             background: #000;
             border: 3px solid #27272a;
@@ -113,6 +102,17 @@
             border-color: #befa39;
             box-shadow: 0 0 0 4px rgba(190, 250, 57, 0.1);
         }
+
+        @media (max-width: 1024px) {
+            .sidebar-closed { transform: translateX(-100%); }
+            .sidebar-open { transform: translateX(0); }
+            #sidebar-overlay.active { display: block; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #befa39; }
     </style>
 </head>
 <body class="antialiased min-h-screen cyber-grid flex">
@@ -170,7 +170,7 @@
 
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-[120] w-72 bg-teenSurface border-r-4 border-black p-6 flex flex-col transition-transform duration-300 sidebar-closed lg:translate-x-0">
         <button onclick="toggleSidebar()" class="lg:hidden absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-zinc-500 hover:text-teenPink">
-            <i class="fas fa-xmark text-2xl" style="margin-left: 30px;"></i>
+            <i class="fas fa-xmark text-2xl"></i>
         </button>
 
         <div class="flex items-center gap-3 mb-12">
@@ -181,10 +181,10 @@
         </div>
 
         <nav class="flex-1 space-y-4">
-            <a href="#" class="sidebar-link active group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
+            <a href="./dashboard.html" class="sidebar-link text-zinc-500 hover:text-teenLime group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
                 <i class="fas fa-house-chimney-window text-lg"></i> COMMAND CENTER
             </a>
-            <a href="./assets.html" class="sidebar-link text-zinc-500 hover:text-teenLime group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
+            <a href="#" class="sidebar-link active group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
                 <i class="fas fa-wallet text-lg"></i> ASSETS
             </a>
             <a href="./analytics.html" class="sidebar-link text-zinc-500 hover:text-teenPink group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
@@ -215,87 +215,105 @@
         
         <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-slide-up" style="margin-top: 60px;">
             <div>
-                <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">COMMAND <span class="text-teenLime">CENTER</span></h1>
-                <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Active Protocol: <span id="userNameDisplay" class="text-white">ACCESSING...</span></p>
+                <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">VAULT <span class="text-teenPurple">ASSETS</span></h1>
+                <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Resource Allocation Status: <span class="text-white">OPTIMIZED</span></p>
             </div>
-            <button id="syncBtn" class="bg-teenPurple p-4 px-8 rounded-2xl neo-box text-[10px] font-black uppercase flex items-center gap-3 self-start md:self-auto">
-                <i class="fas fa-rotate"></i> SYNC CLOUD
-            </button>
+            <div class="flex gap-4">
+                <button onclick="toggleModal(true)" class="bg-teenLime p-4 px-8 rounded-2xl neo-box text-[10px] text-black font-black uppercase flex items-center gap-3">
+                    <i class="fas fa-plus"></i> NEW ENTRY
+                </button>
+            </div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-teenLime p-8 rounded-[2rem] neo-box animate-slide-up no-hover overflow-hidden" style="animation-delay: 0.1s">
-                <p class="text-black font-black text-[10px] uppercase tracking-widest opacity-70">Total Stack</p>
-                <h2 class="text-black text-xl sm:text-2xl lg:text-3xl font-black mt-2 leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
-                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="totalStack" class="truncate">0.00</span>
-                </h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="md:col-span-2 bg-teenSurface p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover relative overflow-hidden group">
+                <div class="relative z-10">
+                    <p class="text-teenPurple font-black text-[10px] uppercase tracking-widest mb-4">Total Net Worth</p>
+                    <h2 class="text-white text-xl sm:text-3xl lg:text-4xl font-black leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
+                        <span class="currency-symbol shrink-0 mr-1">...</span><span id="netWorthDisplay" class="truncate">0.00</span>
+                    </h2>
+                    <div class="flex items-center gap-2 mt-6">
+                        <span class="bg-teenLime/10 text-teenLime text-[9px] font-black px-3 py-1 rounded-full border border-teenLime/20">LIVE DATA LINK</span>
+                    </div>
+                </div>
+                <i class="fas fa-vault absolute -right-6 -bottom-6 text-9xl opacity-5 group-hover:rotate-12 transition-transform duration-500"></i>
             </div>
 
-            <div class="bg-teenSurface p-8 rounded-[2rem] neo-box border-4 border-black animate-slide-up no-hover overflow-hidden" style="animation-delay: 0.2s">
-                <p class="text-teenPurple font-black text-[10px] uppercase tracking-widest">Incoming</p>
-                <h2 class="text-white text-xl sm:text-2xl lg:text-3xl font-black mt-2 leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
-                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="incomingVal" class="truncate">0.00</span>
+            <div class="bg-teenSurface p-8 rounded-[2rem] border-4 border-black neo-box no-hover animate-slide-up overflow-hidden" style="animation-delay: 0.1s">
+                <p class="text-zinc-500 font-black text-[10px] uppercase tracking-widest">Liquid Cash</p>
+                <h2 class="text-white text-lg lg:text-xl font-black mt-2 leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="liquidCash" class="truncate">0.00</span>
                 </h2>
-                <div class="w-full bg-zinc-900 h-2 mt-8 rounded-full overflow-hidden">
-                    <div id="incomingBar" class="bg-teenPurple h-full transition-all duration-1000" style="width: 0%"></div>
+                <div class="mt-8 flex justify-between items-center text-[9px] font-black uppercase">
+                    <span class="text-zinc-600">Sync Status</span>
+                    <span class="text-teenLime">ONLINE</span>
                 </div>
             </div>
 
-            <div class="bg-teenSurface p-8 rounded-[2rem] neo-box border-4 border-black animate-slide-up no-hover overflow-hidden" style="animation-delay: 0.3s">
-                <p class="text-teenPink font-black text-[10px] uppercase tracking-widest">Outgoing</p>
-                <h2 class="text-white text-xl sm:text-2xl lg:text-3xl font-black mt-2 leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
-                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="outgoingVal" class="truncate">0.00</span>
+            <div class="bg-teenSurface p-8 rounded-[2rem] border-4 border-black neo-box no-hover animate-slide-up overflow-hidden" style="animation-delay: 0.2s">
+                <p class="text-zinc-500 font-black text-[10px] uppercase tracking-widest">Growth Index</p>
+                <h2 class="text-white text-lg lg:text-xl font-black mt-2 leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
+                    <span id="growthPercentage">0%</span>
                 </h2>
-                <div class="w-full bg-zinc-900 h-2 mt-8 rounded-full overflow-hidden">
-                    <div id="outgoingBar" class="bg-teenPink h-full transition-all duration-1000" style="width: 0%"></div>
+                <div class="mt-8 flex justify-between items-center text-[9px] font-black uppercase">
+                    <span class="text-zinc-600">Metric</span>
+                    <span class="text-teenPink">DYNAMIC</span>
                 </div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
             <div class="lg:col-span-2 space-y-6">
-                <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover">
-                    <div class="flex justify-between items-center mb-10">
-                        <h3 class="font-black text-2xl italic uppercase">Loot History</h3>
-                        <div class="flex gap-4">
-                             <span id="activeCurrencyDisplay" class="bg-black text-teenLime border-2 border-teenBorder px-4 py-2 rounded-xl text-[10px] font-black uppercase">---</span>
+                <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover min-h-[600px] flex flex-col">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="font-black text-2xl italic uppercase">Dynamic <span class="text-teenLime">Inventory</span></h3>
+                        <div class="flex gap-2">
+                            <button id="prevPage" class="w-10 h-10 bg-black border-2 border-teenBorder rounded-xl flex items-center justify-center text-zinc-500 hover:text-teenLime hover:border-teenLime transition-all">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button id="nextPage" class="w-10 h-10 bg-black border-2 border-teenBorder rounded-xl flex items-center justify-center text-zinc-500 hover:text-teenLime hover:border-teenLime transition-all">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
                         </div>
                     </div>
-
-                    <div class="space-y-4" id="transactionList">
-                        <div class="text-center py-12 opacity-20 font-black uppercase italic text-xs tracking-widest">
-                            No active logs found in vault
+                    
+                    <div class="space-y-4 flex-1" id="assetInventory">
                         </div>
-                    </div>
                 </div>
             </div>
 
             <div class="space-y-8">
-                <div class="bg-teenPurple p-10 rounded-[2.5rem] neo-box text-black no-hover relative overflow-hidden group">
-                    <i class="fas fa-bolt absolute -right-4 -bottom-4 text-8xl opacity-10 group-hover:scale-110 transition-transform"></i>
-                    <h3 class="font-black text-3xl italic uppercase mb-4 leading-none">QUICK <br>ENTRY</h3>
-                    <p class="text-[10px] font-black uppercase opacity-60 mb-10">Deploy new transaction</p>
-                    <button onclick="toggleModal(true)" class="w-full bg-black text-white p-6 rounded-2xl font-black text-xs uppercase neo-box hover:bg-white hover:text-black transition-all flex items-center justify-center gap-4 relative z-10">
-                        <i class="fas fa-plus"></i> ADD ENTRY
+                <div class="bg-teenSurface p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover relative overflow-hidden group">
+                    <h3 class="font-black text-2xl italic uppercase mb-6 leading-none">PORTFOLIO <br><span class="text-teenLime">PULSE</span></h3>
+                    <div class="space-y-6">
+                        <div class="relative pt-1">
+                            <div class="flex mb-2 items-center justify-between text-[10px] font-black uppercase">
+                                <span class="text-zinc-500">Liquidity Index</span>
+                                <span id="liquidityText" class="text-teenLime">Calculating...</span>
+                            </div>
+                            <div class="overflow-hidden h-2 text-xs flex rounded-full bg-zinc-900">
+                                <div id="liquidityBar" style="width:0%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-teenLime transition-all duration-1000"></div>
+                            </div>
+                        </div>
+                        <div class="relative pt-1">
+                            <div class="flex mb-2 items-center justify-between text-[10px] font-black uppercase">
+                                <span class="text-zinc-500">Asset Health</span>
+                                <span class="text-teenPurple">VITAL</span>
+                            </div>
+                            <div class="overflow-hidden h-2 text-xs flex rounded-full bg-zinc-900">
+                                <div style="width:100%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-teenPurple"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-10 bg-black text-white p-6 rounded-2xl font-black text-xs uppercase neo-box hover:bg-white hover:text-black transition-all flex items-center justify-center gap-4">
+                        GENERATE REPORT
                     </button>
                 </div>
 
-                <div class="bg-teenSurface p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover">
-                    <h3 class="font-black text-lg italic uppercase mb-8 text-teenLime">Vault Status</h3>
-                    <div class="space-y-8">
-                        <div class="flex justify-between items-center text-[10px] font-black uppercase">
-                            <span class="text-zinc-500">Cloud Sync</span>
-                            <span class="text-teenLime flex items-center gap-2"><div class="w-2 h-2 bg-teenLime rounded-full animate-pulse"></div> Online</span>
-                        </div>
-                        <div class="flex justify-between items-center text-[10px] font-black uppercase">
-                            <span class="text-zinc-500">Encryption</span>
-                            <span class="text-white">AES-256 BIT</span>
-                        </div>
-                        <div class="flex justify-between items-center text-[10px] font-black uppercase">
-                            <span class="text-zinc-500">Registry</span>
-                            <span class="text-white">v2.0.4-LOCKED</span>
-                        </div>
-                    </div>
+                <div class="bg-teenPink p-10 rounded-[2.5rem] neo-box text-black no-hover">
+                    <h3 class="font-black text-lg italic uppercase mb-4">Security Notice</h3>
+                    <p class="text-[10px] font-black uppercase opacity-60 leading-relaxed mb-6">Your asset visibility is encrypted. Only you can view this ledger.</p>
+                    <button class="text-[10px] font-black uppercase border-b-2 border-black hover:opacity-50 transition-opacity">ENCRYPTION DETAILS</button>
                 </div>
             </div>
         </div>
@@ -323,26 +341,22 @@
 
         const currencyMap = { 'USD': '$', 'PHP': '₱', 'EUR': '€', 'GBP': '£', 'JPY': '¥' };
         let currentUser = null;
+        let currentPage = 0;
+        const itemsPerPage = 5;
+        let allTransactions = [];
 
         // UI Handlers
         window.toggleSidebar = () => {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-            const isClosing = sidebar.classList.contains('sidebar-open');
-            
-            if (isClosing) {
-                sidebar.classList.replace('sidebar-open', 'sidebar-closed');
-                overlay.classList.add('hidden');
-            } else {
-                sidebar.classList.replace('sidebar-closed', 'sidebar-open');
-                overlay.classList.remove('hidden');
-            }
+            const isOpen = sidebar.classList.contains('sidebar-open');
+            sidebar.classList.toggle('sidebar-open', !isOpen);
+            sidebar.classList.toggle('sidebar-closed', isOpen);
+            overlay.classList.toggle('hidden', isOpen);
         };
 
         window.toggleModal = (show) => {
-            const modal = document.getElementById('entryModal');
-            if (show) modal.classList.remove('hidden');
-            else modal.classList.add('hidden');
+            document.getElementById('entryModal').classList.toggle('hidden', !show);
         };
 
         function showToast(message, type = 'success') {
@@ -351,28 +365,66 @@
             toast.className = `${type === 'success' ? 'bg-teenLime' : 'bg-teenPink'} border-4 border-black p-4 rounded-2xl neo-box no-hover animate-slide-in pointer-events-auto min-w-[280px]`;
             toast.innerHTML = `<div class="flex items-center gap-4 text-black"><i class="fas ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'} text-xl"></i><div class="font-black text-[10px] uppercase tracking-tighter italic">${message}</div></div>`;
             container.appendChild(toast);
-            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(20px)'; toast.style.transition = 'all 0.3s ease'; setTimeout(() => toast.remove(), 300); }, 4000);
+            setTimeout(() => { toast.remove(); }, 4000);
         }
 
         function updateCurrencySymbols(code) {
             const symbol = currencyMap[code] || '$';
             document.querySelectorAll('.currency-symbol').forEach(el => el.innerText = symbol);
-            document.getElementById('activeCurrencyDisplay').innerText = code;
         }
 
-        // Transaction Submission
+        // Pagination Rendering
+        function renderTransactions() {
+            const listContainer = document.getElementById('assetInventory');
+            listContainer.innerHTML = '';
+
+            const start = currentPage * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageData = allTransactions.slice(start, end);
+
+            if (pageData.length > 0) {
+                pageData.forEach(tx => {
+                    const amt = parseFloat(tx.amount);
+                    const isIncome = tx.type === 'income';
+                    const item = document.createElement('div');
+                    item.className = `flex items-center justify-between p-6 bg-black/40 rounded-2xl border-2 border-teenBorder group hover:border-${isIncome ? 'teenLime' : 'teenPink'} transition-all animate-slide-up`;
+                    item.innerHTML = `
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 bg-${isIncome ? 'teenLime' : 'teenPink'}/10 rounded-2xl flex items-center justify-center border-2 border-${isIncome ? 'teenLime' : 'teenPink'}/20 text-${isIncome ? 'teenLime' : 'teenPink'}">
+                                <i class="fas ${tx.icon || 'fa-receipt'} text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-base uppercase">${tx.label}</h4>
+                                <p class="text-[9px] font-black text-zinc-500 uppercase tracking-widest">${tx.category} • ${new Date(tx.timestamp).toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-black text-white text-sm">${isIncome ? '+' : '-'}<span class="currency-symbol"></span>${amt.toLocaleString(undefined, {minimumFractionDigits: 2})}</p>
+                            <p class="text-[8px] font-black text-${isIncome ? 'teenLime' : 'zinc-500'} uppercase mt-1">${isIncome ? 'Liquid' : 'Settled'}</p>
+                        </div>
+                    `;
+                    listContainer.appendChild(item);
+                });
+            } else {
+                listContainer.innerHTML = `<div class="text-center py-20 opacity-20 font-black uppercase italic text-xs tracking-[0.3em]">Vault Partition Empty</div>`;
+            }
+
+            document.getElementById('prevPage').disabled = currentPage === 0;
+            document.getElementById('nextPage').disabled = end >= allTransactions.length;
+            document.getElementById('prevPage').style.opacity = currentPage === 0 ? '0.3' : '1';
+            document.getElementById('nextPage').style.opacity = end >= allTransactions.length ? '0.3' : '1';
+            
+            updateCurrencySymbols(document.getElementById('sidebarUserName').dataset.currency || 'USD');
+        }
+
+        document.getElementById('prevPage').addEventListener('click', () => { if(currentPage > 0) { currentPage--; renderTransactions(); }});
+        document.getElementById('nextPage').addEventListener('click', () => { if((currentPage + 1) * itemsPerPage < allTransactions.length) { currentPage++; renderTransactions(); }});
+
+        // Transaction Logic
         document.getElementById('transactionForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) return;
-
-            const iconMap = {
-                'Food & Drinks': 'fa-burger',
-                'Freelance': 'fa-code',
-                'Transport': 'fa-car',
-                'Entertainment': 'fa-gamepad',
-                'Other': 'fa-box'
-            };
-
+            const iconMap = {'Food & Drinks':'fa-burger','Freelance':'fa-code','Transport':'fa-car','Entertainment':'fa-gamepad','Other':'fa-box'};
             const data = {
                 label: document.getElementById('txLabel').value,
                 amount: parseFloat(document.getElementById('txAmount').value),
@@ -381,28 +433,20 @@
                 icon: iconMap[document.getElementById('txCategory').value] || 'fa-receipt',
                 timestamp: Date.now()
             };
-
             try {
-                const txRef = ref(db, `transactions/${currentUser.uid}`);
-                const newTxRef = push(txRef);
-                await set(newTxRef, data);
-                
+                await set(push(ref(db, `transactions/${currentUser.uid}`)), data);
                 showToast("TRANSACTION DEPLOYED", "success");
                 toggleModal(false);
                 document.getElementById('transactionForm').reset();
-            } catch (err) {
-                showToast("UPLOAD FAILED", "error");
-                console.error(err);
-            }
+            } catch (err) { showToast("UPLOAD FAILED", "error"); }
         });
 
-        function loadDashboardData(uid) {
+        function loadAssetData(uid) {
             onValue(ref(db, `users/${uid}`), (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    const name = (data.firstName || 'AGENT').toUpperCase();
-                    document.getElementById('userNameDisplay').innerText = `${name} // SECURE`;
-                    document.getElementById('sidebarUserName').innerText = name;
+                    document.getElementById('sidebarUserName').innerText = (data.firstName || 'AGENT').toUpperCase();
+                    document.getElementById('sidebarUserName').dataset.currency = data.currency;
                     updateCurrencySymbols(data.currency);
                 }
             });
@@ -410,68 +454,33 @@
             onValue(ref(db, `transactions/${uid}`), (snapshot) => {
                 const transactions = snapshot.val();
                 let totalIn = 0; let totalOut = 0;
-                const listContainer = document.getElementById('transactionList');
-                listContainer.innerHTML = '';
+                allTransactions = [];
 
                 if (transactions) {
-                    Object.values(transactions).reverse().forEach(tx => {
+                    allTransactions = Object.values(transactions).sort((a, b) => b.timestamp - a.timestamp);
+                    allTransactions.forEach(tx => {
                         const amt = parseFloat(tx.amount);
-                        if (tx.type === 'income') totalIn += amt;
-                        else totalOut += amt;
-
-                        const item = document.createElement('div');
-                        item.className = "flex items-center justify-between p-5 bg-black/40 rounded-2xl border-2 border-teenBorder hover:border-teenLime transition-colors group animate-slide-up";
-                        item.innerHTML = `
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center neo-box no-hover group-hover:bg-${tx.type === 'income' ? 'teenLime' : 'teenPink'} transition-colors">
-                                    <i class="fas ${tx.icon || 'fa-receipt'} text-white"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-black text-sm uppercase">${tx.label}</h4>
-                                    <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">${tx.category} • ${new Date(tx.timestamp).toLocaleDateString()}</p>
-                                </div>
-                            </div>
-                            <span class="font-black text-${tx.type === 'income' ? 'teenLime' : 'teenPink'} flex items-baseline whitespace-nowrap">${tx.type === 'income' ? '+' : '-'}<span class="currency-symbol">${currencyMap[document.getElementById('activeCurrencyDisplay').innerText] || ''}</span>${amt.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-                        `;
-                        listContainer.appendChild(item);
+                        if (tx.type === 'income') totalIn += amt; else totalOut += amt;
                     });
-                } else {
-                    listContainer.innerHTML = `<div class="text-center py-12 opacity-20 font-black uppercase italic text-xs tracking-widest">No active logs found in vault</div>`;
                 }
+                
+                renderTransactions();
 
-                const totalStack = totalIn - totalOut;
-                document.getElementById('totalStack').innerText = totalStack.toLocaleString(undefined, {minimumFractionDigits: 2});
-                document.getElementById('incomingVal').innerText = totalIn.toLocaleString(undefined, {minimumFractionDigits: 2});
-                document.getElementById('outgoingVal').innerText = totalOut.toLocaleString(undefined, {minimumFractionDigits: 2});
-
-                const totalActivity = totalIn + totalOut;
-                if(totalActivity > 0) {
-                    document.getElementById('incomingBar').style.width = (totalIn / totalActivity * 100) + '%';
-                    document.getElementById('outgoingBar').style.width = (totalOut / totalActivity * 100) + '%';
-                }
+                const currentLiquid = totalIn - totalOut;
+                document.getElementById('liquidCash').innerText = currentLiquid.toLocaleString(undefined, {minimumFractionDigits: 2});
+                document.getElementById('netWorthDisplay').innerText = currentLiquid.toLocaleString(undefined, {minimumFractionDigits: 2});
+                
+                const liquidityPercent = totalIn > 0 ? Math.min(100, Math.round((currentLiquid / totalIn) * 100)) : 0;
+                document.getElementById('liquidityBar').style.width = liquidityPercent + '%';
+                document.getElementById('liquidityText').innerText = liquidityPercent > 50 ? 'Stable' : 'Volatile';
             });
         }
 
-        window.handleLogout = () => {
-            showToast("TERMINATING SESSION...", "success");
-            setTimeout(() => signOut(auth).then(() => window.location.href = '../auth/login.html'), 1000);
-        };
-
-        document.getElementById('syncBtn').addEventListener('click', () => {
-            const icon = document.querySelector('#syncBtn i');
-            icon.classList.add('fa-spin');
-            showToast("INITIATING CLOUD HANDSHAKE...", "success");
-            setTimeout(() => { icon.classList.remove('fa-spin'); showToast("VAULT SYNCHRONIZED", "success"); }, 1500);
-        });
+        window.handleLogout = () => { signOut(auth).then(() => window.location.href = '../auth/login.html'); };
 
         onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = '../auth/login.html';
-            } else {
-                currentUser = user;
-                loadDashboardData(user.uid);
-                showToast(`SECURE LINK ESTABLISHED`, "success");
-            }
+            if (!user) window.location.href = '../auth/login.html';
+            else { currentUser = user; loadAssetData(user.uid); }
         });
     </script>
 </body>
