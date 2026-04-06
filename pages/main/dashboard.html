@@ -67,6 +67,18 @@
                               linear-gradient(to bottom, rgba(24, 24, 27, 0.5) 1px, transparent 1px);
         }
 
+        select.neo-input-sm {
+            background-color: #000;
+            border: 2px solid #27272a;
+            color: #befa39;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 4px 8px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            outline: none;
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
@@ -110,7 +122,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-teenLime p-6 rounded-3xl neo-box animate-slide-up no-hover" style="animation-delay: 0.1s">
                 <p class="text-black font-black text-[10px] uppercase tracking-widest opacity-70">Total Stack</p>
-                <h2 class="text-black text-4xl font-black mt-2 leading-none">$12,450.00</h2>
+                <h2 class="text-black text-4xl font-black mt-2 leading-none"><span class="currency-symbol">$</span><span id="totalStack">12,450.00</span></h2>
                 <div class="mt-4 flex items-center gap-2 text-black/50 text-[10px] font-black uppercase">
                     <i class="fas fa-arrow-trend-up"></i> +12.5% vs last month
                 </div>
@@ -118,7 +130,7 @@
 
             <div class="bg-teenSurface p-6 rounded-3xl neo-box border-4 border-black animate-slide-up no-hover" style="animation-delay: 0.2s">
                 <p class="text-teenPurple font-black text-[10px] uppercase tracking-widest">Incoming</p>
-                <h2 class="text-white text-4xl font-black mt-2 leading-none">$4,200.00</h2>
+                <h2 class="text-white text-4xl font-black mt-2 leading-none"><span class="currency-symbol">$</span><span id="incomingVal">4,200.00</span></h2>
                 <div class="w-full bg-zinc-900 h-2 mt-6 rounded-full overflow-hidden">
                     <div class="bg-teenPurple h-full w-2/3"></div>
                 </div>
@@ -126,7 +138,7 @@
 
             <div class="bg-teenSurface p-6 rounded-3xl neo-box border-4 border-black animate-slide-up no-hover" style="animation-delay: 0.3s">
                 <p class="text-teenPink font-black text-[10px] uppercase tracking-widest">Outgoing</p>
-                <h2 class="text-white text-4xl font-black mt-2 leading-none">$1,840.00</h2>
+                <h2 class="text-white text-4xl font-black mt-2 leading-none"><span class="currency-symbol">$</span><span id="outgoingVal">1,840.00</span></h2>
                 <div class="w-full bg-zinc-900 h-2 mt-6 rounded-full overflow-hidden">
                     <div class="bg-teenPink h-full w-1/3"></div>
                 </div>
@@ -153,7 +165,7 @@
                                     <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Food & Drinks • 2h ago</p>
                                 </div>
                             </div>
-                            <span class="font-black text-teenPink">-$24.50</span>
+                            <span class="font-black text-teenPink">-<span class="currency-symbol">$</span>24.50</span>
                         </div>
 
                         <div class="flex items-center justify-between p-4 bg-black/40 rounded-2xl border-2 border-teenBorder hover:border-teenLime transition-colors group">
@@ -166,7 +178,7 @@
                                     <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Income • Yesterday</p>
                                 </div>
                             </div>
-                            <span class="font-black text-teenLime">+$1,200.00</span>
+                            <span class="font-black text-teenLime">+<span class="currency-symbol">$</span>1,200.00</span>
                         </div>
                     </div>
                 </div>
@@ -184,6 +196,14 @@
                 <div class="bg-teenSurface p-8 rounded-3xl border-4 border-black neo-box no-hover">
                     <h3 class="font-black text-lg italic uppercase mb-6 text-teenLime">Vault Status</h3>
                     <div class="space-y-6">
+                        <div class="flex justify-between items-center text-[10px] font-black uppercase">
+                            <span class="text-zinc-500">Currency</span>
+                            <select id="currencySelector" onchange="changeCurrency()" class="neo-input-sm">
+                                <option value="$">USD</option>
+                                <option value="₱">PHP</option>
+                                <option value="€">EUR</option>
+                            </select>
+                        </div>
                         <div class="flex justify-between items-center text-[10px] font-black uppercase">
                             <span class="text-zinc-500">Cloud Sync</span>
                             <span class="text-teenLime">Online</span>
@@ -246,12 +266,21 @@
         window.handleLogout = () => {
             showToast("TERMINATING SESSION...", "success");
             setTimeout(() => {
-                signOut(auth).then(() => window.location.href = 'index.html');
+                signOut(auth).then(() => window.location.href = '../main/dashboard.html');
             }, 1000);
         };
 
         window.handleNewEntry = () => {
             showToast("LEDGER UPDATER OPENED", "success");
+        };
+
+        window.changeCurrency = () => {
+            const symbol = document.getElementById('currencySelector').value;
+            const symbols = document.querySelectorAll('.currency-symbol');
+            symbols.forEach(el => el.innerText = symbol);
+            
+            const currencyName = document.getElementById('currencySelector').options[document.getElementById('currencySelector').selectedIndex].text;
+            showToast(`VAULT CONVERTED TO ${currencyName}`, "success");
         };
 
         // Sync Logic
@@ -269,7 +298,7 @@
         // Auth Monitor
         onAuthStateChanged(auth, (user) => {
             if (!user) {
-                window.location.href = 'index.html';
+                window.location.href = '../auth/login.html';
             } else {
                 document.getElementById('userNameDisplay').innerText = (user.displayName || user.email.split('@')[0]).toUpperCase();
                 if(user.photoURL) document.getElementById('userAvatar').src = user.photoURL;

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SmartCents | Initialize Vault</title>
+
+    <meta name="theme-color" content="#ff71ce">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teenLime: '#befa39',
+                        teenPurple: '#a855f7',
+                        teenPink: '#ff71ce',
+                        teenCanvas: '#050505',
+                        teenSurface: '#121214',
+                        teenBorder: '#27272a',
+                    },
+                    borderRadius: { '4xl': '2.5rem' },
+                    animation: {
+                        'slide-in': 'slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                    },
+                    keyframes: {
+                        slideIn: {
+                            '0%': { transform: 'translateX(100%) scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'translateX(0) scale(1)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&display=swap');
+        
+        body { 
+            font-family: 'Unbounded', sans-serif; 
+            background-color: #050505; 
+            color: white; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            min-height: 100vh;
+        }
+        
+        .neo-box { 
+            border: 3px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .neo-box:hover:not(.no-hover) {
+            transform: translate(-2px, -2px);
+            box-shadow: 10px 10px 0px #000;
+        }
+        
+        .neo-input {
+            border: 3px solid #27272a;
+            box-shadow: 4px 4px 0px #000;
+            transition: all 0.2s;
+        }
+        .neo-input:focus {
+            border-color: #ff71ce;
+            outline: none;
+            box-shadow: 6px 6px 0px #ff71ce;
+        }
+
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(24, 24, 27, 0.5) 1px, transparent 1px), 
+                              linear-gradient(to bottom, rgba(24, 24, 27, 0.5) 1px, transparent 1px);
+        }
+
+        .check-item { transition: all 0.3s ease; color: #3f3f46; }
+        .check-item.valid { color: #befa39; }
+        .check-item.valid i { transform: scale(1.2); }
+
+        select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ff71ce'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1.5rem center; background-size: 1.5rem; }
+    </style>
+</head>
+<body class="antialiased flex items-center justify-center p-4 md:p-8 cyber-grid">
+
+    <div id="loadingOverlay" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-xl hidden">
+        <div class="text-center">
+            <div class="relative inline-block mb-6">
+                <div class="w-24 h-24 border-8 border-teenBorder rounded-full"></div>
+                <div class="w-24 h-24 border-8 border-t-teenPink rounded-full animate-spin absolute top-0 left-0"></div>
+                <i class="fas fa-user-plus text-teenPink text-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse"></i>
+            </div>
+            <h2 class="font-black text-xl uppercase italic tracking-widest text-white">Syncing <span class="text-teenPink">Vault</span> Data...</h2>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-[110] flex flex-col gap-4 pointer-events-none"></div>
+
+    <main class="w-full max-w-4xl relative z-10">
+        <div class="bg-teenSurface border-4 border-black rounded-3xl md:rounded-4xl p-8 md:p-12 neo-box relative no-hover">
+            
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-12 h-12 bg-teenPink rounded-2xl flex items-center justify-center neo-box no-hover">
+                    <i class="fas fa-plus text-black text-xl"></i>
+                </div>
+                <span class="font-black text-xl italic tracking-tighter uppercase">Smart<span class="text-teenPink">Cents</span></span>
+            </div>
+
+            <header class="mb-10">
+                <span class="bg-teenPink text-black text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter italic">Registry Phase 01</span>
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight uppercase italic mt-4 mb-2 leading-none">
+                    INITIALIZE <span class="text-teenPink">VAULT</span>
+                </h1>
+            </header>
+
+            <form id="signupForm" class="space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <div class="space-y-3">
+                            <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-envelope text-teenPink"></i> Registry Email
+                            </label>
+                            <input type="email" id="email" placeholder="agent@email.com" required class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800">
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-user text-teenPink"></i> First Name
+                            </label>
+                            <input type="text" id="firstName" placeholder="John" required class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800">
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-id-card text-teenPink"></i> Last Name
+                            </label>
+                            <input type="text" id="lastName" placeholder="Doe" required class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800">
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="space-y-3">
+                            <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-coins text-teenPink"></i> Base Currency
+                            </label>
+                            <select id="currency" required class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm cursor-pointer">
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="PHP">PHP - Philippine Peso</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="GBP">GBP - British Pound</option>
+                                <option value="JPY">JPY - Japanese Yen</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-key text-teenPink"></i> Secure Pass-Key
+                            </label>
+                            <div class="relative">
+                                <input type="password" id="password" placeholder="••••••••" required class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800 pr-16">
+                                <button type="button" onclick="togglePassword('password', 'passIcon')" class="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-teenPink">
+                                    <i id="passIcon" class="fas fa-eye text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                                <i class="fas fa-shield-check text-teenPink"></i> Confirm Pass-Key
+                            </label>
+                            <div class="relative">
+                                <input type="password" id="confirmPassword" placeholder="••••••••" required class="w-full bg-black p-5 rounded-2xl text-white font-bold neo-input text-sm placeholder:text-zinc-800 pr-16">
+                                <button type="button" onclick="togglePassword('confirmPassword', 'confirmPassIcon')" class="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-teenPink">
+                                    <i id="confirmPassIcon" class="fas fa-eye text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-black/50 border-2 border-teenBorder rounded-2xl p-6">
+                    <p class="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <i class="fas fa-microchip"></i> Security Matrix Requirements
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div id="req-cap" class="check-item flex items-center gap-2 text-[10px] font-black uppercase">
+                            <i class="fas fa-circle-check"></i> 1 Capital
+                        </div>
+                        <div id="req-low" class="check-item flex items-center gap-2 text-[10px] font-black uppercase">
+                            <i class="fas fa-circle-check"></i> 1 Lowercase
+                        </div>
+                        <div id="req-num" class="check-item flex items-center gap-2 text-[10px] font-black uppercase">
+                            <i class="fas fa-circle-check"></i> 1 Number
+                        </div>
+                        <div id="req-spec" class="check-item flex items-center gap-2 text-[10px] font-black uppercase">
+                            <i class="fas fa-circle-check"></i> 1 Special
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" id="submitBtn" class="w-full bg-teenPink border-4 border-black text-black p-6 rounded-2xl flex items-center justify-center gap-4 hover:bg-white transition-all neo-box group font-black text-sm uppercase tracking-widest">
+                        <span>ESTABLISH MASTER LINK</span>
+                        <i class="fas fa-bolt group-hover:scale-125 transition-transform"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-8 text-center">
+                <a href="./login.html" class="text-[10px] font-black text-zinc-400 hover:text-teenPink uppercase tracking-[0.2em] transition-colors italic">
+                    Return to <span class="underline">Login Terminal</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDYM0pEVPR3PJQoPzNGJF7q4z4BkeNDYoM",
+            authDomain: "budgetbuddy-f9eff.firebaseapp.com",
+            databaseURL: "https://budgetbuddy-f9eff-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "budgetbuddy-f9eff",
+            storageBucket: "budgetbuddy-f9eff.firebasestorage.app",
+            messagingSenderId: "686739320375",
+            appId: "1:686739320375:web:ca0a1bab63bd9df1d6d9b2",
+            measurementId: "G-82MHJLWR60"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        const passwordInput = document.getElementById('password');
+        const requirements = {
+            cap: /[A-Z]/,
+            low: /[a-z]/,
+            num: /[0-9]/,
+            spec: /[!@#$%^&*(),.?":{}|<>]/
+        };
+
+        // Real-time Matrix Validation
+        passwordInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            Object.keys(requirements).forEach(key => {
+                const isValid = requirements[key].test(val);
+                document.getElementById(`req-${key}`).classList.toggle('valid', isValid);
+            });
+        });
+
+        window.togglePassword = (inputId, iconId) => {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        };
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `${type === 'success' ? 'bg-teenLime' : 'bg-teenPink'} border-4 border-black p-4 rounded-2xl neo-box no-hover animate-slide-in pointer-events-auto min-w-[280px]`;
+            toast.innerHTML = `<div class="flex items-center gap-4 text-black"><i class="fas ${type === 'success' ? 'fa-check-double' : 'fa-triangle-exclamation'} text-xl"></i><div class="font-black text-[10px] uppercase italic tracking-tighter">${message}</div></div>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const pass = passwordInput.value;
+            const confirm = document.getElementById('confirmPassword').value;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const currency = document.getElementById('currency').value;
+
+            // Security Check
+            const allValid = Object.values(requirements).every(reg => reg.test(pass));
+            if (!allValid) {
+                showToast("ERROR: SECURITY MATRIX NOT MET", "error");
+                return;
+            }
+
+            if (pass !== confirm) {
+                showToast("ERROR: PASS-KEYS DO NOT MATCH", "error");
+                return;
+            }
+
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+
+            try {
+                // 1. Create Auth Account
+                const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                const user = userCredential.user;
+
+                // 2. Sync Metadata to Realtime Database
+                await set(ref(db, 'users/' + user.uid), {
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    currency: currency,
+                    createdAt: new Date().toISOString(),
+                    vaultStatus: "active"
+                });
+
+                showToast("VAULT INITIALIZED & DATA SYNCED", "success");
+                setTimeout(() => window.location.href = '../main/dashboard.html', 1500);
+
+            } catch (error) {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                let errorMsg = error.code.split('/')[1].replace(/-/g, ' ').toUpperCase();
+                showToast(`SYNC ERROR: ${errorMsg}`, "error");
+            }
+        });
+    </script>
+</body>
+</html>
