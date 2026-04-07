@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SmartCents | System Re-Calibration</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teenLime: '#befa39',
+                        teenPurple: '#a855f7',
+                        teenPink: '#ff71ce',
+                        teenCanvas: '#050505',
+                        teenSurface: '#121214',
+                        teenBorder: '#27272a',
+                    },
+                    animation: {
+                        'glitch': 'glitch 1s linear infinite',
+                        'pulse-fast': 'pulse 0.6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 5s ease-in-out infinite',
+                        'tape-slide': 'tapeSlide 20s linear infinite',
+                        'spin-slow': 'spin 20s linear infinite',
+                    },
+                    keyframes: {
+                        glitch: {
+                            '0%, 100%': { transform: 'translate(0)' },
+                            '33%': { transform: 'translate(-5px, 3px)' },
+                            '66%': { transform: 'translate(5px, -3px)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-15px) rotate(0.5deg)' }
+                        },
+                        tapeSlide: {
+                            '0%': { 'background-position': '0 0' },
+                            '100%': { 'background-position': '400px 0' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&display=swap');
+        
+        body { 
+            font-family: 'Unbounded', sans-serif; 
+            background-color: #050505; 
+            color: white; 
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
+        }
+
+        .neo-box { border: 4px solid #000; box-shadow: 12px 12px 0px #000; }
+        
+        .cyber-grid { 
+            background-size: 60px 60px; 
+            background-image: linear-gradient(to right, rgba(168, 85, 247, 0.08) 1px, transparent 1px), 
+                              linear-gradient(to bottom, rgba(168, 85, 247, 0.08) 1px, transparent 1px); 
+        }
+
+        .caution-tape {
+            background: repeating-linear-gradient(-45deg, #befa39, #befa39 20px, #000 20px, #000 40px);
+            height: 12px;
+            width: 100%;
+            z-index: 50;
+        }
+
+        .terminal-glow {
+            box-shadow: 0 0 50px rgba(168, 85, 247, 0.15);
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #befa39, #a855f7);
+            background-size: 200% 100%;
+            animation: gradientMove 2s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 100% 0%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        @media (max-width: 1024px) {
+            .neo-box { box-shadow: 8px 8px 0px #000; }
+            body { padding-top: 20px; padding-bottom: 40px; }
+        }
+    </style>
+</head>
+<body class="antialiased cyber-grid flex flex-col items-center justify-center p-4">
+
+    <div class="fixed top-0 left-0 caution-tape animate-tape-slide opacity-50"></div>
+
+    <main class="w-full max-w-4xl z-10 my-8">
+        <div class="bg-teenSurface rounded-[2.5rem] md:rounded-[4rem] border-4 border-black neo-box relative overflow-hidden terminal-glow md:animate-float">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+                
+                <div class="lg:col-span-5 bg-black/40 p-10 md:p-12 border-b-4 lg:border-b-0 lg:border-r-4 border-black flex flex-col items-center justify-center">
+                    <div class="relative">
+                        <div class="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-dashed border-teenPurple animate-spin-slow absolute inset-0 opacity-30"></div>
+                        <div class="w-32 h-32 md:w-48 md:h-48 bg-teenSurface rounded-[3rem] border-4 border-black flex items-center justify-center relative neo-box no-hover">
+                            <i class="fas fa-hammer text-5xl md:text-7xl text-teenPurple animate-glitch"></i>
+                        </div>
+                    </div>
+                    <div class="mt-8 text-center">
+                        <div class="inline-block px-4 py-1 bg-teenPurple text-black text-[9px] font-black uppercase rounded-full mb-2">Access Locked</div>
+                        <p class="text-[8px] font-black text-zinc-600 uppercase tracking-widest">Sector: ACCT_MOD</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 p-8 md:p-16 flex flex-col justify-center text-center lg:text-left">
+                    <h2 class="text-[10px] font-black text-teenLime uppercase tracking-[0.4em] mb-4">Fixing in Progress</h2>
+                    <h1 class="text-4xl md:text-7xl font-black italic uppercase leading-none tracking-tighter mb-6">
+                        UNDER<br><span class="text-teenPink">WORK</span>
+                    </h1>
+                    
+                    <p class="text-[10px] md:text-xs font-black text-zinc-500 uppercase tracking-[0.2em] leading-loose mb-10">
+                        We are currently <span class="text-white">re-routing vault protocols</span>. This area is temporarily offline. Expected Completion: <span class="text-teenLime">April 12</span>.
+                    </p>
+
+                    <div class="bg-black p-6 rounded-3xl border-2 border-teenBorder mb-10">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex gap-1.5">
+                                <div class="w-1.5 h-1.5 bg-teenLime rounded-full animate-pulse"></div>
+                                <span id="status-label" class="text-[8px] font-black uppercase text-zinc-400">Calculating...</span>
+                            </div>
+                            <span id="percent" class="text-[10px] font-black text-teenLime">0%</span>
+                        </div>
+                        <div class="h-3 w-full bg-zinc-900 rounded-full overflow-hidden">
+                            <div id="progressBar" class="h-full progress-fill rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-6">
+                        <button onclick="window.history.back()" class="w-full sm:w-auto bg-white text-black px-10 py-5 rounded-2xl font-black text-xs uppercase neo-box hover:bg-teenLime transition-all flex items-center justify-center gap-3 active:scale-95">
+                            <i class="fas fa-arrow-left"></i> GO BACK
+                        </button>
+                        <a href="./dashboard.html" class="text-[9px] font-black text-zinc-600 hover:text-white uppercase tracking-widest flex items-center gap-2 group transition-colors py-2">
+                            <i class="fas fa-terminal group-hover:text-teenPurple"></i> EXIT TO ROOT
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 px-6 flex flex-wrap justify-between items-center gap-6 opacity-50 pb-12">
+            <div class="flex flex-wrap gap-4 md:gap-8">
+                <div class="text-[8px] font-black uppercase flex items-center gap-2">
+                    <span class="text-teenPink">LOG:</span> <span id="log-text">INJECTING_FIXES...</span>
+                </div>
+                <div class="text-[8px] font-black uppercase text-zinc-700">
+                    CORE_v4.2.0
+                </div>
+            </div>
+            <div id="clock" class="text-[8px] font-black uppercase text-teenPurple">00:00:00</div>
+        </div>
+    </main>
+
+    <div class="fixed bottom-0 left-0 caution-tape animate-tape-slide opacity-50" style="animation-direction: reverse;"></div>
+
+    <script>
+        function calculateProgress() {
+            const today = new Date();
+            const startDay = new Date('2026-04-07'); // Today
+            const targetDay = new Date('2026-04-12'); // Deadline
+            
+            const totalDuration = targetDay - startDay;
+            const elapsed = today - startDay;
+            
+            // Calculate percentage based on time
+            let calculatedPercent = Math.floor((elapsed / totalDuration) * 100);
+            
+            // Logic: Start at 0, but if it's less than 35%, cap it at 35% as requested.
+            // If it's April 12 or later, cap at 100%.
+            let displayPercent = Math.max(35, calculatedPercent);
+            if (today >= targetDay) displayPercent = 100;
+            if (today < startDay) displayPercent = 0; // Pre-start safety
+
+            const percentEl = document.getElementById('percent');
+            const barEl = document.getElementById('progressBar');
+            const statusLabel = document.getElementById('status-label');
+
+            percentEl.innerText = displayPercent + "%";
+            barEl.style.width = displayPercent + "%";
+            
+            if (displayPercent === 100) {
+                statusLabel.innerText = "SYSTEM OPTIMIZED";
+                statusLabel.classList.replace('text-zinc-400', 'text-teenLime');
+            } else {
+                statusLabel.innerText = "REBUILDING NODES...";
+            }
+        }
+
+        // System Logs
+        const logText = document.getElementById('log-text');
+        const logs = ["INJECTING_FIXES...", "SYNCING_VAULT...", "OPTIMIZING_ASSETS...", "ENCRYPTING_KEYS..."];
+        setInterval(() => {
+            logText.innerText = logs[Math.floor(Math.random() * logs.length)];
+        }, 4000);
+
+        // System Clock
+        function updateClock() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('clock').innerText = "SYS_TIME: " + time;
+        }
+
+        // Initialize
+        calculateProgress();
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
