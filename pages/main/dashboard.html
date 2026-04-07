@@ -31,6 +31,7 @@
                         'slide-up': 'slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                         'slide-in': 'slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                         'fade-in': 'fadeIn 0.2s ease-out forwards',
+                        'shimmer': 'shimmer 2s infinite linear',
                     },
                     keyframes: {
                         slideUp: {
@@ -44,6 +45,10 @@
                         fadeIn: {
                             '0%': { opacity: '0' },
                             '100%': { opacity: '1' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-1000px 0' },
+                            '100%': { backgroundPosition: '1000px 0' }
                         }
                     }
                 }
@@ -113,6 +118,12 @@
             border-color: #befa39;
             box-shadow: 0 0 0 4px rgba(190, 250, 57, 0.1);
         }
+
+        /* Loading Skeleton Shimmer */
+        .skeleton {
+            background: linear-gradient(90deg, #121214 25%, #1a1a1d 50%, #121214 75%);
+            background-size: 1000px 100%;
+        }
     </style>
 </head>
 <body class="antialiased min-h-screen cyber-grid flex">
@@ -174,8 +185,7 @@
             <h3 class="text-2xl font-black italic uppercase mb-2 text-center">SWITCH <span class="text-teenPurple">CURRENCY</span></h3>
             <p class="text-[9px] font-black uppercase text-zinc-500 tracking-widest mb-8 text-center">Update global exchange protocol</p>
             
-            <div class="grid grid-cols-2 gap-4" id="currencyOptions">
-                </div>
+            <div class="grid grid-cols-2 gap-4" id="currencyOptions"></div>
         </div>
     </div>
 
@@ -228,9 +238,9 @@
         </div>
     </aside>
 
-    <main class="flex-1 lg:ml-72 min-h-screen p-6 md:p-12 space-y-10" style="margin-bottom: 30px;">
+    <main class="flex-1 lg:ml-72 min-h-screen p-6 md:p-12 space-y-10" style="margin-top: 60px;">
         
-        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-slide-up" style="margin-top: 60px;">
+        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-slide-up">
             <div>
                 <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">COMMAND <span class="text-teenLime">CENTER</span></h1>
                 <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Active Protocol: <span id="userNameDisplay" class="text-white">ACCESSING...</span></p>
@@ -272,17 +282,47 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
             <div class="lg:col-span-2 space-y-6">
                 <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover">
-                    <div class="flex justify-between items-center mb-10">
+                    <div class="flex flex-wrap justify-between items-center mb-10 gap-4">
                         <h3 class="font-black text-2xl italic uppercase">Loot History</h3>
-                        <div class="flex gap-4">
+                        <div class="flex items-center gap-4">
+                             <div class="flex gap-2">
+                                <button onclick="changePage(-1)" id="prevBtn" class="w-10 h-10 bg-black border-2 border-teenBorder rounded-xl flex items-center justify-center text-zinc-500 hover:text-teenLime hover:border-teenLime transition-all disabled:opacity-30 disabled:pointer-events-none">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button onclick="changePage(1)" id="nextBtn" class="w-10 h-10 bg-black border-2 border-teenBorder rounded-xl flex items-center justify-center text-zinc-500 hover:text-teenLime hover:border-teenLime transition-all disabled:opacity-30 disabled:pointer-events-none">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                             </div>
                              <span id="activeCurrencyDisplay" onclick="toggleCurrencyModal(true)" class="bg-black text-teenLime border-2 border-teenBorder px-4 py-2 rounded-xl text-[10px] font-black uppercase cursor-pointer hover:border-teenLime transition-all">---</span>
                         </div>
                     </div>
 
                     <div class="space-y-4" id="transactionList">
-                        <div class="text-center py-12 opacity-20 font-black uppercase italic text-xs tracking-widest">
-                            No active logs found in vault
+                        <div class="skeleton-wrapper space-y-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-black/40 rounded-2xl border-2 border-teenBorder opacity-50">
+                                <div class="flex items-center gap-4 w-full">
+                                    <div class="w-12 h-12 rounded-xl skeleton animate-shimmer"></div>
+                                    <div class="space-y-2 flex-1">
+                                        <div class="h-4 w-1/3 skeleton animate-shimmer rounded"></div>
+                                        <div class="h-2 w-1/4 skeleton animate-shimmer rounded"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-black/40 rounded-2xl border-2 border-teenBorder opacity-30">
+                                <div class="flex items-center gap-4 w-full">
+                                    <div class="w-12 h-12 rounded-xl skeleton animate-shimmer"></div>
+                                    <div class="space-y-2 flex-1">
+                                        <div class="h-4 w-1/2 skeleton animate-shimmer rounded"></div>
+                                        <div class="h-2 w-1/5 skeleton animate-shimmer rounded"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="mt-8 flex justify-between items-center px-2">
+                        <p class="text-[8px] font-black uppercase text-zinc-600 tracking-widest">Protocol v2.0 // Logs Secured</p>
+                        <p id="pageIndicator" class="text-[8px] font-black uppercase text-teenLime tracking-[0.2em]">LOADING...</p>
                     </div>
                 </div>
             </div>
@@ -340,13 +380,16 @@
 
         const currencyMap = { 'USD': '$', 'PHP': '₱', 'EUR': '€', 'GBP': '£', 'JPY': '¥' };
         let currentUser = null;
+        let allTransactions = [];
+        let currentPage = 1;
+        let itemsPerPage = 4;
+        let isFirstLoad = true;
 
         // UI Handlers
         window.toggleSidebar = () => {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
             const isClosing = sidebar.classList.contains('sidebar-open');
-            
             if (isClosing) {
                 sidebar.classList.replace('sidebar-open', 'sidebar-closed');
                 overlay.classList.add('hidden');
@@ -362,22 +405,16 @@
             else modal.classList.add('hidden');
         };
 
-        // NEW: Currency Modal Handlers
         window.toggleCurrencyModal = (show) => {
             const modal = document.getElementById('currencyModal');
-            if (show) {
-                renderCurrencyOptions();
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
+            if (show) { renderCurrencyOptions(); modal.classList.remove('hidden'); }
+            else modal.classList.add('hidden');
         };
 
         function renderCurrencyOptions() {
             const container = document.getElementById('currencyOptions');
             const currentCode = document.getElementById('activeCurrencyDisplay').innerText;
             container.innerHTML = '';
-
             Object.keys(currencyMap).forEach(code => {
                 const btn = document.createElement('button');
                 const isActive = code === currentCode;
@@ -416,19 +453,10 @@
             document.getElementById('activeCurrencyDisplay').innerText = code;
         }
 
-        // Transaction Submission
         document.getElementById('transactionForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) return;
-
-            const iconMap = {
-                'Food & Drinks': 'fa-burger',
-                'Freelance': 'fa-code',
-                'Transport': 'fa-car',
-                'Entertainment': 'fa-gamepad',
-                'Other': 'fa-box'
-            };
-
+            const iconMap = { 'Food & Drinks': 'fa-burger', 'Freelance': 'fa-code', 'Transport': 'fa-car', 'Entertainment': 'fa-gamepad', 'Other': 'fa-box' };
             const data = {
                 label: document.getElementById('txLabel').value,
                 amount: parseFloat(document.getElementById('txAmount').value),
@@ -437,12 +465,10 @@
                 icon: iconMap[document.getElementById('txCategory').value] || 'fa-receipt',
                 timestamp: Date.now()
             };
-
             try {
                 const txRef = ref(db, `transactions/${currentUser.uid}`);
                 const newTxRef = push(txRef);
                 await set(newTxRef, data);
-                
                 showToast("TRANSACTION DEPLOYED", "success");
                 toggleModal(false);
                 document.getElementById('transactionForm').reset();
@@ -452,6 +478,55 @@
             }
         });
 
+        window.changePage = (dir) => {
+            const totalPages = Math.ceil(allTransactions.length / itemsPerPage);
+            currentPage += dir;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            renderTransactions();
+        };
+
+        function renderTransactions() {
+            const listContainer = document.getElementById('transactionList');
+            listContainer.innerHTML = '';
+            
+            const totalPages = Math.ceil(allTransactions.length / itemsPerPage) || 1;
+            document.getElementById('pageIndicator').innerText = `PAGE ${currentPage}/${totalPages}`;
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages;
+
+            if (allTransactions.length > 0) {
+                const start = (currentPage - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const paginatedItems = allTransactions.slice(start, end);
+
+                paginatedItems.forEach(tx => {
+                    const amt = parseFloat(tx.amount);
+                    const item = document.createElement('div');
+                    item.className = "flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-black/40 rounded-2xl border-2 border-teenBorder hover:border-teenLime transition-colors group animate-slide-up gap-3 sm:gap-0";
+                    item.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center neo-box no-hover group-hover:bg-${tx.type === 'income' ? 'teenLime' : 'teenPink'} transition-colors">
+                                <i class="fas ${tx.icon || 'fa-receipt'} text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-sm uppercase">${tx.label}</h4>
+                                <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">${tx.category} • ${new Date(tx.timestamp).toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                        <div class="sm:text-right">
+                            <span class="font-black text-lg sm:text-base text-${tx.type === 'income' ? 'teenLime' : 'teenPink'} flex items-baseline whitespace-nowrap">
+                                ${tx.type === 'income' ? '+' : '-'}<span class="currency-symbol">${currencyMap[document.getElementById('activeCurrencyDisplay').innerText] || ''}</span>${amt.toLocaleString(undefined, {minimumFractionDigits: 2})}
+                            </span>
+                        </div>
+                    `;
+                    listContainer.appendChild(item);
+                });
+            } else if (!isFirstLoad) {
+                listContainer.innerHTML = `<div class="text-center py-12 opacity-20 font-black uppercase italic text-xs tracking-widest">No active logs found in vault</div>`;
+            }
+        }
+
         function loadDashboardData(uid) {
             onValue(ref(db, `users/${uid}`), (snapshot) => {
                 const data = snapshot.val();
@@ -460,44 +535,28 @@
                     document.getElementById('userNameDisplay').innerText = `${name} // SECURE`;
                     document.getElementById('sidebarUserName').innerText = name;
                     updateCurrencySymbols(data.currency || 'USD');
+                    renderTransactions();
                 }
             });
 
             onValue(ref(db, `transactions/${uid}`), (snapshot) => {
                 const transactions = snapshot.val();
                 let totalIn = 0; let totalOut = 0;
-                const listContainer = document.getElementById('transactionList');
-                listContainer.innerHTML = '';
 
                 if (transactions) {
-                    Object.values(transactions).reverse().forEach(tx => {
+                    allTransactions = Object.values(transactions).reverse();
+                    allTransactions.forEach(tx => {
                         const amt = parseFloat(tx.amount);
                         if (tx.type === 'income') totalIn += amt;
                         else totalOut += amt;
-
-                        const item = document.createElement('div');
-                        item.className = "flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-black/40 rounded-2xl border-2 border-teenBorder hover:border-teenLime transition-colors group animate-slide-up gap-3 sm:gap-0";
-                        item.innerHTML = `
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center neo-box no-hover group-hover:bg-${tx.type === 'income' ? 'teenLime' : 'teenPink'} transition-colors">
-                                    <i class="fas ${tx.icon || 'fa-receipt'} text-white"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-black text-sm uppercase">${tx.label}</h4>
-                                    <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">${tx.category} • ${new Date(tx.timestamp).toLocaleDateString()}</p>
-                                </div>
-                            </div>
-                            <div class="sm:text-right">
-                                <span class="font-black text-lg sm:text-base text-${tx.type === 'income' ? 'teenLime' : 'teenPink'} flex items-baseline whitespace-nowrap">
-                                    ${tx.type === 'income' ? '+' : '-'}<span class="currency-symbol">${currencyMap[document.getElementById('activeCurrencyDisplay').innerText] || ''}</span>${amt.toLocaleString(undefined, {minimumFractionDigits: 2})}
-                                </span>
-                            </div>
-                        `;
-                        listContainer.appendChild(item);
                     });
                 } else {
-                    listContainer.innerHTML = `<div class="text-center py-12 opacity-20 font-black uppercase italic text-xs tracking-widest">No active logs found in vault</div>`;
+                    allTransactions = [];
                 }
+
+                isFirstLoad = false;
+                currentPage = 1;
+                renderTransactions();
 
                 const totalStack = totalIn - totalOut;
                 document.getElementById('totalStack').innerText = totalStack.toLocaleString(undefined, {minimumFractionDigits: 2});
@@ -525,24 +584,9 @@
         });
 
         onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = '../auth/login.html';
-            } else {
-                currentUser = user;
-                loadDashboardData(user.uid);
-                showToast(`SECURE LINK ESTABLISHED`, "success");
-            }
+            if (!user) window.location.href = '../auth/login.html';
+            else { currentUser = user; loadDashboardData(user.uid); showToast(`SECURE LINK ESTABLISHED`, "success"); }
         });
-    </script>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-            navigator.serviceWorker.register('../../sw.js')
-                .then(reg => console.log('Service Worker registered! Scope:', reg.scope))
-                .catch(err => console.log('Service Worker registration failed:', err));
-            });
-        }
     </script>
 </body>
 </html>
