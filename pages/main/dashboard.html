@@ -113,13 +113,30 @@
             font-size: 0.75rem;
             outline: none;
             transition: all 0.2s;
+            appearance: none;
         }
         .neo-input:focus {
             border-color: #befa39;
             box-shadow: 0 0 0 4px rgba(190, 250, 57, 0.1);
         }
 
-        /* Loading Skeleton Shimmer */
+        select.neo-input {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23befa39' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2rem;
+            cursor: pointer;
+            padding-right: 3rem;
+        }
+
+        select.neo-input option {
+            background: #121214;
+            color: white;
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 700;
+            padding: 10px;
+        }
+
         .skeleton {
             background: linear-gradient(90deg, #121214 25%, #1a1a1d 50%, #121214 75%);
             background-size: 1000px 100%;
@@ -142,7 +159,7 @@
             <h3 class="text-2xl font-black italic uppercase mb-2">NEW <span class="text-teenLime">ENTRY</span></h3>
             <p class="text-[9px] font-black uppercase text-zinc-500 tracking-widest mb-8">Synchronize transaction with cloud</p>
             
-            <form id="transactionForm" class="space-y-6">
+            <form id="transactionForm" class="space-y-4">
                 <div class="space-y-2">
                     <label class="text-[10px] font-black uppercase text-teenLime ml-2">Description</label>
                     <input type="text" id="txLabel" placeholder="E.G. COFFEE, SUBSCRIPTION" required class="w-full neo-input">
@@ -160,15 +177,19 @@
                         </select>
                     </div>
                 </div>
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black uppercase text-teenLime ml-2">Category</label>
-                    <select id="txCategory" class="w-full neo-input">
-                        <option value="Food & Drinks">FOOD & DRINKS</option>
-                        <option value="Freelance">FREELANCE</option>
-                        <option value="Transport">TRANSPORT</option>
-                        <option value="Entertainment">ENTERTAINMENT</option>
-                        <option value="Other">OTHER</option>
-                    </select>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-teenLime ml-2">Category</label>
+                        <select id="txCategory" class="w-full neo-input">
+                            <option value="Other">OTHER</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-teenLime ml-2">Account</label>
+                        <select id="txAccount" class="w-full neo-input" required>
+                            <option value="Default">DEFAULT</option>
+                        </select>
+                    </div>
                 </div>
                 <button type="submit" class="w-full bg-teenLime text-black p-5 rounded-2xl font-black text-xs uppercase neo-box hover:bg-white transition-all flex items-center justify-center gap-3 mt-4">
                     <i class="fas fa-cloud-arrow-up"></i> DEPLOY TO CLOUD
@@ -220,6 +241,9 @@
             <a href="./security.html" class="sidebar-link text-zinc-500 hover:text-teenPurple group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
                 <i class="fas fa-shield-halved text-lg"></i> SECURITY
             </a>
+            <a href="./category.html" class="sidebar-link text-zinc-500 hover:text-teenPurple group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
+                <i class="fas fa-tags text-lg"></i> CATEGORY
+            </a>
         </nav>
 
         <div class="pt-6 border-t-2 border-teenBorder space-y-4">
@@ -254,14 +278,14 @@
             <div class="bg-teenLime p-8 rounded-[2rem] neo-box animate-slide-up no-hover overflow-hidden" style="animation-delay: 0.1s">
                 <p class="text-black font-black text-[10px] uppercase tracking-widest opacity-70">Total Stack</p>
                 <h2 class="text-black text-xl sm:text-2xl lg:text-3xl font-black mt-2 leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
-                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="totalStack" class="truncate">0.00</span>
+                    <span class="currency-symbol shrink-0 mr-1">---</span><span id="totalStack" class="truncate">0.00</span>
                 </h2>
             </div>
 
             <div class="bg-teenSurface p-8 rounded-[2rem] neo-box border-4 border-black animate-slide-up no-hover overflow-hidden" style="animation-delay: 0.2s">
                 <p class="text-teenPurple font-black text-[10px] uppercase tracking-widest">Incoming</p>
                 <h2 class="text-white text-xl sm:text-2xl lg:text-3xl font-black mt-2 leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
-                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="incomingVal" class="truncate">0.00</span>
+                    <span class="currency-symbol shrink-0 mr-1">---</span><span id="incomingVal" class="truncate">0.00</span>
                 </h2>
                 <div class="w-full bg-zinc-900 h-2 mt-8 rounded-full overflow-hidden">
                     <div id="incomingBar" class="bg-teenPurple h-full transition-all duration-1000" style="width: 0%"></div>
@@ -271,7 +295,7 @@
             <div class="bg-teenSurface p-8 rounded-[2rem] neo-box border-4 border-black animate-slide-up no-hover overflow-hidden" style="animation-delay: 0.3s">
                 <p class="text-teenPink font-black text-[10px] uppercase tracking-widest">Outgoing</p>
                 <h2 class="text-white text-xl sm:text-2xl lg:text-3xl font-black mt-2 leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
-                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="outgoingVal" class="truncate">0.00</span>
+                    <span class="currency-symbol shrink-0 mr-1">---</span><span id="outgoingVal" class="truncate">0.00</span>
                 </h2>
                 <div class="w-full bg-zinc-900 h-2 mt-8 rounded-full overflow-hidden">
                     <div id="outgoingBar" class="bg-teenPink h-full transition-all duration-1000" style="width: 0%"></div>
@@ -305,15 +329,6 @@
                                     <div class="space-y-2 flex-1">
                                         <div class="h-4 w-1/3 skeleton animate-shimmer rounded"></div>
                                         <div class="h-2 w-1/4 skeleton animate-shimmer rounded"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-black/40 rounded-2xl border-2 border-teenBorder opacity-30">
-                                <div class="flex items-center gap-4 w-full">
-                                    <div class="w-12 h-12 rounded-xl skeleton animate-shimmer"></div>
-                                    <div class="space-y-2 flex-1">
-                                        <div class="h-4 w-1/2 skeleton animate-shimmer rounded"></div>
-                                        <div class="h-2 w-1/5 skeleton animate-shimmer rounded"></div>
                                     </div>
                                 </div>
                             </div>
@@ -361,7 +376,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getDatabase, ref, onValue, push, set, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, push, set, update, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDYM0pEVPR3PJQoPzNGJF7q4z4BkeNDYoM",
@@ -381,6 +396,8 @@
         const currencyMap = { 'USD': '$', 'PHP': '₱', 'EUR': '€', 'GBP': '£', 'JPY': '¥' };
         let currentUser = null;
         let allTransactions = [];
+        let activeCategories = []; 
+        let activeAccounts = []; // To store local copy of account IDs/Balances
         let currentPage = 1;
         let itemsPerPage = 4;
         let isFirstLoad = true;
@@ -453,27 +470,73 @@
             document.getElementById('activeCurrencyDisplay').innerText = code;
         }
 
+        // --- UPDATED TRANSACTION FORM LOGIC ---
         document.getElementById('transactionForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) return;
-            const iconMap = { 'Food & Drinks': 'fa-burger', 'Freelance': 'fa-code', 'Transport': 'fa-car', 'Entertainment': 'fa-gamepad', 'Other': 'fa-box' };
+            
+            const categoryValue = document.getElementById('txCategory').value;
+            const accountValue = document.getElementById('txAccount').value;
+            const txType = document.getElementById('txType').value;
+            const amount = parseFloat(document.getElementById('txAmount').value);
+            const selectedCategoryData = activeCategories.find(c => c.name === categoryValue);
+            
+            // 1. Prepare Transaction Data
             const data = {
                 label: document.getElementById('txLabel').value,
-                amount: parseFloat(document.getElementById('txAmount').value),
-                type: document.getElementById('txType').value,
-                category: document.getElementById('txCategory').value,
-                icon: iconMap[document.getElementById('txCategory').value] || 'fa-receipt',
+                amount: amount,
+                type: txType,
+                category: categoryValue,
+                account: accountValue,
+                icon: selectedCategoryData ? selectedCategoryData.icon : 'fa-receipt',
                 timestamp: Date.now()
             };
+
             try {
+                // 2. Identify the specific account entry in Firebase
+                const accountsRef = ref(db, `accounts/${currentUser.uid}`);
+                const accountsSnapshot = await get(accountsRef);
+                const accountsData = accountsSnapshot.val();
+                
+                let accountKey = null;
+                let currentBalance = 0;
+
+                if (accountsData) {
+                    // Find the key (Firebase ID) where accountName matches the selection
+                    for (const key in accountsData) {
+                        if (accountsData[key].accountName === accountValue) {
+                            accountKey = key;
+                            currentBalance = parseFloat(accountsData[key].balance || 0);
+                            break;
+                        }
+                    }
+                }
+
+                // 3. Calculate New Balance
+                let newBalance = currentBalance;
+                if (txType === 'income') {
+                    newBalance += amount;
+                } else {
+                    newBalance -= amount;
+                }
+
+                // 4. Multi-path Update (Atomic write is better, but let's do sequential for clarity)
+                // A. Save Transaction Record
                 const txRef = ref(db, `transactions/${currentUser.uid}`);
                 const newTxRef = push(txRef);
                 await set(newTxRef, data);
-                showToast("TRANSACTION DEPLOYED", "success");
+
+                // B. Update Account Balance
+                if (accountKey) {
+                    const specificAccRef = ref(db, `accounts/${currentUser.uid}/${accountKey}`);
+                    await update(specificAccRef, { balance: newBalance });
+                }
+
+                showToast(`VAULT UPDATED: ${txType.toUpperCase()}`, "success");
                 toggleModal(false);
                 document.getElementById('transactionForm').reset();
             } catch (err) {
-                showToast("UPLOAD FAILED", "error");
+                showToast("DATABASE ERROR", "error");
                 console.error(err);
             }
         });
@@ -503,19 +566,20 @@
                 paginatedItems.forEach(tx => {
                     const amt = parseFloat(tx.amount);
                     const item = document.createElement('div');
+                    const colorClass = tx.type === 'income' ? 'teenLime' : 'teenPink';
                     item.className = "flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-black/40 rounded-2xl border-2 border-teenBorder hover:border-teenLime transition-colors group animate-slide-up gap-3 sm:gap-0";
                     item.innerHTML = `
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center neo-box no-hover group-hover:bg-${tx.type === 'income' ? 'teenLime' : 'teenPink'} transition-colors">
-                                <i class="fas ${tx.icon || 'fa-receipt'} text-white"></i>
+                            <div class="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center neo-box no-hover group-hover:bg-${colorClass} transition-colors">
+                                <i class="fas ${tx.icon || 'fa-receipt'} text-white transition-colors group-hover:text-black"></i>
                             </div>
                             <div>
                                 <h4 class="font-black text-sm uppercase">${tx.label}</h4>
-                                <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">${tx.category} • ${new Date(tx.timestamp).toLocaleDateString()}</p>
+                                <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">${tx.category} • ${tx.account || 'Vault'} • ${new Date(tx.timestamp).toLocaleDateString()}</p>
                             </div>
                         </div>
                         <div class="sm:text-right">
-                            <span class="font-black text-lg sm:text-base text-${tx.type === 'income' ? 'teenLime' : 'teenPink'} flex items-baseline whitespace-nowrap">
+                            <span class="font-black text-lg sm:text-base text-${colorClass} flex items-baseline whitespace-nowrap">
                                 ${tx.type === 'income' ? '+' : '-'}<span class="currency-symbol">${currencyMap[document.getElementById('activeCurrencyDisplay').innerText] || ''}</span>${amt.toLocaleString(undefined, {minimumFractionDigits: 2})}
                             </span>
                         </div>
@@ -536,6 +600,48 @@
                     document.getElementById('sidebarUserName').innerText = name;
                     updateCurrencySymbols(data.currency || 'USD');
                     renderTransactions();
+                }
+            });
+
+            onValue(ref(db, `categories/${uid}`), (snapshot) => {
+                const categoriesData = snapshot.val();
+                const selectElement = document.getElementById('txCategory');
+                selectElement.innerHTML = '';
+                activeCategories = [];
+
+                if (categoriesData) {
+                    Object.values(categoriesData).forEach(cat => {
+                        activeCategories.push(cat);
+                        const opt = document.createElement('option');
+                        opt.value = cat.name;
+                        opt.innerText = cat.name.toUpperCase();
+                        selectElement.appendChild(opt);
+                    });
+                } else {
+                    const fallback = document.createElement('option');
+                    fallback.value = "Other";
+                    fallback.innerText = "OTHER";
+                    selectElement.appendChild(fallback);
+                }
+            });
+
+            onValue(ref(db, `accounts/${uid}`), (snapshot) => {
+                const accountsData = snapshot.val();
+                const selectElement = document.getElementById('txAccount');
+                selectElement.innerHTML = '';
+
+                if (accountsData) {
+                    Object.values(accountsData).forEach(acc => {
+                        const opt = document.createElement('option');
+                        opt.value = acc.accountName;
+                        opt.innerText = acc.accountName.toUpperCase();
+                        selectElement.appendChild(opt);
+                    });
+                } else {
+                    const fallback = document.createElement('option');
+                    fallback.value = "Cash";
+                    fallback.innerText = "CASH (DEFAULT)";
+                    selectElement.appendChild(fallback);
                 }
             });
 

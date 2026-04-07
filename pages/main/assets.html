@@ -6,10 +6,8 @@
     <title>SmartCents | Assets Vault</title>
 
     <link rel="manifest" href="../../pwa/manifest.json">
-
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="SmartCents">
-
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2489/2489756.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -31,20 +29,13 @@
                         'slide-up': 'slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                         'slide-in': 'slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                         'fade-in': 'fadeIn 0.2s ease-out forwards',
+                        'cyber-pulse': 'cyberPulse 1.5s infinite',
                     },
                     keyframes: {
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                        slideIn: {
-                            '0%': { transform: 'translateX(100%) scale(0.9)', opacity: '0' },
-                            '100%': { transform: 'translateX(0) scale(1)', opacity: '1' },
-                        },
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        }
+                        slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        slideIn: { '0%': { transform: 'translateX(100%) scale(0.9)', opacity: '0' }, '100%': { transform: 'translateX(0) scale(1)', opacity: '1' } },
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        cyberPulse: { '0%, 100%': { opacity: '0.3' }, '50%': { opacity: '1' } }
                     }
                 }
             }
@@ -53,62 +44,16 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&display=swap');
-        
-        body { 
-            font-family: 'Unbounded', sans-serif; 
-            background-color: #050505; 
-            color: white; 
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            background-attachment: fixed;
-            background-blend-mode: overlay;
-            overflow-x: hidden;
-        }
-        
-        .neo-box { 
-            border: 3px solid #000;
-            box-shadow: 6px 6px 0px #000;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .neo-box:hover:not(.no-hover) {
-            transform: translate(-2px, -2px);
-            box-shadow: 10px 10px 0px #000;
-        }
-
-        .cyber-grid {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(24, 24, 27, 0.5) 1px, transparent 1px), 
-                              linear-gradient(to bottom, rgba(24, 24, 27, 0.5) 1px, transparent 1px);
-        }
-
-        .sidebar-link.active {
-            background-color: #befa39;
-            color: black;
-            box-shadow: 4px 4px 0px #000;
-        }
-
-        .neo-input {
-            background: #000;
-            border: 3px solid #27272a;
-            padding: 1rem;
-            border-radius: 1rem;
-            color: white;
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            outline: none;
-            transition: all 0.2s;
-        }
-        .neo-input:focus {
-            border-color: #befa39;
-            box-shadow: 0 0 0 4px rgba(190, 250, 57, 0.1);
-        }
-
-        @media (max-width: 1024px) {
-            .sidebar-closed { transform: translateX(-100%); }
-            .sidebar-open { transform: translateX(0); }
-            #sidebar-overlay.active { display: block; }
-        }
-
+        body { font-family: 'Unbounded', sans-serif; background-color: #050505; color: white; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); background-attachment: fixed; background-blend-mode: overlay; overflow-x: hidden; }
+        .neo-box { border: 3px solid #000; box-shadow: 6px 6px 0px #000; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .neo-box:hover:not(.no-hover) { transform: translate(-2px, -2px); box-shadow: 10px 10px 0px #000; }
+        .cyber-grid { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(24, 24, 27, 0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(24, 24, 27, 0.5) 1px, transparent 1px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .sidebar-link.active { background-color: #befa39; color: black; box-shadow: 4px 4px 0px #000; }
+        .neo-input { background: #000; border: 3px solid #27272a; padding: 1rem; border-radius: 1rem; color: white; font-weight: 900; text-transform: uppercase; font-size: 0.75rem; outline: none; transition: all 0.2s; }
+        .neo-input:focus { border-color: #befa39; box-shadow: 0 0 0 4px rgba(190, 250, 57, 0.1); }
+        @media (max-width: 1024px) { .sidebar-closed { transform: translateX(-100%); } .sidebar-open { transform: translateX(0); } }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
@@ -117,11 +62,15 @@
 </head>
 <body class="antialiased min-h-screen cyber-grid flex">
 
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[115] hidden transition-opacity duration-300"></div>
+    <button id="sidebarToggle" class="lg:hidden fixed top-6 right-6 z-[100] w-12 h-12 bg-teenLime rounded-xl neo-box flex items-center justify-center text-black">
+        <i class="fas fa-bars-staggered"></i>
+    </button>
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[115] hidden transition-opacity duration-300"></div>
 
     <div id="entryModal" class="fixed inset-0 z-[150] hidden bg-black/80 backdrop-blur-xl flex items-center justify-center p-6 animate-fade-in">
         <div class="bg-teenSurface w-full max-w-md border-4 border-black rounded-[2.5rem] neo-box no-hover p-8 md:p-10 relative">
-            <button onclick="toggleModal(false)" class="absolute top-6 right-6 text-zinc-500 hover:text-teenPink">
+            <button id="closeEntryBtn" class="absolute top-6 right-6 text-zinc-500 hover:text-teenPink">
                 <i class="fas fa-xmark text-2xl"></i>
             </button>
             <h3 class="text-2xl font-black italic uppercase mb-2">NEW <span class="text-teenLime">ENTRY</span></h3>
@@ -145,15 +94,15 @@
                         </select>
                     </div>
                 </div>
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black uppercase text-teenLime ml-2">Category</label>
-                    <select id="txCategory" class="w-full neo-input">
-                        <option value="Food & Drinks">FOOD & DRINKS</option>
-                        <option value="Freelance">FREELANCE</option>
-                        <option value="Transport">TRANSPORT</option>
-                        <option value="Entertainment">ENTERTAINMENT</option>
-                        <option value="Other">OTHER</option>
-                    </select>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-teenLime ml-2">Category</label>
+                        <select id="txCategory" class="w-full neo-input"></select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-teenPurple ml-2">Account Node</label>
+                        <select id="txAccount" required class="w-full neo-input" style="border-color: #a855f7;"></select>
+                    </div>
                 </div>
                 <button type="submit" class="w-full bg-teenLime text-black p-5 rounded-2xl font-black text-xs uppercase neo-box hover:bg-white transition-all flex items-center justify-center gap-3 mt-4">
                     <i class="fas fa-cloud-arrow-up"></i> DEPLOY TO CLOUD
@@ -162,17 +111,23 @@
         </div>
     </div>
 
-    <button onclick="toggleSidebar()" class="lg:hidden fixed top-6 right-6 z-[100] w-12 h-12 bg-teenLime rounded-xl neo-box flex items-center justify-center text-black">
-        <i class="fas fa-bars-staggered"></i>
-    </button>
-
-    <div id="toastContainer" class="fixed bottom-6 right-6 z-[110] flex flex-col gap-4 pointer-events-none"></div>
+    <div id="accountHistoryModal" class="fixed inset-0 z-[160] hidden bg-black/90 backdrop-blur-2xl flex items-center justify-center p-6 animate-fade-in">
+        <div class="bg-teenSurface w-full max-w-2xl border-4 border-black rounded-[3rem] neo-box no-hover p-8 md:p-12 relative flex flex-col max-h-[85vh]">
+            <button id="closeHistoryBtn" class="absolute top-8 right-8 text-zinc-500 hover:text-teenPink">
+                <i class="fas fa-xmark text-2xl"></i>
+            </button>
+            <div class="mb-10">
+                <h3 id="historyAccountName" class="text-3xl font-black italic uppercase leading-none">NODE <span class="text-teenPurple">HISTORY</span></h3>
+                <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Historical Ledger Registry</p>
+            </div>
+            <div id="historyContainer" class="flex-1 overflow-y-auto space-y-4 pr-4"></div>
+        </div>
+    </div>
 
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-[120] w-72 bg-teenSurface border-r-4 border-black p-6 flex flex-col transition-transform duration-300 sidebar-closed lg:translate-x-0">
         <button onclick="toggleSidebar()" class="lg:hidden absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-zinc-500 hover:text-teenPink">
-            <i class="fas fa-xmark text-2xl" style="margin-left: 20px;"></i>
+            <i class="fas fa-xmark text-2xl" style="margin-left: 30px;"></i>
         </button>
-
         <div class="flex items-center gap-3 mb-12">
             <div class="w-10 h-10 bg-teenLime rounded-xl flex items-center justify-center neo-box no-hover">
                 <i class="fas fa-hand-holding-dollar text-black text-lg"></i>
@@ -193,44 +148,57 @@
             <a href="./security.html" class="sidebar-link text-zinc-500 hover:text-teenPurple group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
                 <i class="fas fa-shield-halved text-lg"></i> SECURITY
             </a>
+            <a href="./category.html" class="sidebar-link text-zinc-500 hover:text-teenPurple group flex items-center gap-4 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all">
+                <i class="fas fa-tags text-lg"></i> CATEGORY
+            </a>
         </nav>
 
         <div class="pt-6 border-t-2 border-teenBorder space-y-4">
             <div class="flex items-center gap-3 p-2 bg-black/40 rounded-2xl border-2 border-teenBorder">
                 <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-black">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" id="sidebarAvatar">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" id="sidebarAvatar">
                 </div>
                 <div class="overflow-hidden">
                     <p id="sidebarUserName" class="font-black text-[9px] uppercase truncate text-white">ACCESSING...</p>
                     <p class="text-[8px] font-bold text-teenLime uppercase">Agent Active</p>
                 </div>
             </div>
-            <button onclick="handleLogout()" class="w-full bg-teenPink border-2 border-black text-black p-3 rounded-xl font-black text-[10px] uppercase hover:bg-white transition-all flex items-center justify-center gap-2">
+            <button id="logoutBtn" class="w-full bg-teenPink border-2 border-black text-black p-3 rounded-xl font-black text-[10px] uppercase hover:bg-white transition-all flex items-center justify-center gap-2">
                 <i class="fas fa-power-off"></i> TERMINATE SESSION
             </button>
         </div>
     </aside>
 
-    <main class="flex-1 lg:ml-72 min-h-screen p-6 md:p-12 space-y-10" style="margin-bottom: 30px;">
+    <main class="flex-1 lg:ml-72 min-h-screen p-6 md:p-12 space-y-10">
         
         <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-slide-up" style="margin-top: 60px;">
-            <div>
-                <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">VAULT <span class="text-teenPurple">ASSETS</span></h1>
-                <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Resource Allocation Status: <span class="text-white">OPTIMIZED</span></p>
+            <div class="flex items-center justify-between w-full md:w-auto">
+                <div>
+                    <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">VAULT <span class="text-teenPurple">ASSETS</span></h1>
+                    <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Resource Allocation Status: <span class="text-white">OPTIMIZED</span></p>
+                </div>
             </div>
-            <div class="flex gap-4">
-                <button onclick="toggleModal(true)" class="bg-teenLime p-4 px-8 rounded-2xl neo-box text-[10px] text-black font-black uppercase flex items-center gap-3">
+            
+            <button id="openEntryBtn" class="relative bg-teenLime p-4 pl-12 pr-10 rounded-2xl neo-box text-[10px] text-black font-black uppercase flex flex-col items-start gap-1 overflow-hidden group">
+                <div id="btnStatusBar" class="absolute left-0 top-0 bottom-0 w-8 bg-black/20 flex flex-col items-center justify-center gap-1.5 transition-colors duration-500">
+                    <div id="statusDot1" class="w-[3px] h-[3px] bg-black rounded-full"></div>
+                    <div id="statusDot2" class="w-[3px] h-[3px] bg-black rounded-full"></div>
+                    <div id="statusDot3" class="w-[3px] h-[3px] bg-black rounded-full"></div>
+                </div>
+                
+                <div class="flex items-center gap-2">
                     <i class="fas fa-plus"></i> NEW ENTRY
-                </button>
-            </div>
+                </div>
+                <div id="btnStatusText" class="text-[7px] opacity-70 tracking-tighter">Status: Checking...</div>
+            </button>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 animate-slide-up">
             <div class="md:col-span-2 bg-teenSurface p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover relative overflow-hidden group">
                 <div class="relative z-10">
                     <p class="text-teenPurple font-black text-[10px] uppercase tracking-widest mb-4">Total Net Worth</p>
-                    <h2 class="text-white text-xl sm:text-3xl lg:text-4xl font-black leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
-                        <span class="currency-symbol shrink-0 mr-1">...</span><span id="netWorthDisplay" class="truncate">0.00</span>
+                    <h2 class="text-white text-xl sm:text-3xl lg:text-4xl font-black leading-none flex items-baseline">
+                        <span class="currency-symbol shrink-0 mr-2">...</span><span id="netWorthDisplay">0.00</span>
                     </h2>
                     <div class="flex items-center gap-2 mt-6">
                         <span class="bg-teenLime/10 text-teenLime text-[9px] font-black px-3 py-1 rounded-full border border-teenLime/20">LIVE DATA LINK</span>
@@ -239,22 +207,20 @@
                 <i class="fas fa-vault absolute -right-6 -bottom-6 text-9xl opacity-5 group-hover:rotate-12 transition-transform duration-500"></i>
             </div>
 
-            <div class="bg-teenSurface p-8 rounded-[2rem] border-4 border-black neo-box no-hover animate-slide-up overflow-hidden" style="animation-delay: 0.1s">
+            <div class="bg-teenSurface p-8 rounded-[2rem] border-4 border-black neo-box no-hover overflow-hidden">
                 <p class="text-zinc-500 font-black text-[10px] uppercase tracking-widest">Liquid Cash</p>
-                <h2 class="text-white text-lg lg:text-xl font-black mt-2 leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
-                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="liquidCash" class="truncate">0.00</span>
+                <h2 class="text-white text-lg lg:text-xl font-black mt-2 leading-none flex items-baseline">
+                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="liquidCash">0.00</span>
                 </h2>
                 <div class="mt-8 flex justify-between items-center text-[9px] font-black uppercase">
                     <span class="text-zinc-600">Sync Status</span>
-                    <span class="text-teenLime">ONLINE</span>
+                    <span class="text-teenLime" id="syncStatusLabel">ONLINE</span>
                 </div>
             </div>
 
-            <div class="bg-teenSurface p-8 rounded-[2rem] border-4 border-black neo-box no-hover animate-slide-up overflow-hidden" style="animation-delay: 0.2s">
+            <div class="bg-teenSurface p-8 rounded-[2rem] border-4 border-black neo-box no-hover overflow-hidden">
                 <p class="text-zinc-500 font-black text-[10px] uppercase tracking-widest">Growth Index</p>
-                <h2 class="text-white text-lg lg:text-xl font-black mt-2 leading-none flex items-baseline flex-nowrap whitespace-nowrap overflow-hidden text-ellipsis">
-                    <span id="growthPercentage">0%</span>
-                </h2>
+                <h2 id="growthPercentage" class="text-white text-lg lg:text-xl font-black mt-2 leading-none">0%</h2>
                 <div class="mt-8 flex justify-between items-center text-[9px] font-black uppercase">
                     <span class="text-zinc-600">Metric</span>
                     <span class="text-teenPink">DYNAMIC</span>
@@ -262,23 +228,24 @@
             </div>
         </div>
 
+        <div class="space-y-4 animate-slide-up" style="animation-delay: 0.1s">
+            <div class="flex items-center justify-between px-2">
+                <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 italic">Account Nodes <span class="text-teenLime">Carousel</span></h3>
+                <div class="flex gap-2">
+                    <button id="scrollLeft" class="text-zinc-600 hover:text-teenLime"><i class="fas fa-circle-arrow-left text-xl"></i></button>
+                    <button id="scrollRight" class="text-zinc-600 hover:text-teenLime"><i class="fas fa-circle-arrow-right text-xl"></i></button>
+                </div>
+            </div>
+            <div id="accountCarousel" class="flex flex-row gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 px-2"></div>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
             <div class="lg:col-span-2 space-y-6">
-                <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover min-h-[600px] flex flex-col">
+                <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover min-h-[500px] flex flex-col">
                     <div class="flex items-center justify-between mb-8">
                         <h3 class="font-black text-2xl italic uppercase">Dynamic <span class="text-teenLime">Inventory</span></h3>
-                        <div class="flex gap-2">
-                            <button id="prevPage" class="w-10 h-10 bg-black border-2 border-teenBorder rounded-xl flex items-center justify-center text-zinc-500 hover:text-teenLime hover:border-teenLime transition-all">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <button id="nextPage" class="w-10 h-10 bg-black border-2 border-teenBorder rounded-xl flex items-center justify-center text-zinc-500 hover:text-teenLime hover:border-teenLime transition-all">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
                     </div>
-                    
-                    <div class="space-y-4 flex-1" id="assetInventory">
-                        </div>
+                    <div class="space-y-4 flex-1" id="assetInventory"></div>
                 </div>
             </div>
 
@@ -289,40 +256,38 @@
                         <div class="relative pt-1">
                             <div class="flex mb-2 items-center justify-between text-[10px] font-black uppercase">
                                 <span class="text-zinc-500">Liquidity Index</span>
-                                <span id="liquidityText" class="text-teenLime">Calculating...</span>
+                                <span id="liquidityText" class="text-teenLime">...</span>
                             </div>
-                            <div class="overflow-hidden h-2 text-xs flex rounded-full bg-zinc-900">
-                                <div id="liquidityBar" style="width:0%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-teenLime transition-all duration-1000"></div>
+                            <div class="overflow-hidden h-2 rounded-full bg-zinc-900">
+                                <div id="liquidityBar" style="width:0%" class="h-full bg-teenLime transition-all duration-1000"></div>
                             </div>
                         </div>
                         <div class="relative pt-1">
                             <div class="flex mb-2 items-center justify-between text-[10px] font-black uppercase">
-                                <span class="text-zinc-500">Asset Health</span>
+                                <span class="text-zinc-600">Asset Health</span>
                                 <span class="text-teenPurple">VITAL</span>
                             </div>
-                            <div class="overflow-hidden h-2 text-xs flex rounded-full bg-zinc-900">
-                                <div style="width:100%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-teenPurple"></div>
+                            <div class="overflow-hidden h-2 rounded-full bg-zinc-900">
+                                <div style="width:100%" class="h-full bg-teenPurple"></div>
                             </div>
                         </div>
                     </div>
-                    <button class="w-full mt-10 bg-black text-white p-6 rounded-2xl font-black text-xs uppercase neo-box hover:bg-white hover:text-black transition-all flex items-center justify-center gap-4">
-                        GENERATE REPORT
-                    </button>
                 </div>
 
                 <div class="bg-teenPink p-10 rounded-[2.5rem] neo-box text-black no-hover">
                     <h3 class="font-black text-lg italic uppercase mb-4">Security Notice</h3>
-                    <p class="text-[10px] font-black uppercase opacity-60 leading-relaxed mb-6">Your asset visibility is encrypted. Only you can view this ledger.</p>
-                    <button class="text-[10px] font-black uppercase border-b-2 border-black hover:opacity-50 transition-opacity">ENCRYPTION DETAILS</button>
+                    <p class="text-[10px] font-black uppercase opacity-60 leading-relaxed">Your asset visibility is encrypted. Only you can view this ledger.</p>
                 </div>
             </div>
         </div>
     </main>
 
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-[200] flex flex-col gap-4 pointer-events-none"></div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getDatabase, ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, push, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDYM0pEVPR3PJQoPzNGJF7q4z4BkeNDYoM",
@@ -331,168 +296,227 @@
             projectId: "budgetbuddy-f9eff",
             storageBucket: "budgetbuddy-f9eff.firebasestorage.app",
             messagingSenderId: "686739320375",
-            appId: "1:686739320375:web:ca0a1bab63bd9df1d6d9b2",
-            measurementId: "G-82MHJLWR60"
+            appId: "1:686739320375:web:ca0a1bab63bd9df1d6d9b2"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        const currencyMap = { 'USD': '$', 'PHP': '₱', 'EUR': '€', 'GBP': '£', 'JPY': '¥' };
         let currentUser = null;
-        let currentPage = 0;
-        const itemsPerPage = 5;
         let allTransactions = [];
+        let allAccounts = {};
+        let allCategories = {};
+        const currencyMap = { 'USD': '$', 'PHP': '₱', 'EUR': '€', 'GBP': '£', 'JPY': '¥' };
 
-        // UI Handlers
+        // Connectivity Logic for Button Status
+        function updateConnectivityStatus() {
+            const bar = document.getElementById('btnStatusBar');
+            const dots = [document.getElementById('statusDot1'), document.getElementById('statusDot2'), document.getElementById('statusDot3')];
+            const syncLabel = document.getElementById('syncStatusLabel');
+            const btnStatusText = document.getElementById('btnStatusText');
+
+            if (navigator.onLine) {
+                bar.style.backgroundColor = '#befa39'; // Green
+                dots.forEach(d => {
+                    d.className = 'w-[3px] h-[3px] bg-black rounded-full';
+                    d.style.animation = 'none';
+                });
+                syncLabel.innerText = "ONLINE";
+                syncLabel.className = "text-teenLime";
+                btnStatusText.innerText = "Status: Online";
+            } else {
+                bar.style.backgroundColor = '#ff71ce'; // Pink/Red
+                dots.forEach(d => d.className = 'w-[3px] h-[3px] bg-black rounded-full opacity-20');
+                syncLabel.innerText = "OFFLINE";
+                syncLabel.className = "text-teenPink";
+                btnStatusText.innerText = "Status: Offline";
+            }
+        }
+
+        function setConnectingState() {
+            const bar = document.getElementById('btnStatusBar');
+            const dots = [document.getElementById('statusDot1'), document.getElementById('statusDot2'), document.getElementById('statusDot3')];
+            const btnStatusText = document.getElementById('btnStatusText');
+            
+            bar.style.backgroundColor = '#fbbf24'; // Yellow
+            dots.forEach((d, i) => {
+                d.className = 'w-[3px] h-[3px] bg-black rounded-full animate-cyber-pulse';
+                d.style.animationDelay = `${i * 0.2}s`;
+            });
+            btnStatusText.innerText = "Status: Connecting";
+        }
+
+        window.addEventListener('online', updateConnectivityStatus);
+        window.addEventListener('offline', updateConnectivityStatus);
+        updateConnectivityStatus();
+
+        const toggleModal = (id, show) => document.getElementById(id).classList.toggle('hidden', !show);
+
+        // Sidebar Logic
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
         window.toggleSidebar = () => {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
             const isOpen = sidebar.classList.contains('sidebar-open');
             sidebar.classList.toggle('sidebar-open', !isOpen);
             sidebar.classList.toggle('sidebar-closed', isOpen);
             overlay.classList.toggle('hidden', isOpen);
         };
 
-        window.toggleModal = (show) => {
-            document.getElementById('entryModal').classList.toggle('hidden', !show);
-        };
+        document.getElementById('sidebarToggle').onclick = window.toggleSidebar;
+        overlay.onclick = window.toggleSidebar;
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `${type === 'success' ? 'bg-teenLime' : 'bg-teenPink'} border-4 border-black p-4 rounded-2xl neo-box no-hover animate-slide-in pointer-events-auto min-w-[280px]`;
-            toast.innerHTML = `<div class="flex items-center gap-4 text-black"><i class="fas ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'} text-xl"></i><div class="font-black text-[10px] uppercase tracking-tighter italic">${message}</div></div>`;
+            toast.innerHTML = `<div class="flex items-center gap-4 text-black font-black text-[10px] uppercase italic"><i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>${message}</div>`;
             container.appendChild(toast);
-            setTimeout(() => { toast.remove(); }, 4000);
+            setTimeout(() => toast.remove(), 4000);
         }
 
-        function updateCurrencySymbols(code) {
+        document.getElementById('openEntryBtn').onclick = () => toggleModal('entryModal', true);
+        document.getElementById('closeEntryBtn').onclick = () => toggleModal('entryModal', false);
+        document.getElementById('closeHistoryBtn').onclick = () => toggleModal('accountHistoryModal', false);
+        document.getElementById('scrollLeft').onclick = () => document.getElementById('accountCarousel').scrollLeft -= 300;
+        document.getElementById('scrollRight').onclick = () => document.getElementById('accountCarousel').scrollLeft += 300;
+        document.getElementById('logoutBtn').onclick = () => signOut(auth);
+
+        function updateCurrency() {
+            const code = document.getElementById('sidebarUserName').dataset.currency || 'USD';
             const symbol = currencyMap[code] || '$';
             document.querySelectorAll('.currency-symbol').forEach(el => el.innerText = symbol);
         }
 
-        // Pagination Rendering
-        function renderTransactions() {
-            const listContainer = document.getElementById('assetInventory');
-            listContainer.innerHTML = '';
-
-            const start = currentPage * itemsPerPage;
-            const end = start + itemsPerPage;
-            const pageData = allTransactions.slice(start, end);
-
-            if (pageData.length > 0) {
-                pageData.forEach(tx => {
-                    const amt = parseFloat(tx.amount);
-                    const isIncome = tx.type === 'income';
-                    const item = document.createElement('div');
-                    // Changed to flex-col on mobile and flex-row on desktop (md:)
-                    item.className = `flex flex-col md:flex-row md:items-center justify-between p-6 bg-black/40 rounded-2xl border-2 border-teenBorder group hover:border-${isIncome ? 'teenLime' : 'teenPink'} transition-all animate-slide-up gap-4`;
-                    item.innerHTML = `
-                        <div class="flex items-center gap-5">
-                            <div class="w-14 h-14 bg-${isIncome ? 'teenLime' : 'teenPink'}/10 rounded-2xl flex items-center justify-center border-2 border-${isIncome ? 'teenLime' : 'teenPink'}/20 text-${isIncome ? 'teenLime' : 'teenPink'}">
-                                <i class="fas ${tx.icon || 'fa-receipt'} text-2xl"></i>
-                            </div>
-                            <div class="overflow-hidden">
-                                <h4 class="font-black text-base uppercase truncate">${tx.label}</h4>
-                                <p class="text-[9px] font-black text-zinc-500 uppercase tracking-widest">${tx.category} • ${new Date(tx.timestamp).toLocaleDateString()}</p>
-                            </div>
-                        </div>
-                        <div class="text-left md:text-right flex flex-col md:block">
-                            <p class="font-black text-white text-lg md:text-sm order-1 md:order-none italic md:not-italic">${isIncome ? '+' : '-'}<span class="currency-symbol"></span>${amt.toLocaleString(undefined, {minimumFractionDigits: 2})}</p>
-                            <p class="text-[8px] font-black text-${isIncome ? 'teenLime' : 'zinc-500'} uppercase mt-1 order-2 md:order-none">${isIncome ? 'Liquid' : 'Settled'}</p>
-                        </div>
-                    `;
-                    listContainer.appendChild(item);
-                });
-            } else {
-                listContainer.innerHTML = `<div class="text-center py-20 opacity-20 font-black uppercase italic text-xs tracking-[0.3em]">Vault Partition Empty</div>`;
+        function renderAccountHistory(accId) {
+            const container = document.getElementById('historyContainer');
+            container.innerHTML = '';
+            const filtered = allTransactions.filter(t => t.accountId === accId);
+            if(filtered.length === 0) {
+                container.innerHTML = `<div class="text-center py-20 opacity-20 font-black uppercase text-xs">No Node Traffic Found</div>`;
+                return;
             }
-
-            document.getElementById('prevPage').disabled = currentPage === 0;
-            document.getElementById('nextPage').disabled = end >= allTransactions.length;
-            document.getElementById('prevPage').style.opacity = currentPage === 0 ? '0.3' : '1';
-            document.getElementById('nextPage').style.opacity = end >= allTransactions.length ? '0.3' : '1';
-            
-            updateCurrencySymbols(document.getElementById('sidebarUserName').dataset.currency || 'USD');
+            filtered.forEach(tx => {
+                const isInc = tx.type === 'income';
+                container.innerHTML += `<div class="flex items-center justify-between p-6 bg-black/40 rounded-2xl border-2 border-teenBorder"><div><h4 class="font-black text-[10px] uppercase">${tx.label}</h4><p class="text-[8px] text-zinc-600 font-black uppercase">${new Date(tx.timestamp).toLocaleDateString()}</p></div><p class="font-black text-[10px] ${isInc ? 'text-teenLime' : 'text-white'}">${isInc ? '+' : '-'}<span class="currency-symbol"></span>${tx.amount.toLocaleString()}</p></div>`;
+            });
+            updateCurrency();
         }
 
-        document.getElementById('prevPage').addEventListener('click', () => { if(currentPage > 0) { currentPage--; renderTransactions(); }});
-        document.getElementById('nextPage').addEventListener('click', () => { if((currentPage + 1) * itemsPerPage < allTransactions.length) { currentPage++; renderTransactions(); }});
+        function renderUI() {
+            let total = 0;
+            Object.values(allAccounts).forEach(acc => total += acc.balance);
+            document.getElementById('netWorthDisplay').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('liquidCash').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-        // Transaction Logic
-        document.getElementById('transactionForm').addEventListener('submit', async (e) => {
+            const carousel = document.getElementById('accountCarousel');
+            carousel.innerHTML = '';
+            Object.keys(allAccounts).forEach(id => {
+                const acc = allAccounts[id];
+                const card = document.createElement('div');
+                card.className = "flex-shrink-0 w-72 bg-teenSurface p-8 rounded-[2.5rem] border-4 border-black neo-box no-hover cursor-pointer hover:border-teenLime group";
+                card.onclick = () => {
+                    document.getElementById('historyAccountName').innerText = acc.accountName.toUpperCase();
+                    renderAccountHistory(id);
+                    toggleModal('accountHistoryModal', true);
+                };
+                card.innerHTML = `<p class="text-zinc-500 font-black text-[8px] uppercase tracking-widest mb-2">${acc.accountName}</p><h2 class="text-white text-2xl font-black italic"><span class="currency-symbol"></span>${acc.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}</h2><div class="mt-6 flex justify-between items-center text-[8px] font-black uppercase text-zinc-600"><span class="group-hover:text-teenLime">History Registry</span><i class="fas fa-arrow-right-long group-hover:translate-x-2 transition-transform"></i></div>`;
+                carousel.appendChild(card);
+            });
+
+            const inv = document.getElementById('assetInventory');
+            inv.innerHTML = '';
+            allTransactions.slice(0, 10).forEach(tx => {
+                const isInc = tx.type === 'income';
+                inv.innerHTML += `
+                    <div class="flex flex-col md:flex-row md:items-center justify-between p-6 bg-black/40 rounded-2xl border-2 border-teenBorder group hover:border-${isInc ? 'teenLime' : 'teenPink'} transition-all gap-4">
+                        <div class="flex items-center gap-5">
+                            <div class="w-12 h-12 bg-${isInc ? 'teenLime' : 'teenPink'}/10 rounded-xl flex items-center justify-center text-${isInc ? 'teenLime' : 'teenPink'}">
+                                <i class="fas ${tx.icon || 'fa-receipt'} text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-sm uppercase">${tx.label}</h4>
+                                <p class="text-[9px] font-black text-zinc-500 uppercase">${tx.accountName}</p>
+                            </div>
+                        </div>
+                        <div class="md:text-right">
+                            <p class="font-black text-lg ${isInc ? 'text-teenLime' : 'text-white'}">${isInc ? '+' : '-'}<span class="currency-symbol"></span>${tx.amount.toLocaleString()}</p>
+                        </div>
+                    </div>`;
+            });
+
+            const incT = allTransactions.filter(t => t.type === 'income').reduce((a,b) => a + b.amount, 0);
+            const expT = allTransactions.filter(t => t.type === 'expense').reduce((a,b) => a + b.amount, 0);
+            const liq = incT > 0 ? Math.min(100, Math.round(((incT - expT) / incT) * 100)) : 0;
+            const bar = document.getElementById('liquidityBar');
+            if(bar) bar.style.width = liq + '%';
+            document.getElementById('liquidityText').innerText = liq > 50 ? 'Stable' : (liq > 0 ? 'Volatile' : 'Critical');
+            updateCurrency();
+        }
+
+        document.getElementById('transactionForm').onsubmit = async (e) => {
             e.preventDefault();
-            if (!currentUser) return;
-            const iconMap = {'Food & Drinks':'fa-burger','Freelance':'fa-code','Transport':'fa-car','Entertainment':'fa-gamepad','Other':'fa-box'};
+            if(!navigator.onLine) return showToast("OFFLINE: CANNOT DEPLOY", "error");
+
+            setConnectingState();
+            
+            const accId = document.getElementById('txAccount').value;
+            const amount = parseFloat(document.getElementById('txAmount').value);
+            const type = document.getElementById('txType').value;
+            const acc = allAccounts[accId];
+            const catId = document.getElementById('txCategory').value;
+            
+            if(!acc) { updateConnectivityStatus(); return showToast("SELECT AN ACCOUNT NODE", "error"); }
+            if(type === 'expense' && amount > acc.balance) { updateConnectivityStatus(); return showToast("INSUFFICIENT NODE BALANCE", "error"); }
+
             const data = {
-                label: document.getElementById('txLabel').value,
-                amount: parseFloat(document.getElementById('txAmount').value),
-                type: document.getElementById('txType').value,
-                category: document.getElementById('txCategory').value,
-                icon: iconMap[document.getElementById('txCategory').value] || 'fa-receipt',
+                label: document.getElementById('txLabel').value.toUpperCase(),
+                amount, type, accountId: accId, accountName: acc.accountName,
+                category: allCategories[catId] ? allCategories[catId].name : "UNCATEGORIZED", 
+                icon: allCategories[catId] ? (allCategories[catId].icon || 'fa-receipt') : 'fa-receipt',
                 timestamp: Date.now()
             };
             try {
-                await set(push(ref(db, `transactions/${currentUser.uid}`)), data);
-                showToast("TRANSACTION DEPLOYED", "success");
-                toggleModal(false);
-                document.getElementById('transactionForm').reset();
-            } catch (err) { showToast("UPLOAD FAILED", "error"); }
+                await push(ref(db, `transactions/${currentUser.uid}`), data);
+                await update(ref(db, `accounts/${currentUser.uid}/${accId}`), { 
+                    balance: type === 'income' ? acc.balance + amount : acc.balance - amount 
+                });
+                showToast("VAULT SYNCHRONIZED", "success");
+                toggleModal('entryModal', false);
+                e.target.reset();
+            } catch(err) { showToast("DEPLOYMENT FAILED", "error"); }
+            finally { updateConnectivityStatus(); }
+        };
+
+        onAuthStateChanged(auth, u => {
+            if(!u) window.location.href = '../auth/login.html';
+            else {
+                currentUser = u;
+                onValue(ref(db, `users/${u.uid}`), s => {
+                    const d = s.val();
+                    if(d) {
+                        document.getElementById('sidebarUserName').innerText = d.firstName.toUpperCase();
+                        document.getElementById('sidebarUserName').dataset.currency = d.currency;
+                        updateCurrency();
+                    }
+                });
+                onValue(ref(db, `accounts/${u.uid}`), s => {
+                    allAccounts = s.val() || {};
+                    const sel = document.getElementById('txAccount'); sel.innerHTML = '';
+                    Object.keys(allAccounts).forEach(id => sel.innerHTML += `<option value="${id}">${allAccounts[id].accountName}</option>`);
+                    renderUI();
+                });
+                onValue(ref(db, `categories/${u.uid}`), s => {
+                    allCategories = s.val() || {};
+                    const sel = document.getElementById('txCategory'); sel.innerHTML = '';
+                    Object.keys(allCategories).forEach(id => sel.innerHTML += `<option value="${id}">${allCategories[id].name}</option>`);
+                });
+                onValue(ref(db, `transactions/${u.uid}`), s => {
+                    allTransactions = s.val() ? Object.values(s.val()).sort((a,b) => b.timestamp - a.timestamp) : [];
+                    renderUI();
+                });
+            }
         });
-
-        function loadAssetData(uid) {
-            onValue(ref(db, `users/${uid}`), (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    document.getElementById('sidebarUserName').innerText = (data.firstName || 'AGENT').toUpperCase();
-                    document.getElementById('sidebarUserName').dataset.currency = data.currency;
-                    updateCurrencySymbols(data.currency);
-                }
-            });
-
-            onValue(ref(db, `transactions/${uid}`), (snapshot) => {
-                const transactions = snapshot.val();
-                let totalIn = 0; let totalOut = 0;
-                allTransactions = [];
-
-                if (transactions) {
-                    allTransactions = Object.values(transactions).sort((a, b) => b.timestamp - a.timestamp);
-                    allTransactions.forEach(tx => {
-                        const amt = parseFloat(tx.amount);
-                        if (tx.type === 'income') totalIn += amt; else totalOut += amt;
-                    });
-                }
-                
-                renderTransactions();
-
-                const currentLiquid = totalIn - totalOut;
-                document.getElementById('liquidCash').innerText = currentLiquid.toLocaleString(undefined, {minimumFractionDigits: 2});
-                document.getElementById('netWorthDisplay').innerText = currentLiquid.toLocaleString(undefined, {minimumFractionDigits: 2});
-                
-                const liquidityPercent = totalIn > 0 ? Math.min(100, Math.round((currentLiquid / totalIn) * 100)) : 0;
-                document.getElementById('liquidityBar').style.width = liquidityPercent + '%';
-                document.getElementById('liquidityText').innerText = liquidityPercent > 50 ? 'Stable' : 'Volatile';
-            });
-        }
-
-        window.handleLogout = () => { signOut(auth).then(() => window.location.href = '../auth/login.html'); };
-
-        onAuthStateChanged(auth, (user) => {
-            if (!user) window.location.href = '../auth/login.html';
-            else { currentUser = user; loadAssetData(user.uid); }
-        });
-    </script>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-            navigator.serviceWorker.register('../../pwa/sw.js')
-                .then(reg => console.log('Service Worker registered! Scope:', reg.scope))
-                .catch(err => console.log('Service Worker registration failed:', err));
-            });
-        }
     </script>
 </body>
 </html>

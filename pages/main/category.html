@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SmartCents | Category Vault</title>
+    <title>SmartCents | Category & Account Vault</title>
 
     <link rel="manifest" href="../../manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -127,31 +127,46 @@
         <i class="fas fa-bars-staggered"></i>
     </button>
 
-    <main class="flex-1 lg:ml-72 p-6 md:p-12 space-y-10" style="margin-top: 60px;">
-        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-slide-up">
-            <div>
-                <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">CATEGORY <span class="text-teenPurple">VAULT</span></h1>
-                <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Active Protocol: <span id="userNameDisplay" class="text-white">ACCESSING...</span></p>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <div id="connectionBadge" class="flex items-center gap-2 px-4 py-2 bg-black border-2 border-teenBorder rounded-xl order-first md:order-first lg:order-first sm:order-last">
-                    <span id="connectionDot" class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
-                    <span id="connectionText" class="text-[8px] font-black uppercase text-zinc-400">Connecting</span>
+    <main class="flex-1 lg:ml-72 p-6 md:p-12 space-y-16" style="margin-top: 60px;">
+        <section class="space-y-10">
+            <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-slide-up">
+                <div>
+                    <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">CATEGORY <span class="text-teenPurple">VAULT</span></h1>
+                    <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Active Protocol: <span id="userNameDisplay" class="text-white">ACCESSING...</span></p>
                 </div>
+                
+                <div class="flex items-center gap-4">
+                    <div id="connectionBadge" class="flex items-center gap-2 px-4 py-2 bg-black border-2 border-teenBorder rounded-xl">
+                        <span id="connectionDot" class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+                        <span id="connectionText" class="text-[8px] font-black uppercase text-zinc-400">Connecting</span>
+                    </div>
+                    <button onclick="toggleCatModal(true)" class="bg-teenLime p-4 px-8 rounded-2xl neo-box text-[10px] font-black uppercase flex items-center gap-3 text-black">
+                        <i class="fas fa-plus"></i> NEW CATEGORY
+                    </button>
+                </div>
+            </header>
 
-                <button onclick="toggleCatModal(true)" class="bg-teenLime p-4 px-8 rounded-2xl neo-box text-[10px] font-black uppercase flex items-center gap-3 text-black order-last md:order-last lg:order-last sm:order-first">
-                    <i class="fas fa-plus"></i> NEW CATEGORY
+            <div id="categoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="bg-teenSurface p-6 rounded-[2.5rem] border-4 border-black neo-box no-hover opacity-50 space-y-4">
+                    <div class="w-12 h-12 rounded-xl skeleton animate-shimmer"></div>
+                    <div class="h-6 w-1/2 skeleton animate-shimmer rounded"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-10">
+            <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-slide-up">
+                <div>
+                    <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">ACCOUNT <span class="text-teenLime">VAULT</span></h1>
+                    <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Financial Nodes Registry</p>
+                </div>
+                <button onclick="toggleAccModal(true)" class="bg-teenPurple p-4 px-8 rounded-2xl neo-box text-[10px] font-black uppercase flex items-center gap-3 text-black">
+                    <i class="fas fa-university"></i> NEW ACCOUNT
                 </button>
-            </div>
-        </header>
+            </header>
 
-        <div id="categoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <div class="bg-teenSurface p-6 rounded-[2.5rem] border-4 border-black neo-box no-hover opacity-50 space-y-4">
-                <div class="w-12 h-12 rounded-xl skeleton animate-shimmer"></div>
-                <div class="h-6 w-1/2 skeleton animate-shimmer rounded"></div>
-            </div>
-        </div>
+            <div id="accountGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+        </section>
 
         <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover">
             <h3 class="font-black text-xl italic uppercase mb-8">System <span class="text-teenLime">Registry</span></h3>
@@ -160,10 +175,11 @@
                     <thead>
                         <tr class="text-[10px] font-black uppercase text-zinc-500 border-b-2 border-teenBorder">
                             <th class="pb-4">Label Identity</th>
-                            <th class="pb-4 text-right">Protection Status</th>
+                            <th class="pb-4">Type</th>
+                            <th class="pb-4 text-right">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="categoryTable" class="text-[11px] font-black uppercase"></tbody>
+                    <tbody id="registryTable" class="text-[11px] font-black uppercase"></tbody>
                 </table>
             </div>
         </div>
@@ -173,8 +189,8 @@
         <div class="bg-teenSurface w-full max-w-sm border-4 border-black rounded-[2.5rem] neo-box no-hover p-10 text-center relative">
             <button onclick="toggleActionModal(false)" class="absolute top-6 right-6 text-zinc-500 hover:text-teenPink"><i class="fas fa-xmark text-2xl"></i></button>
             <div id="actionIcon" class="w-20 h-20 bg-black rounded-3xl border-2 border-teenPurple flex items-center justify-center mx-auto mb-6 text-3xl text-teenPurple"></div>
-            <h3 id="actionTitle" class="text-2xl font-black italic uppercase mb-2">CATEGORY</h3>
-            <p class="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-10">Vault operation hub</p>
+            <h3 id="actionTitle" class="text-2xl font-black italic uppercase mb-2">IDENTITY</h3>
+            <p id="actionSubtitle" class="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-10">Vault operation hub</p>
             
             <div class="grid grid-cols-1 gap-4">
                 <button id="editBtnAction" class="w-full bg-white text-black p-4 rounded-2xl font-black text-[10px] uppercase neo-box hover:bg-teenLime transition-all flex items-center justify-center gap-3">
@@ -191,21 +207,37 @@
         <div class="bg-teenSurface w-full max-w-md border-4 border-black rounded-[3rem] neo-box no-hover p-10 relative">
             <button onclick="toggleCatModal(false)" class="absolute top-6 right-6 text-zinc-500 hover:text-teenPink"><i class="fas fa-xmark text-2xl"></i></button>
             <h3 id="modalTitle" class="text-2xl font-black italic uppercase mb-8 text-center text-teenLime">CONFIGURE</h3>
-            
             <form id="catForm" class="space-y-8">
                 <input type="hidden" id="editCatId">
                 <div class="space-y-3">
                     <label class="text-[10px] font-black uppercase text-teenLime ml-2">Label Name</label>
                     <input type="text" id="catName" placeholder="E.G. FOOD & DRINKS" required class="w-full neo-input">
                 </div>
-                
                 <div class="space-y-3">
                     <label class="text-[10px] font-black uppercase text-teenLime ml-2">Icon ID</label>
                     <div id="iconPicker" class="grid grid-cols-5 gap-3 p-4 bg-black/50 rounded-2xl border-2 border-teenBorder"></div>
                     <input type="hidden" id="catIcon" value="fa-tag">
                 </div>
-
                 <button type="submit" class="w-full bg-teenPurple text-black p-6 rounded-2xl font-black text-xs uppercase neo-box hover:bg-white transition-all">SYNC TO VAULT</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="accModal" class="fixed inset-0 z-[150] hidden bg-black/90 backdrop-blur-xl flex items-center justify-center p-6 animate-fade-in">
+        <div class="bg-teenSurface w-full max-w-md border-4 border-black rounded-[3rem] neo-box no-hover p-10 relative">
+            <button onclick="toggleAccModal(false)" class="absolute top-6 right-6 text-zinc-500 hover:text-teenPink"><i class="fas fa-xmark text-2xl"></i></button>
+            <h3 id="accModalTitle" class="text-2xl font-black italic uppercase mb-8 text-center text-teenPurple">NODE CONFIG</h3>
+            <form id="accForm" class="space-y-8">
+                <input type="hidden" id="editAccId">
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black uppercase text-teenPurple ml-2">Account Name</label>
+                    <input type="text" id="accName" placeholder="E.G. GCASH / PAYPAL" required class="w-full neo-input" style="border-color: #a855f7;">
+                </div>
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black uppercase text-teenPurple ml-2">Initial Balance</label>
+                    <input type="number" step="0.01" id="accBalance" placeholder="0.00" required class="w-full neo-input" style="border-color: #a855f7;">
+                </div>
+                <button type="submit" class="w-full bg-teenLime text-black p-6 rounded-2xl font-black text-xs uppercase neo-box hover:bg-white transition-all">DECODE & DEPLOY</button>
             </form>
         </div>
     </div>
@@ -246,19 +278,14 @@
         const db = getDatabase(app);
         let currentUser = null;
         let pendingDeleteId = null;
+        let pendingDeletePath = '';
 
-        const availableIcons = [
-            'fa-tag', 'fa-burger', 'fa-car', 'fa-gamepad', 'fa-bolt', 
-            'fa-shopping-bag', 'fa-film', 'fa-heart', 'fa-plane', 'fa-dumbbell',
-            'fa-briefcase', 'fa-book', 'fa-music', 'fa-laptop-code', 'fa-house'
-        ];
+        const availableIcons = ['fa-tag', 'fa-burger', 'fa-car', 'fa-gamepad', 'fa-bolt', 'fa-shopping-bag', 'fa-film', 'fa-heart', 'fa-plane', 'fa-dumbbell', 'fa-briefcase', 'fa-book', 'fa-music', 'fa-laptop-code', 'fa-house'];
 
-        // Connection Monitor Logic
-        const connectedRef = ref(db, ".info/connected");
-        onValue(connectedRef, (snap) => {
+        onValue(ref(db, ".info/connected"), (snap) => {
             const dot = document.getElementById('connectionDot');
             const txt = document.getElementById('connectionText');
-            if (snap.val() === true) {
+            if (snap.val()) {
                 dot.className = "w-2 h-2 rounded-full bg-teenLime shadow-[0_0_8px_#befa39]";
                 txt.innerText = "Active";
                 txt.className = "text-[8px] font-black uppercase text-teenLime";
@@ -292,25 +319,48 @@
                     document.getElementById('modalTitle').innerHTML = 'NEW <span class="text-teenLime">CATEGORY</span>';
                     document.getElementById('catForm').reset();
                     document.getElementById('editCatId').value = '';
-                    document.getElementById('catIcon').value = 'fa-tag';
                 }
             } else modal.classList.add('hidden');
         };
 
-        window.toggleActionModal = (show, data = null) => {
-            const modal = document.getElementById('actionModal');
+        window.toggleAccModal = (show, editData = null) => {
+            const modal = document.getElementById('accModal');
             if (show) {
                 modal.classList.remove('hidden');
-                document.getElementById('actionTitle').innerText = data.name;
-                document.getElementById('actionIcon').innerHTML = `<i class="fas ${data.icon}"></i>`;
-                document.getElementById('editBtnAction').onclick = () => { toggleActionModal(false); toggleCatModal(true, data); };
-                document.getElementById('deleteBtnAction').onclick = () => { toggleActionModal(false); toggleDeleteModal(true, data.id); };
+                if (editData) {
+                    document.getElementById('accModalTitle').innerHTML = 'EDIT <span class="text-teenPurple">ACCOUNT</span>';
+                    document.getElementById('editAccId').value = editData.id;
+                    document.getElementById('accName').value = editData.accountName;
+                    document.getElementById('accBalance').value = editData.balance;
+                } else {
+                    document.getElementById('accModalTitle').innerHTML = 'NEW <span class="text-teenPurple">ACCOUNT</span>';
+                    document.getElementById('accForm').reset();
+                    document.getElementById('editAccId').value = '';
+                }
             } else modal.classList.add('hidden');
         };
 
-        window.toggleDeleteModal = (show, id = null) => {
+        window.toggleActionModal = (show, data = null, type = 'categories') => {
+            const modal = document.getElementById('actionModal');
+            if (show) {
+                modal.classList.remove('hidden');
+                document.getElementById('actionTitle').innerText = data.name || data.accountName;
+                document.getElementById('actionIcon').innerHTML = `<i class="fas ${data.icon || 'fa-university'}"></i>`;
+                document.getElementById('editBtnAction').onclick = () => { 
+                    toggleActionModal(false); 
+                    type === 'categories' ? toggleCatModal(true, data) : toggleAccModal(true, data);
+                };
+                document.getElementById('deleteBtnAction').onclick = () => { 
+                    toggleActionModal(false); 
+                    toggleDeleteModal(true, data.id, type); 
+                };
+            } else modal.classList.add('hidden');
+        };
+
+        window.toggleDeleteModal = (show, id = null, type = '') => {
             const modal = document.getElementById('deleteModal');
             pendingDeleteId = id;
+            pendingDeletePath = type;
             if (show) modal.classList.remove('hidden');
             else modal.classList.add('hidden');
         };
@@ -346,7 +396,7 @@
             else { 
                 currentUser = user; 
                 loadUserInfo(user.uid);
-                loadCategories(); 
+                startVaultSync(); 
             }
         });
 
@@ -361,41 +411,68 @@
             });
         }
 
-        function loadCategories() {
-            onValue(ref(db, `categories/${currentUser.uid}`), (snap) => {
-                const grid = document.getElementById('categoryGrid');
-                const table = document.getElementById('categoryTable');
-                grid.innerHTML = ''; table.innerHTML = '';
-                const cats = snap.val();
-                
-                if (cats) {
-                    Object.keys(cats).forEach(id => {
-                        const c = cats[id];
-                        const item = document.createElement('div');
-                        item.className = "bg-teenSurface p-8 rounded-[2.5rem] border-4 border-black neo-box group animate-slide-up cursor-pointer";
-                        item.onclick = () => toggleActionModal(true, { id, name: c.name, icon: c.icon });
-                        item.innerHTML = `
-                            <div class="w-14 h-14 bg-black rounded-2xl flex items-center justify-center border-2 border-teenBorder group-hover:border-teenPurple transition-all mb-6">
-                                <i class="fas ${c.icon} text-xl text-teenPurple"></i>
-                            </div>
-                            <h3 class="font-black text-sm uppercase italic mb-1">${c.name}</h3>
-                            <p class="text-[8px] font-bold text-zinc-600 uppercase tracking-widest">Protocol Active</p>
-                        `;
-                        grid.appendChild(item);
+        function startVaultSync() {
+            const grid = document.getElementById('categoryGrid');
+            const accGrid = document.getElementById('accountGrid');
+            const table = document.getElementById('registryTable');
 
-                        const row = document.createElement('tr');
-                        row.className = "border-b border-teenBorder/50 hover:bg-white/5 transition-colors cursor-pointer group";
-                        row.onclick = () => toggleActionModal(true, { id, name: c.name, icon: c.icon });
-                        row.innerHTML = `
-                            <td class="py-6"><i class="fas ${c.icon} mr-4 text-teenPurple group-hover:text-teenLime transition-colors"></i>${c.name}</td>
-                            <td class="py-6 text-right"><span class="px-3 py-1 bg-black border border-teenLime text-teenLime text-[8px] rounded-full">LOCKED</span></td>
-                        `;
-                        table.appendChild(row);
-                    });
-                } else {
-                    grid.innerHTML = `<div class="col-span-full py-12 text-center opacity-30 font-black uppercase text-xs">No active protocols in registry</div>`;
-                }
+            let currentCats = {};
+            let currentAccs = {};
+
+            const updateUI = () => {
+                grid.innerHTML = ''; accGrid.innerHTML = ''; table.innerHTML = '';
+
+                Object.keys(currentCats).forEach(id => {
+                    const c = currentCats[id];
+                    grid.appendChild(createCard(c.name, c.icon, 'teenPurple', () => toggleActionModal(true, {id, ...c}, 'categories')));
+                    table.appendChild(createRow(c.name, c.icon, 'CATEGORY', 'teenPurple', () => toggleActionModal(true, {id, ...c}, 'categories')));
+                });
+
+                Object.keys(currentAccs).forEach(id => {
+                    const a = currentAccs[id];
+                    accGrid.appendChild(createCard(a.accountName, 'fa-university', 'teenLime', () => toggleActionModal(true, {id, ...a}, 'accounts')));
+                    table.appendChild(createRow(a.accountName, 'fa-university', 'ACCOUNT', 'teenLime', () => toggleActionModal(true, {id, ...a}, 'accounts')));
+                });
+
+                if (Object.keys(currentCats).length === 0) grid.innerHTML = '<div class="col-span-full py-12 text-center opacity-30 font-black uppercase text-xs">No Categories</div>';
+                if (Object.keys(currentAccs).length === 0) accGrid.innerHTML = '<div class="col-span-full py-12 text-center opacity-30 font-black uppercase text-xs">No Accounts</div>';
+            };
+
+            onValue(ref(db, `categories/${currentUser.uid}`), (snap) => {
+                currentCats = snap.val() || {};
+                updateUI();
             });
+
+            onValue(ref(db, `accounts/${currentUser.uid}`), (snap) => {
+                currentAccs = snap.val() || {};
+                updateUI();
+            });
+        }
+
+        function createCard(name, icon, color, onClick) {
+            const div = document.createElement('div');
+            div.className = `bg-teenSurface p-8 rounded-[2.5rem] border-4 border-black neo-box group animate-slide-up cursor-pointer`;
+            div.onclick = onClick;
+            div.innerHTML = `
+                <div class="w-14 h-14 bg-black rounded-2xl flex items-center justify-center border-2 border-teenBorder group-hover:border-${color} transition-all mb-6">
+                    <i class="fas ${icon} text-xl text-${color}"></i>
+                </div>
+                <h3 class="font-black text-sm uppercase italic mb-1">${name}</h3>
+                <p class="text-[8px] font-bold text-zinc-600 uppercase tracking-widest">Active Protocol</p>
+            `;
+            return div;
+        }
+
+        function createRow(name, icon, type, color, onClick) {
+            const tr = document.createElement('tr');
+            tr.className = "border-b border-teenBorder/50 hover:bg-white/5 transition-colors cursor-pointer group";
+            tr.onclick = onClick;
+            tr.innerHTML = `
+                <td class="py-6"><i class="fas ${icon} mr-4 text-${color}"></i>${name}</td>
+                <td class="py-6 text-[9px] text-zinc-500">${type}</td>
+                <td class="py-6 text-right"><span class="px-3 py-1 bg-black border border-${color} text-${color} text-[8px] rounded-full">LOCKED</span></td>
+            `;
+            return tr;
         }
 
         document.getElementById('catForm').onsubmit = async (e) => {
@@ -403,16 +480,24 @@
             const id = document.getElementById('editCatId').value;
             const data = { name: document.getElementById('catName').value, icon: document.getElementById('catIcon').value };
             try {
-                if (id) await update(ref(db, `categories/${currentUser.uid}/${id}`), data);
-                else await push(ref(db, `categories/${currentUser.uid}`), data);
-                showToast("VAULT UPDATED");
-                toggleCatModal(false);
+                id ? await update(ref(db, `categories/${currentUser.uid}/${id}`), data) : await push(ref(db, `categories/${currentUser.uid}`), data);
+                showToast("VAULT UPDATED"); toggleCatModal(false);
+            } catch (err) { console.error(err); }
+        };
+
+        document.getElementById('accForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('editAccId').value;
+            const data = { accountName: document.getElementById('accName').value, balance: parseFloat(document.getElementById('accBalance').value) };
+            try {
+                id ? await update(ref(db, `accounts/${currentUser.uid}/${id}`), data) : await push(ref(db, `accounts/${currentUser.uid}`), data);
+                showToast("ACCOUNT DEPLOYED"); toggleAccModal(false);
             } catch (err) { console.error(err); }
         };
 
         document.getElementById('confirmDeleteBtn').onclick = async () => {
-            if (pendingDeleteId) {
-                await remove(ref(db, `categories/${currentUser.uid}/${pendingDeleteId}`));
+            if (pendingDeleteId && pendingDeletePath) {
+                await remove(ref(db, `${pendingDeletePath}/${currentUser.uid}/${pendingDeleteId}`));
                 showToast("PROTOCOL TERMINATED");
                 toggleDeleteModal(false);
             }
