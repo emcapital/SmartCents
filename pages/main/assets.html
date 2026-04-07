@@ -44,7 +44,7 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&display=swap');
-        body { font-family: 'Unbounded', sans-serif; background-color: #050505; color: white; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); background-attachment: fixed; background-blend-mode: overlay; overflow-x: hidden; }
+        body { font-family: 'Unbounded', sans-serif; background-color: #050505; color: white; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); background-attachment: fixed; background-blend-mode: overlay; overflow-x: hidden; width: 100%; }
         .neo-box { border: 3px solid #000; box-shadow: 6px 6px 0px #000; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .neo-box:hover:not(.no-hover) { transform: translate(-2px, -2px); box-shadow: 10px 10px 0px #000; }
         .cyber-grid { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(24, 24, 27, 0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(24, 24, 27, 0.5) 1px, transparent 1px); }
@@ -60,7 +60,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #befa39; }
     </style>
 </head>
-<body class="antialiased min-h-screen cyber-grid flex">
+<body class="antialiased min-h-screen cyber-grid flex max-w-full overflow-x-hidden">
 
     <button id="sidebarToggle" class="lg:hidden fixed top-6 right-6 z-[100] w-12 h-12 bg-teenLime rounded-xl neo-box flex items-center justify-center text-black">
         <i class="fas fa-bars-staggered"></i>
@@ -68,8 +68,8 @@
 
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[115] hidden transition-opacity duration-300"></div>
 
-    <div id="entryModal" class="fixed inset-0 z-[150] hidden bg-black/80 backdrop-blur-xl flex items-center justify-center p-6 animate-fade-in">
-        <div class="bg-teenSurface w-full max-w-md border-4 border-black rounded-[2.5rem] neo-box no-hover p-8 md:p-10 relative">
+    <div id="entryModal" class="fixed inset-0 z-[150] hidden bg-black/80 backdrop-blur-xl flex items-center justify-center p-4 md:p-6 animate-fade-in">
+        <div class="bg-teenSurface w-full max-w-md border-4 border-black rounded-[2.5rem] neo-box no-hover p-6 md:p-10 relative overflow-y-auto max-h-[95vh]">
             <button id="closeEntryBtn" class="absolute top-6 right-6 text-zinc-500 hover:text-teenPink">
                 <i class="fas fa-xmark text-2xl"></i>
             </button>
@@ -81,7 +81,7 @@
                     <label class="text-[10px] font-black uppercase text-teenLime ml-2">Description</label>
                     <input type="text" id="txLabel" placeholder="E.G. COFFEE, SUBSCRIPTION" required class="w-full neo-input">
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="text-[10px] font-black uppercase text-teenLime ml-2">Amount</label>
                         <input type="number" step="0.01" id="txAmount" placeholder="0.00" required class="w-full neo-input">
@@ -94,7 +94,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="text-[10px] font-black uppercase text-teenLime ml-2">Category</label>
                         <select id="txCategory" class="w-full neo-input"></select>
@@ -111,8 +111,8 @@
         </div>
     </div>
 
-    <div id="accountHistoryModal" class="fixed inset-0 z-[160] hidden bg-black/90 backdrop-blur-2xl flex items-center justify-center p-6 animate-fade-in">
-        <div class="bg-teenSurface w-full max-w-2xl border-4 border-black rounded-[3rem] neo-box no-hover p-8 md:p-12 relative flex flex-col max-h-[85vh]">
+    <div id="accountHistoryModal" class="fixed inset-0 z-[160] hidden bg-black/90 backdrop-blur-2xl flex items-center justify-center p-4 md:p-6 animate-fade-in">
+        <div class="bg-teenSurface w-full max-w-2xl border-4 border-black rounded-[3rem] neo-box no-hover p-6 md:p-12 relative flex flex-col max-h-[85vh]">
             <button id="closeHistoryBtn" class="absolute top-8 right-8 text-zinc-500 hover:text-teenPink">
                 <i class="fas fa-xmark text-2xl"></i>
             </button>
@@ -120,7 +120,7 @@
                 <h3 id="historyAccountName" class="text-3xl font-black italic uppercase leading-none">NODE <span class="text-teenPurple">HISTORY</span></h3>
                 <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Historical Ledger Registry</p>
             </div>
-            <div id="historyContainer" class="flex-1 overflow-y-auto space-y-4 pr-4"></div>
+            <div id="historyContainer" class="flex-1 overflow-y-auto space-y-4 pr-2 md:pr-4 no-scrollbar"></div>
         </div>
     </div>
 
@@ -171,17 +171,17 @@
         </div>
     </aside>
 
-    <main class="flex-1 lg:ml-72 min-h-screen p-6 md:p-12 space-y-10">
+    <main class="flex-1 lg:ml-72 min-h-screen p-4 md:p-12 space-y-10 max-w-full overflow-x-hidden">
         
         <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 animate-slide-up" style="margin-top: 60px;">
             <div class="flex items-center justify-between w-full md:w-auto">
-                <div>
-                    <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none">VAULT <span class="text-teenPurple">ASSETS</span></h1>
+                <div class="max-w-[250px] md:max-w-none">
+                    <h1 class="text-3xl md:text-5xl font-black italic uppercase leading-none break-words">VAULT <span class="text-teenPurple">ASSETS</span></h1>
                     <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mt-2">Resource Allocation Status: <span class="text-white">OPTIMIZED</span></p>
                 </div>
             </div>
             
-            <button id="openEntryBtn" class="relative bg-teenLime p-4 pl-12 pr-10 rounded-2xl neo-box text-[10px] text-black font-black uppercase flex flex-col items-start gap-1 overflow-hidden group">
+            <button id="openEntryBtn" class="relative bg-teenLime p-4 pl-12 pr-10 rounded-2xl neo-box text-[10px] text-black font-black uppercase flex flex-col items-start gap-1 overflow-hidden group w-full md:w-auto">
                 <div id="btnStatusBar" class="absolute left-0 top-0 bottom-0 w-8 bg-black/20 flex flex-col items-center justify-center gap-1.5 transition-colors duration-500">
                     <div id="statusDot1" class="w-[3px] h-[3px] bg-black rounded-full"></div>
                     <div id="statusDot2" class="w-[3px] h-[3px] bg-black rounded-full"></div>
@@ -195,12 +195,12 @@
             </button>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 animate-slide-up">
-            <div class="md:col-span-2 bg-teenSurface p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover relative overflow-hidden group">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 animate-slide-up">
+            <div class="md:col-span-2 bg-teenSurface p-6 md:p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover relative overflow-hidden group">
                 <div class="relative z-10">
                     <p class="text-teenPurple font-black text-[10px] uppercase tracking-widest mb-4">Total Net Worth</p>
-                    <h2 class="text-white text-xl sm:text-3xl lg:text-4xl font-black leading-none flex items-baseline">
-                        <span class="currency-symbol shrink-0 mr-2">...</span><span id="netWorthDisplay">0.00</span>
+                    <h2 class="text-white text-xl sm:text-3xl lg:text-4xl font-black leading-none flex items-baseline overflow-hidden">
+                        <span class="currency-symbol shrink-0 mr-2">...</span><span id="netWorthDisplay" class="truncate">0.00</span>
                     </h2>
                     <div class="flex items-center gap-2 mt-6">
                         <span class="bg-teenLime/10 text-teenLime text-[9px] font-black px-3 py-1 rounded-full border border-teenLime/20">LIVE DATA LINK</span>
@@ -209,10 +209,10 @@
                 <i class="fas fa-vault absolute -right-6 -bottom-6 text-9xl opacity-5 group-hover:rotate-12 transition-transform duration-500"></i>
             </div>
 
-            <div class="bg-teenSurface p-8 rounded-[2rem] border-4 border-black neo-box no-hover overflow-hidden">
+            <div class="bg-teenSurface p-6 md:p-8 rounded-[2rem] border-4 border-black neo-box no-hover overflow-hidden">
                 <p class="text-zinc-500 font-black text-[10px] uppercase tracking-widest">Liquid Cash</p>
-                <h2 class="text-white text-lg lg:text-xl font-black mt-2 leading-none flex items-baseline">
-                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="liquidCash">0.00</span>
+                <h2 class="text-white text-lg lg:text-xl font-black mt-2 leading-none flex items-baseline overflow-hidden">
+                    <span class="currency-symbol shrink-0 mr-1">...</span><span id="liquidCash" class="truncate">0.00</span>
                 </h2>
                 <div class="mt-8 flex justify-between items-center text-[9px] font-black uppercase">
                     <span class="text-zinc-600">Sync Status</span>
@@ -220,7 +220,7 @@
                 </div>
             </div>
 
-            <div class="bg-teenSurface p-8 rounded-[2rem] border-4 border-black neo-box no-hover overflow-hidden">
+            <div class="bg-teenSurface p-6 md:p-8 rounded-[2rem] border-4 border-black neo-box no-hover overflow-hidden">
                 <p class="text-zinc-500 font-black text-[10px] uppercase tracking-widest">Growth Index</p>
                 <h2 id="growthPercentage" class="text-white text-lg lg:text-xl font-black mt-2 leading-none">0%</h2>
                 <div class="mt-8 flex justify-between items-center text-[9px] font-black uppercase">
@@ -238,21 +238,21 @@
                     <button id="scrollRight" class="text-zinc-600 hover:text-teenLime"><i class="fas fa-circle-arrow-right text-xl"></i></button>
                 </div>
             </div>
-            <div id="accountCarousel" class="flex flex-row gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 px-2"></div>
+            <div id="accountCarousel" class="flex flex-row gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 px-2 snap-x snap-mandatory"></div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <div class="lg:col-span-2 space-y-6">
-                <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-8 md:p-10 neo-box no-hover min-h-[500px] flex flex-col">
+            <div class="lg:col-span-2 space-y-6 max-w-full">
+                <div class="bg-teenSurface rounded-[2.5rem] border-4 border-black p-6 md:p-10 neo-box no-hover min-h-[500px] flex flex-col overflow-hidden">
                     <div class="flex items-center justify-between mb-8">
                         <h3 class="font-black text-2xl italic uppercase">Dynamic <span class="text-teenLime">Inventory</span></h3>
                     </div>
-                    <div class="space-y-4 flex-1" id="assetInventory"></div>
+                    <div class="space-y-4 flex-1 overflow-x-hidden" id="assetInventory"></div>
                 </div>
             </div>
 
             <div class="space-y-8">
-                <div class="bg-teenSurface p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover relative overflow-hidden group">
+                <div class="bg-teenSurface p-8 md:p-10 rounded-[2.5rem] border-4 border-black neo-box no-hover relative overflow-hidden group">
                     <h3 class="font-black text-2xl italic uppercase mb-6 leading-none">PORTFOLIO <br><span class="text-teenLime">PULSE</span></h3>
                     <div class="space-y-6">
                         <div class="relative pt-1">
@@ -276,7 +276,7 @@
                     </div>
                 </div>
 
-                <div class="bg-teenPink p-10 rounded-[2.5rem] neo-box text-black no-hover">
+                <div class="bg-teenPink p-8 md:p-10 rounded-[2.5rem] neo-box text-black no-hover">
                     <h3 class="font-black text-lg italic uppercase mb-4">Security Notice</h3>
                     <p class="text-[10px] font-black uppercase opacity-60 leading-relaxed">Your asset visibility is encrypted. Only you can view this ledger.</p>
                 </div>
@@ -284,7 +284,7 @@
         </div>
     </main>
 
-    <div id="toastContainer" class="fixed bottom-6 right-6 z-[200] flex flex-col gap-4 pointer-events-none"></div>
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-[200] flex flex-col gap-4 pointer-events-none max-w-[90vw]"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -371,7 +371,7 @@
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-            toast.className = `${type === 'success' ? 'bg-teenLime' : 'bg-teenPink'} border-4 border-black p-4 rounded-2xl neo-box no-hover animate-slide-in pointer-events-auto min-w-[280px]`;
+            toast.className = `${type === 'success' ? 'bg-teenLime' : 'bg-teenPink'} border-4 border-black p-4 rounded-2xl neo-box no-hover animate-slide-in pointer-events-auto min-w-[250px] md:min-w-[280px]`;
             toast.innerHTML = `<div class="flex items-center gap-4 text-black font-black text-[10px] uppercase italic"><i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>${message}</div>`;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 4000);
@@ -400,7 +400,7 @@
             }
             filtered.forEach(tx => {
                 const isInc = tx.type === 'income';
-                container.innerHTML += `<div class="flex items-center justify-between p-6 bg-black/40 rounded-2xl border-2 border-teenBorder"><div><h4 class="font-black text-[10px] uppercase">${tx.label}</h4><p class="text-[8px] text-zinc-600 font-black uppercase">${new Date(tx.timestamp).toLocaleDateString()}</p></div><p class="font-black text-[10px] ${isInc ? 'text-teenLime' : 'text-white'}">${isInc ? '+' : '-'}<span class="currency-symbol"></span>${tx.amount.toLocaleString()}</p></div>`;
+                container.innerHTML += `<div class="flex items-center justify-between p-4 md:p-6 bg-black/40 rounded-2xl border-2 border-teenBorder gap-2"><div><h4 class="font-black text-[9px] md:text-[10px] uppercase truncate max-w-[120px] md:max-w-none">${tx.label}</h4><p class="text-[8px] text-zinc-600 font-black uppercase">${new Date(tx.timestamp).toLocaleDateString()}</p></div><p class="font-black text-[9px] md:text-[10px] ${isInc ? 'text-teenLime' : 'text-white'} whitespace-nowrap">${isInc ? '+' : '-'}<span class="currency-symbol"></span>${tx.amount.toLocaleString()}</p></div>`;
             });
             updateCurrency();
         }
@@ -416,13 +416,13 @@
             Object.keys(allAccounts).forEach(id => {
                 const acc = allAccounts[id];
                 const card = document.createElement('div');
-                card.className = "flex-shrink-0 w-72 bg-teenSurface p-8 rounded-[2.5rem] border-4 border-black neo-box no-hover cursor-pointer hover:border-teenLime group";
+                card.className = "flex-shrink-0 w-64 md:w-72 bg-teenSurface p-6 md:p-8 rounded-[2.5rem] border-4 border-black neo-box no-hover cursor-pointer hover:border-teenLime group snap-start";
                 card.onclick = () => {
                     document.getElementById('historyAccountName').innerText = acc.accountName.toUpperCase();
                     renderAccountHistory(id);
                     toggleModal('accountHistoryModal', true);
                 };
-                card.innerHTML = `<p class="text-zinc-500 font-black text-[8px] uppercase tracking-widest mb-2">${acc.accountName}</p><h2 class="text-white text-2xl font-black italic"><span class="currency-symbol"></span>${acc.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}</h2><div class="mt-6 flex justify-between items-center text-[8px] font-black uppercase text-zinc-600"><span class="group-hover:text-teenLime">History Registry</span><i class="fas fa-arrow-right-long group-hover:translate-x-2 transition-transform"></i></div>`;
+                card.innerHTML = `<p class="text-zinc-500 font-black text-[8px] uppercase tracking-widest mb-2">${acc.accountName}</p><h2 class="text-white text-xl md:text-2xl font-black italic truncate"><span class="currency-symbol"></span>${acc.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}</h2><div class="mt-6 flex justify-between items-center text-[8px] font-black uppercase text-zinc-600"><span class="group-hover:text-teenLime">History Registry</span><i class="fas fa-arrow-right-long group-hover:translate-x-2 transition-transform"></i></div>`;
                 carousel.appendChild(card);
             });
 
@@ -431,18 +431,18 @@
             allTransactions.slice(0, 10).forEach(tx => {
                 const isInc = tx.type === 'income';
                 inv.innerHTML += `
-                    <div class="flex flex-col md:flex-row md:items-center justify-between p-6 bg-black/40 rounded-2xl border-2 border-teenBorder group hover:border-${isInc ? 'teenLime' : 'teenPink'} transition-all gap-4">
-                        <div class="flex items-center gap-5">
-                            <div class="w-12 h-12 bg-${isInc ? 'teenLime' : 'teenPink'}/10 rounded-xl flex items-center justify-center text-${isInc ? 'teenLime' : 'teenPink'}">
-                                <i class="fas ${tx.icon || 'fa-receipt'} text-xl"></i>
+                    <div class="flex items-center justify-between p-4 md:p-6 bg-black/40 rounded-2xl border-2 border-teenBorder group transition-all gap-4 overflow-hidden">
+                        <div class="flex items-center gap-3 md:gap-5 min-w-0">
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-${isInc ? 'teenLime' : 'teenPink'}/10 rounded-xl flex-shrink-0 flex items-center justify-center text-${isInc ? 'teenLime' : 'teenPink'}">
+                                <i class="fas ${tx.icon || 'fa-receipt'} text-lg md:text-xl"></i>
                             </div>
-                            <div>
-                                <h4 class="font-black text-sm uppercase">${tx.label}</h4>
-                                <p class="text-[9px] font-black text-zinc-500 uppercase">${tx.accountName}</p>
+                            <div class="min-w-0">
+                                <h4 class="font-black text-xs md:text-sm uppercase truncate">${tx.label}</h4>
+                                <p class="text-[8px] md:text-[9px] font-black text-zinc-500 uppercase truncate">${tx.accountName}</p>
                             </div>
                         </div>
-                        <div class="md:text-right">
-                            <p class="font-black text-lg ${isInc ? 'text-teenLime' : 'text-white'}">${isInc ? '+' : '-'}<span class="currency-symbol"></span>${tx.amount.toLocaleString()}</p>
+                        <div class="text-right flex-shrink-0">
+                            <p class="font-black text-sm md:text-lg ${isInc ? 'text-teenLime' : 'text-white'}">${isInc ? '+' : '-'}<span class="currency-symbol"></span>${tx.amount.toLocaleString()}</p>
                         </div>
                     </div>`;
             });
