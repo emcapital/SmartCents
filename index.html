@@ -169,8 +169,17 @@
             
             <div class="md:col-span-8 bg-teenSurface border-4 border-black rounded-4xl p-6 md:p-10 neo-box-purple relative overflow-hidden group custom-gradient">
                 <div class="relative z-10">
-                    <span class="text-zinc-400 font-black text-[10px] md:text-sm uppercase tracking-widest">Total Stack</span>
-                    <h2 class="text-4xl md:text-8xl font-black my-4 md:my-6 tracking-tighter">$2,405.<span class="text-zinc-600 text-2xl md:text-5xl">10</span></h2>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div>
+                            <span class="text-zinc-400 font-black text-[10px] md:text-sm uppercase tracking-widest">Total Stack</span>
+                            <h2 class="text-4xl md:text-8xl font-black my-4 md:my-6 tracking-tighter">$2,405.<span class="text-zinc-600 text-2xl md:text-5xl">10</span></h2>
+                        </div>
+                        <a href="../pages/auth/login.html" class="inline-flex items-center justify-center gap-3 bg-teenLime text-black px-8 py-5 rounded-2xl font-black text-xs md:text-sm uppercase neo-box hover:bg-white active:translate-y-1 transition-all w-full md:w-auto">
+                            Get Started 
+                            <i class="fas fa-arrow-right-long animate-bounce-x"></i>
+                        </a>
+                    </div>
+                    
                     <div class="flex flex-wrap gap-2 md:gap-4 mt-6">
                         <div class="bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl border-2 border-white/5 flex items-center gap-2 md:gap-3">
                             <span class="w-2 h-2 md:w-3 md:h-3 bg-teenLime rounded-full shadow-[0_0_10px_#befa39]"></span>
@@ -252,7 +261,7 @@
         </div>
     </main>
 
-    <nav class="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm bg-teenSurface/90 backdrop-blur-2xl border-4 border-black rounded-[2.5rem] px-8 py-4 flex justify-between items-center z-50 neo-box-lime shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+    <nav class="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-sm bg-teenSurface/90 backdrop-blur-2xl border-4 border-black rounded-[2.5rem] px-8 py-4 flex justify-between items-center z-50 neo-box-lime shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
         <a href="#" class="text-teenLime text-xl"><i class="fas fa-house"></i></a>
         <a href="#" class="text-zinc-600 text-xl"><i class="fas fa-chart-simple"></i></a>
         
@@ -290,19 +299,13 @@
         const installBtn = document.getElementById('installBtn');
 
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent Chrome 67 and earlier from automatically showing the prompt
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             deferredPrompt = e;
-            // Update UI notify the user they can add to home screen
             installBtn.classList.remove('hidden');
 
             installBtn.addEventListener('click', () => {
-                // hide our install button
                 installBtn.classList.add('hidden');
-                // Show the prompt
                 deferredPrompt.prompt();
-                // Wait for the user to respond to the prompt
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the A2HS prompt');
@@ -314,7 +317,6 @@
             });
         });
 
-        // Hide button if already installed
         window.addEventListener('appinstalled', (evt) => {
             console.log('SmartCents was installed.');
             installBtn.classList.add('hidden');
